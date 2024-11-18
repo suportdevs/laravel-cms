@@ -1,0 +1,2 @@
+<input type="checkbox" <?php echo $attributes->merge(['class' => 'rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500']); ?>>
+<?php /**PATH /media/anonymous/12a8dd6f-3122-4159-adcf-832ac2c3572d/laravel/cms_api_service/resources/views/components/checkbox.blade.php ENDPATH**/ ?>
