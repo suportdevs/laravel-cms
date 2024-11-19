@@ -24,75 +24,23 @@
                 <div class="card">
                     <div class="card-body">
                       <div class="mb-5">
-                        <label for="name" class="form-label">Name <b class="text-danger">*</b></label>
+                        <label for="name" class="form-label"><b>Name</b> <b class="text-danger">*</b></label>
                         <input type="text" class="form-control border-radius-5" id="name" name="name" placeholder="Name" required>
                       </div>
                       <div class="mb-5">
-                          <label for="permalink" class="form-label">Permalink <b class="text-danger">*</b></label>
+                          <label for="permalink" class="form-label"><b>Permalink</b> <b class="text-danger">*</b></label>
                           <div class="input-group input-group-merge">
                             <span class="input-group-text" id="basic-addon34">{{route('admin.blog.posts.index')}}/</span>
                             <input type="text" class="form-control" name="permalink" id="permalink" required>
                           </div>
                         </div>
                         <div class="mb-5">
-                            <label for="categories" class="form-label">Catgory</label>
-                            <select name="categories[]" id="categories" class="form-select select2search" multiple>
-                                <option value="">Select</option>
-                                @foreach ($categories as $category)
-                                    @include('admin.layouts.partials.category-option', ['category' => $category, 'level' => 0])
-                                @endforeach
-                            </select>
+                            <label for="excerpt" class="form-label"><b>Description</b></label>
+                            <textarea name="excerpt" id="excerpt" rows="3" class="form-control border-radius-5" placeholder="Short Description"></textarea>
                         </div>
                         <div class="mb-5">
-                            <label for="tags" class="form-label">Tag</label>
-                            <select name="tags[]" id="tags" class="form-select select2search" multiple>
-                                <option value="">Select</option>
-                                @foreach ($tags as $id=>$name)
-                                    <option value="{{$id}}">{{$name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="mb-5">
-                            <label for="description" class="form-label">Description</label>
-                            <textarea name="description" id="description" rows="3" class="form-control border-radius-5" placeholder="Description"></textarea>
-                        </div>
-                        <div class="mb-5">
-                            <label for="formFile" class="form-label">Image</label>
-                            <br>
-                            <div class="image-preview-wrapper">
-                                <img
-                                    id="imagePreview"
-                                    class="preview-image"
-                                    data-default="https://cms.botble.com/vendor/core/core/base/images/placeholder.png"
-                                    src="https://cms.botble.com/vendor/core/core/base/images/placeholder.png"
-                                    alt="Preview image"
-                                    style="width: 150px;"
-                                >
-                                <button
-                                    type="button"
-                                    class="btn rounded-pill btn-icon btn-outline-secondary p-2 mt-2 d-none"
-                                    data-remove-button
-                                    data-target-preview="imagePreview"
-                                    data-target-input="formFile"
-                                    style="position: absolute; top: 5px; left: 130px; width: 8px; height: 8px;"
-                                >
-                                    &times;
-                                </button>
-                            </div>
-                            <input
-                                class="form-control"
-                                type="file"
-                                id="formFile"
-                                name="image"
-                                accept="image/jpeg, image/png"
-                                data-preview="imagePreview"
-                                style="opacity: 0; position: absolute; z-index: -1;"
-                                onchange="previewSelectedImage(this)"
-                            >
-                            <br>
-                            <b class="text-primary mt-2" onclick="document.getElementById('formFile').click()" type="button">
-                                Choose Image
-                            </b>
+                            <label for="content" class="form-label"><b>Content</b></label>
+                            <textarea name="content" id="content" rows="10" class="form-control border-radius-5" placeholder="Content"></textarea>
                         </div>
                     </div>
                 </div>
@@ -175,19 +123,132 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card">
+                <div class="card mb-5">
+                    <div class="card-header p-4 border-bottom">
+                        <h5>Categories <b class="text-danger">*</b></h5>
+                    </div>
+                    <div class="card-body mt-4">
+                        <select name="categories[]" id="categories" class="form-select select2search" data-control="select2" data-placeholder="Select an option" multiple>
+                            {{-- <option value="">Select</option> --}}
+                            <option ></option>
+                            @foreach ($categories as $category)
+                                @include('admin.layouts.partials.category-option', ['category' => $category, 'level' => 0])
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="card mb-5">
+                    <div class="card-header p-4 border-bottom">
+                        <h5>Tags <b class="text-danger">*</b></h5>
+                    </div>
+                    <div class="card-body mt-4">
+                        <select name="tags[]" id="tags" class="form-select select2search" data-control="select2" data-placeholder="Select an option" multiple>
+                            <option value="">Select</option>
+                            @foreach ($tags as $id=>$name)
+                                <option value="{{$id}}">{{$name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="card mb-5">
                     <div class="card-header p-4 border-bottom">
                         <h5>Status <b class="text-danger">*</b></h5>
                     </div>
                     <div class="card-body mt-4">
-                        <select name="status" id="status" class="form-select">
+                        <select name="status" id="status" class="form-select select2search" data-control="select2" data-placeholder="Select an option">
                             <option value="Published">Published</option>
                             <option value="Draft">Draft</option>
                             <option value="Pending">Pending</option>
                         </select>
                     </div>
                 </div>
-                <div class="card mt-5">
+                <div class="card mb-5">
+                    <div class="card-header p-4 border-bottom">
+                        <h5>Image</h5>
+                    </div>
+                    <div class="card-body mt-4">
+                        <div class="mb-5 text-center">
+                            <div class="image-preview-wrapper">
+                                <img
+                                    id="imagePreview"
+                                    class="preview-image"
+                                    data-default="https://cms.botble.com/vendor/core/core/base/images/placeholder.png"
+                                    src="https://cms.botble.com/vendor/core/core/base/images/placeholder.png"
+                                    alt="Preview image"
+                                    style="width: 150px;"
+                                >
+                                <button
+                                    type="button"
+                                    class="btn rounded-pill btn-icon btn-outline-secondary p-2 mt-2 d-none"
+                                    data-remove-button
+                                    data-target-preview="imagePreview"
+                                    data-target-input="formFile"
+                                    style="position: absolute; top: 5px; left: 130px; width: 8px; height: 8px;"
+                                >
+                                    &times;
+                                </button>
+                            </div>
+                            <input
+                                class="form-control"
+                                type="file"
+                                id="formFile"
+                                name="image"
+                                accept="image/jpeg, image/png"
+                                data-preview="imagePreview"
+                                style="opacity: 0; position: absolute; z-index: -1;"
+                                onchange="previewSelectedImage(this)"
+                            >
+                            <br>
+                            <b class="text-primary mt-2" onclick="document.getElementById('formFile').click()" type="button">
+                                Choose Image
+                            </b>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-5">
+                    <div class="card-header p-4 border-bottom">
+                        <h5>Banner Image</h5>
+                    </div>
+                    <div class="card-body mt-4">
+                        <div class="mb-5 text-center">
+                            <div class="image-preview-wrapper">
+                                <img
+                                    id="bannerImagePreview"
+                                    class="preview-image"
+                                    data-default="https://cms.botble.com/vendor/core/core/base/images/placeholder.png"
+                                    src="https://cms.botble.com/vendor/core/core/base/images/placeholder.png"
+                                    alt="Preview image"
+                                    style="width: 150px;"
+                                >
+                                <button
+                                    type="button"
+                                    class="btn rounded-pill btn-icon btn-outline-secondary p-2 mt-2 d-none"
+                                    data-remove-button
+                                    data-target-preview="bannerImagePreview"
+                                    data-target-input="formFileBanner"
+                                    style="position: absolute; top: 5px; left: 130px; width: 8px; height: 8px;"
+                                >
+                                    &times;
+                                </button>
+                            </div>
+                            <input
+                                class="form-control"
+                                type="file"
+                                id="formFileBanner"
+                                name="banner_image"
+                                accept="image/jpeg, image/png"
+                                data-preview="bannerImagePreview"
+                                style="opacity: 0; position: absolute; z-index: -1;"
+                                onchange="previewSelectedImage(this)"
+                            >
+                            <br>
+                            <b class="text-primary mt-2" onclick="document.getElementById('formFileBanner').click()" type="button">
+                                Choose Image
+                            </b>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-5">
                     <div class="card-header p-4 border-bottom">
                         <h5>Publish</h5>
                     </div>

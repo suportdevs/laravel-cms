@@ -133,7 +133,7 @@ $(document).ready(function () {
         search(this.action)
     });
     $('.select2search').select2({
-        theme: "classic"
+        // theme: "classic"
     });
     $(document).on('select2:open', () => {
         document.querySelector('.select2-container--open .select2-search__field').focus();
@@ -223,8 +223,6 @@ function singleDelete(deleteUrl) {
         }
     });
 }
-
-
 
 function readURL(input, to) {
     if (input.files && input.files[0]) {
