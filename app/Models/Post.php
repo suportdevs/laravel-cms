@@ -42,6 +42,6 @@ class Post extends Model implements HasMedia
     }
 
     public function scopeFilter($query, $filters) {
-        $query->when($filters->title ?? false, fn($query, $title) => $query->where('title', 'LIKE', "%". trim($title) . "%"));
+        $query->when($filters->name ?? false, fn($query, $name) => $query->where('name', 'LIKE', "%". trim($name) . "%"));
     }
 }

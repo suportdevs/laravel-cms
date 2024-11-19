@@ -1,4 +1,4 @@
-<option value="{{ $category->id }}" {{$category->id == ($data->id ?? NULL) ? 'selected' : ''}}>
+<option value="{{ $category->id }}" {{($category->id == ($data->id ?? NULL) || in_array($category->id, ($selectedCategories ?? []))) ? 'selected' : ''}}>
     {{ str_repeat('--', $level) }} {{ $category->name }}
 </option>
 

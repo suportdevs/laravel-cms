@@ -8,12 +8,13 @@ use App\Models\Tag;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
     public function index(Request $request)
     {
-        $dataset = Post::filter($request)->paginate($request->item_count ?? $this->pageCount);
+        $dataset = Post::filter($request)->with('categories:id,name,_key', 'tags:id,name,_key')->paginate($request->item_count ?? $this->pageCount);
 
         return ($request->expectsJson() && !$request->view_render) ?
             response()->json($dataset) :
@@ -35,6 +36,7 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $attributes = $this->validateRequest($request);
+        $attributes['is_featured'] = $request->is_featured ? 1 : 0;
         try {
             DB::beginTransaction();
             $data = Post::create($attributes);
@@ -51,6 +53,10 @@ class PostController extends Controller
             if ($request->hasFile('image')) {
                 $data->addMedia($request->file('image'))
                 ->toMediaCollection('image');
+            }
+            if ($request->hasFile('banner_image')) {
+                $data->addMedia($request->file('banner_image'))
+                ->toMediaCollection('banner_image');
             }
             if ($request->hasFile('seo_image')) {
                 $data->addMedia($request->file('seo_image'))
@@ -78,7 +84,8 @@ class PostController extends Controller
         $data = Post::where('_key', $key)->first();
         return view('admin.posts.edit', [
             'page_title' => "Post Edit",
-            'posts' => Post::with('children')->whereNull('parent_id')->get(),
+            'categories' => Category::with('children')->whereNull('parent_id')->get(),
+            'tags' => Tag::pluck('name', 'id'),
             'data'=> $data,
         ]);
     }
@@ -86,6 +93,7 @@ class PostController extends Controller
     public function update(Request $request, $key)
     {
         $attributes = $this->validateRequest($request, $key);
+        $attributes['is_featured'] = $request->is_featured ? 1 : 0;
         $data = Post::where('_key', $key)->first();
 
         try {
@@ -104,6 +112,11 @@ class PostController extends Controller
                 $data->clearMediaCollection('image');
                 $data->addMedia($request->file('image'))
                 ->toMediaCollection('image');
+            }
+            if ($request->hasFile('banner_image')) {
+                $data->clearMediaCollection('banner_image');
+                $data->addMedia($request->file('banner_image'))
+                ->toMediaCollection('banner_image');
             }
             if ($request->hasFile('seo_image')) {
                  $data->clearMediaCollection('seo_image');
@@ -128,6 +141,7 @@ class PostController extends Controller
         $data = Post::where('_key', $key)->first();
         if ($data) {
             $data->clearMediaCollection('image');
+            $data->clearMediaCollection('banner_image');
              $data->clearMediaCollection('seo_image');
 
             // Delete the tag record
@@ -147,6 +161,7 @@ class PostController extends Controller
                 $data = Post::where('_key', $id)->first();
                 if ($data) {
                     $data->clearMediaCollection('image');
+                    $data->clearMediaCollection('banner_image');
                      $data->clearMediaCollection('seo_image');
 
                     // Delete the tag record
@@ -163,6 +178,25 @@ class PostController extends Controller
         }
     }
 
+    public function imageUpload(Request $request)
+    {
+        if ($request->hasFile('upload')) {
+            $file = $request->file('upload');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $path = $file->storeAs('uploads', $filename);
+
+            $url = Storage::url($path);
+
+            return response()->json([
+                'uploaded' => 1,
+                'fileName' => $filename,
+                'url' => $url,
+            ]);
+        }
+
+        return response()->json(['uploaded' => 0, 'error' => ['message' => 'File upload failed.']]);
+    }
+
     // Helper method to validate request
     protected function validateRequest(Request $request, $ignoreKey = null)
     {
@@ -171,15 +205,17 @@ class PostController extends Controller
             'tags' => 'required',
             'name' => 'required|string|max:255|unique:posts,name,' . $ignoreKey . ',_key',
             'excerpt' => 'nullable|string',
-            // 'content' => 'required|string',
+            'content' => 'required|string',
             'permalink' => 'required|string|unique:posts,permalink,' . $ignoreKey . ',_key',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:1024',
+            'banner_image' => 'nullable|image|mimes:jpg,jpeg,png|max:1024',
             'seo_title' => 'nullable|string|max:255',
             'seo_description' => 'nullable|string|max:1000',
             'seo_image' => 'nullable|image|mimes:jpg,jpeg,png|max:1024',
             'status' => 'nullable|string|max:255',
             'submitter' => 'nullable|string|max:255',
             'is_index' => 'nullable|boolean',
+            'is_featured' => 'nullable',
             'published_at' => 'nullable',
         ]);
     }

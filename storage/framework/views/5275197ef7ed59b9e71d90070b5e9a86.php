@@ -1,4 +1,4 @@
-<option value="<?php echo e($category->id); ?>" <?php echo e($category->id == ($data->id ?? NULL) ? 'selected' : ''); ?>>
+<option value="<?php echo e($category->id); ?>" <?php echo e(($category->id == ($data->id ?? NULL) || in_array($category->id, ($selectedCategories ?? []))) ? 'selected' : ''); ?>>
     <?php echo e(str_repeat('--', $level)); ?> <?php echo e($category->name); ?>
 
 </option>

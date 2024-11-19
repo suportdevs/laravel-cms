@@ -17,12 +17,14 @@ return new class extends Migration
             $table->string('excerpt')->nullable();
             $table->text('content')->nullable();
             $table->string('image')->nullable();
+            $table->string('banner_image')->nullable();
             $table->string('permalink')->unique();
             $table->enum('status', ['Published', 'Draft', 'Pending'])->default('Published');
             $table->string('seo_title')->nullable();
             $table->string('seo_description')->nullable();
             $table->string('seo_image')->nullable();
             $table->tinyInteger('is_index')->default(1);
+            $table->tinyInteger('is_featured')->default(0);
             $table->integer('visited_count')->nullable();
             $table->timestamp('published_at')->nullable();
             $table->timestamps();

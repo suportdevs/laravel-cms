@@ -44,7 +44,7 @@
         <form action="{{route('admin.blog.posts.delete')}}" id="frmList" method="POST">
             @csrf
             <div id="ajax_content">
-                @include('admin.categories._list')
+                @include('admin.posts._list')
             </div>
         </form>
     </div>

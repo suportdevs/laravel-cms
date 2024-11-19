@@ -2,7 +2,9 @@
 
 use App\Helpers\ShortcodeParser;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\ImageUploadController;
+use App\Http\Controllers\MemberController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
@@ -37,6 +39,7 @@ Route::middleware([
 ])->group(function () {
     // Blog Posts Resource Route
     Route::prefix('admin/blog/posts')->name('admin.blog.posts.')->group(function () {
+        Route::post("/ckeditor/image/upload", [PostController::class, "imageUpload"])->name("ckeditor.image.upload");
         Route::post('/delete', [PostController::class, 'delete'])->name('delete');
         Route::resource('/', PostController::class)->parameters(['' => 'key']);
     });
@@ -52,8 +55,17 @@ Route::middleware([
         Route::post('/delete', [TagController::class, 'delete'])->name('delete');
         Route::resource('/', TagController::class)->parameters(['' => 'key']);
     });
-    Route::post('/admin/upload-image', [ImageUploadController::class, 'upload'])->name('admin.upload.image');
-
+    // Blog Galleries Resource Route
+    Route::prefix('admin/blog/galleries')->name('admin.blog.galleries.')->group(function () {
+        Route::post("/ckeditor/image/upload", [GalleryController::class, "imageUpload"])->name("ckeditor.image.upload");
+        Route::post('/delete', [GalleryController::class, 'delete'])->name('delete');
+        Route::resource('/', GalleryController::class)->parameters(['' => 'key']);
+    });
+    // Blog Members Resource Route
+    Route::prefix('admin/blog/members')->name('admin.blog.members.')->group(function () {
+        Route::post('/delete', [MemberController::class, 'delete'])->name('delete');
+        Route::resource('/', MemberController::class)->parameters(['' => 'key']);
+    });
 });
 
 

@@ -36,55 +36,16 @@
                           </div>
                         </div>
                         <div class="mb-5">
-                            <label for="parent_id" class="form-label">Parent</label>
-                            <select name="parent_id" id="parent_id" class="form-select select2search">
-                                <option value="">Select</option>
-                                @foreach ($categories as $category)
-                                    @include('admin.layouts.partials.category-option', ['category' => $category, 'level' => 0])
-                                @endforeach
-                            </select>
+                            <label for="excerpt" class="form-label">Description</label>
+                            <textarea name="excerpt" id="excerpt" rows="3" class="form-control border-radius-5" placeholder="Short Description">{{$data->excerpt}}</textarea>
                         </div>
                         <div class="mb-5">
-                            <label for="description" class="form-label">Description</label>
-                            <textarea name="description" id="description" rows="3" class="form-control border-radius-5" placeholder="Description">{{$data->description}}</textarea>
+                            <label for="content" class="form-label"><b>Content</b></label>
+                            <textarea name="content" id="content" rows="10" class="form-control border-radius-5" placeholder="Content">{!!$data->content!!}</textarea>
                         </div>
-                        <div class="mb-5">
-                            <label for="formFile" class="form-label">Image</label>
-                            <br>
-                            <div class="image-preview-wrapper">
-                                <img
-                                    id="imagePreview"
-                                    class="preview-image"
-                                    data-default="{{!is_null($data->image) ? $data->getFirstMediaUrl('image') : 'https://cms.botble.com/vendor/core/core/base/images/placeholder.png' }}"
-                                    src="{{!is_null($data->image) ? $data->getFirstMediaUrl('image') : 'https://cms.botble.com/vendor/core/core/base/images/placeholder.png' }}"
-                                    alt="Preview image"
-                                    style="width: 150px;"
-                                >
-                                <button
-                                    type="button"
-                                    class="btn rounded-pill btn-icon btn-outline-secondary p-2 mt-2 d-none"
-                                    data-remove-button
-                                    data-target-preview="imagePreview"
-                                    data-target-input="formFile"
-                                    style="position: absolute; top: 5px; left: 130px; width: 8px; height: 8px;"
-                                >
-                                    &times;
-                                </button>
-                            </div>
-                            <input
-                                class="form-control"
-                                type="file"
-                                id="formFile"
-                                name="image"
-                                accept="image/jpeg, image/png"
-                                data-preview="imagePreview"
-                                style="opacity: 0; position: absolute; z-index: -1;"
-                                onchange="previewSelectedImage(this)"
-                            >
-                            <br>
-                            <b class="text-primary mt-2" onclick="document.getElementById('formFile').click()" type="button">
-                                Choose Image
-                            </b>
+                        <div class="form-check form-switch mb-5">
+                            <input class="form-check-input" type="checkbox" id="is_featured" name="is_featured" {{$data->is_featured == 1 ? 'checked' : ''}}>
+                            <label class="form-check-label" for="is_featured"><b>? Is Featured</b></label>
                         </div>
                     </div>
                 </div>
@@ -167,7 +128,46 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card">
+                <div class="card mb-5">
+                    <div class="card-header p-4 border-bottom">
+                        <h5>Publish</h5>
+                    </div>
+                    <div class="card-body mt-4">
+                        <button  type="submit" name="submitter"  class="btn btn-primary"><i class="bx bx-save"></i> Save</button>
+                        <button type="submit" name="submitter" value="save"  class="btn btn-secondary"><i class="bx bx-exit"></i> Save & Exit</button>
+                    </div>
+                </div>
+
+                <div class="card mb-5">
+                    <div class="card-header p-4 border-bottom">
+                        <h5>Categories <b class="text-danger">*</b></h5>
+                    </div>
+                    <div class="card-body mt-4">
+                        <select name="categories[]" id="categories" class="form-select select2search" data-control="select2" data-placeholder="Select an option" multiple>
+                            <option ></option>
+                            @foreach ($categories as $category)
+                                @include('admin.layouts.partials.category-option', ['category' => $category, 'level' => 0, 'selectedCategories' => $data->categories->pluck('id')->toArray()])
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="card mb-5">
+                    <div class="card-header p-4 border-bottom">
+                        <h5>Tags <b class="text-danger"></b></h5>
+                    </div>
+                    <div class="card-body mt-4">
+                        <select name="tags[]" id="tags" class="form-select select2search" data-control="select2" data-placeholder="Select an option" multiple>
+                            <option value="">Select</option>
+                            @foreach ($tags as $id=>$name)
+                            @php
+                                $selectedTags = $data->tags->pluck('id')->toArray();
+                            @endphp
+                                <option value="{{$id}}" {{ in_array($id, $selectedTags) ? 'selected' : ''}}>{{$name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="card mb-5">
                     <div class="card-header p-4 border-bottom">
                         <h5>Status <b class="text-danger">*</b></h5>
                     </div>
@@ -179,13 +179,90 @@
                         </select>
                     </div>
                 </div>
-                <div class="card mt-5">
+                <div class="card mb-5">
                     <div class="card-header p-4 border-bottom">
-                        <h5>Publish</h5>
+                        <h5>Image</h5>
                     </div>
                     <div class="card-body mt-4">
-                        <button  type="submit" name="submitter"  class="btn btn-primary"><i class="bx bx-save"></i> Save</button>
-                        <button type="submit" name="submitter" value="save"  class="btn btn-secondary"><i class="bx bx-exit"></i> Save & Exit</button>
+                        <div class="mb-5 text-center">
+                            <div class="image-preview-wrapper">
+                                <img
+                                    id="imagePreview"
+                                    class="preview-image"
+                                    data-default="{{!is_null($data->image) ? $data->getFirstMediaUrl('image') : 'https://cms.botble.com/vendor/core/core/base/images/placeholder.png' }}"
+                                    src="{{!is_null($data->image) ? $data->getFirstMediaUrl('image') : 'https://cms.botble.com/vendor/core/core/base/images/placeholder.png' }}"
+                                    alt="Preview image"
+                                    style="width: 150px;"
+                                >
+                                <button
+                                    type="button"
+                                    class="btn rounded-pill btn-icon btn-outline-secondary p-2 mt-2 d-none"
+                                    data-remove-button
+                                    data-target-preview="imagePreview"
+                                    data-target-input="formFile"
+                                    style="position: absolute; top: 5px; left: 130px; width: 8px; height: 8px;"
+                                >
+                                    &times;
+                                </button>
+                            </div>
+                            <input
+                                class="form-control"
+                                type="file"
+                                id="formFile"
+                                name="image"
+                                accept="image/jpeg, image/png"
+                                data-preview="imagePreview"
+                                style="opacity: 0; position: absolute; z-index: -1;"
+                                onchange="previewSelectedImage(this)"
+                            >
+                            <br>
+                            <b class="text-primary mt-2" onclick="document.getElementById('formFile').click()" type="button">
+                                Choose Image
+                            </b>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-5">
+                    <div class="card-header p-4 border-bottom">
+                        <h5>Banner Image (1920x170px)</h5>
+                    </div>
+                    <div class="card-body mt-4">
+                        <div class="mb-5 text-center">
+                            <div class="image-preview-wrapper">
+                                <img
+                                    id="bannerImagePreview"
+                                    class="preview-image"
+                                    data-default="{{ $data->getFirstMediaUrl('banner_image') ? $data->getFirstMediaUrl('banner_image') : 'https://cms.botble.com/vendor/core/core/base/images/placeholder.png' }}"
+                                    src="{{ $data->getFirstMediaUrl('banner_image') ? $data->getFirstMediaUrl('banner_image') : 'https://cms.botble.com/vendor/core/core/base/images/placeholder.png' }}"
+                                    alt="Preview image"
+                                    style="width: 150px;"
+                                >
+                                <button
+                                    type="button"
+                                    class="btn rounded-pill btn-icon btn-outline-secondary p-2 mt-2 d-none"
+                                    data-remove-button
+                                    data-target-preview="bannerImagePreview"
+                                    data-target-input="formFileBanner"
+                                    style="position: absolute; top: 5px; left: 130px; width: 8px; height: 8px;"
+                                >
+                                    &times;
+                                </button>
+                            </div>
+                            <input
+                                class="form-control"
+                                type="file"
+                                id="formFileBanner"
+                                name="banner_image"
+                                accept="image/jpeg, image/png"
+                                data-preview="bannerImagePreview"
+                                style="opacity: 0; position: absolute; z-index: -1;"
+                                onchange="previewSelectedImage(this)"
+                            >
+                            <br>
+                            <b class="text-primary mt-2" onclick="document.getElementById('formFileBanner').click()" type="button">
+                                Choose Image
+                            </b>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -194,6 +271,7 @@
 @endpush
 
 @push('scripts')
+<script src="{{ asset('assets/vendor/ckeditor5/ckeditor.js') }}"></script>
 <script>
     function debounce(func, delay) {
         let timeout;
@@ -253,5 +331,19 @@
         }
     });
 
+
+    ClassicEditor
+            .create( document.querySelector( '#content' ), {
+              ckfinder: {
+                uploadUrl: "{{ route('admin.blog.posts.ckeditor.image.upload').'?_token='.csrf_token() }}"
+              }
+            } )
+            .then((editor) => {
+                editor.ui.view.editable.element.style.height = 'auto';
+              console.log(editor);
+            })
+            .catch( error => {
+                console.error( error );
+            } );
 </script>
 @endpush

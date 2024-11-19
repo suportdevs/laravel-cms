@@ -43,7 +43,7 @@
         <form action="<?php echo e(route('admin.blog.posts.delete')); ?>" id="frmList" method="POST">
             <?php echo csrf_field(); ?>
             <div id="ajax_content">
-                <?php echo $__env->make('admin.categories._list', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+                <?php echo $__env->make('admin.posts._list', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             </div>
         </form>
     </div>

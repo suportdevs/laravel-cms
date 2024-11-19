@@ -40,6 +40,10 @@
                             <label for="content" class="form-label"><b>Content</b></label>
                             <textarea name="content" id="content" rows="10" class="form-control border-radius-5" placeholder="Content"></textarea>
                         </div>
+                        <div class="form-check form-switch mb-5">
+                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                            <label class="form-check-label" for="flexSwitchCheckDefault"><b>? Is Featured</b></label>
+                          </div>
                     </div>
                 </div>
                 <div class="accordion mt-4" id="accordionExample">
@@ -123,6 +127,15 @@
             <div class="col-md-4">
                 <div class="card mb-5">
                     <div class="card-header p-4 border-bottom">
+                        <h5>Publish</h5>
+                    </div>
+                    <div class="card-body mt-4">
+                        <button  type="submit" name="submitter"  class="btn btn-primary"><i class="bx bx-save"></i> Save</button>
+                        <button type="submit" name="submitter" value="save"  class="btn btn-secondary"><i class="bx bx-exit"></i> Save & Exit</button>
+                    </div>
+                </div>
+                <div class="card mb-5">
+                    <div class="card-header p-4 border-bottom">
                         <h5>Categories <b class="text-danger">*</b></h5>
                     </div>
                     <div class="card-body mt-4">
@@ -137,7 +150,7 @@
                 </div>
                 <div class="card mb-5">
                     <div class="card-header p-4 border-bottom">
-                        <h5>Tags <b class="text-danger">*</b></h5>
+                        <h5>Tags <b class="text-danger"></b></h5>
                     </div>
                     <div class="card-body mt-4">
                         <select name="tags[]" id="tags" class="form-select select2search" data-control="select2" data-placeholder="Select an option" multiple>
@@ -205,7 +218,7 @@
                 </div>
                 <div class="card mb-5">
                     <div class="card-header p-4 border-bottom">
-                        <h5>Banner Image</h5>
+                        <h5>Banner Image (1920x170px)</h5>
                     </div>
                     <div class="card-body mt-4">
                         <div class="mb-5 text-center">
@@ -246,21 +259,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="card mb-5">
-                    <div class="card-header p-4 border-bottom">
-                        <h5>Publish</h5>
-                    </div>
-                    <div class="card-body mt-4">
-                        <button  type="submit" name="submitter"  class="btn btn-primary"><i class="bx bx-save"></i> Save</button>
-                        <button type="submit" name="submitter" value="save"  class="btn btn-secondary"><i class="bx bx-exit"></i> Save & Exit</button>
-                    </div>
-                </div>
             </div>
     </form>
 </div>
 <?php $__env->stopPush(); ?>
 
 <?php $__env->startPush('scripts'); ?>
+<script src="<?php echo e(asset('assets/vendor/ckeditor5/ckeditor.js')); ?>"></script>
 <script>
     function debounce(func, delay) {
         let timeout;
@@ -310,16 +315,26 @@
             const inputId = e.target.dataset.targetInput;
             const previewImage = document.getElementById(previewId);
             const fileInput = document.getElementById(inputId);
-            // Reset to default image
             const defaultImage = previewImage.dataset.default || '';
             previewImage.src = defaultImage;
-            // Hide the remove button
             e.target.classList.add('d-none');
-            // Clear the file input
             fileInput.value = '';
         }
     });
 
+    ClassicEditor
+            .create( document.querySelector( '#content' ), {
+              ckfinder: {
+                uploadUrl: "<?php echo e(route('admin.blog.posts.ckeditor.image.upload').'?_token='.csrf_token()); ?>"
+              }
+            } )
+            .then((editor) => {
+                editor.ui.view.editable.element.style.height = '300px';
+              console.log(editor);
+            })
+            .catch( error => {
+                console.error( error );
+            } );
 </script>
 <?php $__env->stopPush(); ?>
 
