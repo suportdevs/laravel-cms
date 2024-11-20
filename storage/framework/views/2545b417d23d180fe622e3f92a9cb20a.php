@@ -1,24 +1,23 @@
-@extends('admin.layouts.app')
-
-@push('content')
+<?php $__env->startPush('content'); ?>
 
 <div class="container-xxl flex-grow-1 container-p-y">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-style1">
         <li class="breadcrumb-item">
-            <a href="{{route('admin.dashboard')}}">Dashboard</a>
+            <a href="<?php echo e(route('admin.dashboard')); ?>">Dashboard</a>
         </li>
         <li class="breadcrumb-item">
             <a>Blogs</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="{{route('admin.blog.posts.index')}}">Posts</a>
+            <a href="<?php echo e(route('admin.blog.pages.index')); ?>">Pages</a>
         </li>
         <li class="breadcrumb-item active">Create</li>
         </ol>
     </nav>
-    <form action="{{route('admin.blog.posts.store')}}" method="POST" enctype="multipart/form-data">
-        @csrf
+
+    <form action="<?php echo e(route('admin.blog.pages.store')); ?>" method="POST" enctype="multipart/form-data">
+        <?php echo csrf_field(); ?>
         <div class="row">
             <div class="col-md-8">
                 <div class="card">
@@ -28,10 +27,10 @@
                         <input type="text" class="form-control border-radius-5" id="name" name="name" placeholder="Name" required>
                       </div>
                       <div class="mb-5">
-                          <label for="permalink" class="form-label"><b>Permalink</b> <b class="text-danger">*</b></label>
+                          <label for="permalink" class="form-label"><b>Permalink</b> <b class="text-danger"><?php echo e($maxId ? '*' : ''); ?></b></label>
                           <div class="input-group input-group-merge">
-                            <span class="input-group-text" id="basic-addon34">{{route('admin.blog.posts.index')}}/</span>
-                            <input type="text" class="form-control" name="permalink" id="permalink" required>
+                            <span class="input-group-text text-gray" id="basic-addon34"><?php echo e($maxId ? route('home') : ''); ?></span>
+                            <input type="text" class="form-control" name="permalink" id="permalink" <?php echo e($maxId ? 'required' : ''); ?> value="<?php echo e(!$maxId ? route('home') : ''); ?>" <?php echo e(!$maxId ? 'readonly' : ''); ?>>
                           </div>
                         </div>
                         <div class="mb-5">
@@ -41,10 +40,6 @@
                         <div class="mb-5">
                             <label for="content" class="form-label"><b>Content</b></label>
                             <textarea name="content" id="content" rows="10" class="form-control border-radius-5" placeholder="Content"></textarea>
-                        </div>
-                        <div class="form-check form-switch mb-5">
-                            <input class="form-check-input" type="checkbox" id="is_featured" name="is_featured">
-                            <label class="form-check-label" for="is_featured"><b>? Is Featured</b></label>
                         </div>
                     </div>
                 </div>
@@ -138,28 +133,13 @@
                 </div>
                 <div class="card mb-5">
                     <div class="card-header p-4 border-bottom">
-                        <h5>Categories <b class="text-danger">*</b></h5>
+                        <h5>Template <b class="text-danger">*</b></h5>
                     </div>
                     <div class="card-body mt-4">
-                        <select name="categories[]" id="categories" class="form-select select2search" data-control="select2" data-placeholder="Select an option" multiple>
-                            {{-- <option value="">Select</option> --}}
-                            <option ></option>
-                            @foreach ($categories as $category)
-                                @include('admin.layouts.partials.category-option', ['category' => $category, 'level' => 0])
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="card mb-5">
-                    <div class="card-header p-4 border-bottom">
-                        <h5>Tags <b class="text-danger"></b></h5>
-                    </div>
-                    <div class="card-body mt-4">
-                        <select name="tags[]" id="tags" class="form-select select2search" data-control="select2" data-placeholder="Select an option" multiple>
-                            <option value="">Select</option>
-                            @foreach ($tags as $id=>$name)
-                                <option value="{{$id}}">{{$name}}</option>
-                            @endforeach
+                        <label for="template" class="form-label">Selete Template</label>
+                        <select name="template" id="template" class="form-select select2search" data-control="select2" >
+                            <option value="default">Default</option>
+                            <option value="no_sidebar">No Sidebar</option>
                         </select>
                     </div>
                 </div>
@@ -175,7 +155,6 @@
                             <option value="Pending">Pending</option>
                         </select>
                     </div>
-
                 </div>
                 <div class="card mb-5">
                     <div class="card-header p-4 border-bottom">
@@ -266,17 +245,19 @@
             </div>
     </form>
 </div>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@push('scripts')
-<script src="{{ asset('assets/vendor/ckeditor5/ckeditor.js') }}"></script>
+<?php $__env->startPush('scripts'); ?>
+<script src="<?php echo e(asset('assets/vendor/ckeditor5/ckeditor.js')); ?>"></script>
 <script>
     function debounce(func, delay) {
         let timeout;
-        return function (...args) {
-            clearTimeout(timeout);
-            timeout = setTimeout(() => func.apply(this, args), delay);
-        };
+        <?php if($maxId): ?>
+            return function (...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), delay);
+            };
+        <?php endif; ?>
     }
 
     document.getElementById('name').addEventListener('keyup', debounce(function () {
@@ -287,8 +268,9 @@
             .replace(/[^\w\s-]/g, '')
             .replace(/[\s_-]+/g, '-')
             .replace(/^-+|-+$/g, '');
-
-        document.getElementById('permalink').value = slug;
+        <?php if($maxId): ?>
+            document.getElementById('permalink').value = slug;
+        <?php endif; ?>
     }, 300));
 
     function previewSelectedImage(input) {
@@ -329,7 +311,7 @@
     ClassicEditor
             .create( document.querySelector( '#content' ), {
               ckfinder: {
-                uploadUrl: "{{ route('admin.blog.posts.ckeditor.image.upload').'?_token='.csrf_token() }}"
+                uploadUrl: "<?php echo e(route('admin.blog.pages.ckeditor.image.upload').'?_token='.csrf_token()); ?>"
               }
             } )
             .then((editor) => {
@@ -340,4 +322,6 @@
                 console.error( error );
             } );
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('admin.layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /media/anonymous/12a8dd6f-3122-4159-adcf-832ac2c3572d/laravel/cms_api_service/resources/views/admin/pages/create.blade.php ENDPATH**/ ?>

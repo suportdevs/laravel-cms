@@ -62,6 +62,13 @@
     <div class="menu-inner-shadow"></div>
 
     <ul class="menu-inner py-1">
+      {{-- Galleries  --}}
+      <li class="menu-item {{ request()->routeIs('admin.blog.pages.*') ? 'active' : '' }}">
+        <a href="{{route('admin.blog.pages.index')}}" class="menu-link">
+          <i class="menu-icon tf-icons bx bx-book-content"></i>
+          <div class="text-truncate" data-i18n="Tables">Pages</div>
+        </a>
+      </li>
       <!-- Blogs -->
       <li class="menu-item {{ request()->routeIs('admin.blog.posts.*') || request()->routeIs('admin.blog.categories.*') || request()->routeIs('admin.blog.tags.*') ? 'active open' : '' }}">
         <a href="javascript:void(0);" class="menu-link menu-toggle">

@@ -1,7 +1,7 @@
 <div class="table-responsive text-nowrap" >
     <table class="table table-hover" id="check">
         <thead>
-        <tr class="bg-secondary">
+        <tr class="bg-secondary" id="r_checkAll">
             <th><input class="form-check-input" type="checkbox" value="" id="check_all"></th>
             <th>ID</th>
             <th>NAME</th>

@@ -5,13 +5,14 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\ImageUploadController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\PagesController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
 Route::middleware([
     'auth:sanctum',
@@ -37,6 +38,12 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
+    // Pages Resource Route
+    Route::prefix('admin/blog/pages')->name('admin.blog.pages.')->group(function () {
+        Route::post("/ckeditor/image/upload", [PagesController::class, "imageUpload"])->name("ckeditor.image.upload");
+        Route::post('/delete', [PagesController::class, 'delete'])->name('delete');
+        Route::resource('/', PagesController::class)->parameters(['' => 'key']);
+    });
     // Blog Posts Resource Route
     Route::prefix('admin/blog/posts')->name('admin.blog.posts.')->group(function () {
         Route::post("/ckeditor/image/upload", [PostController::class, "imageUpload"])->name("ckeditor.image.upload");

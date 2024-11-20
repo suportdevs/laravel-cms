@@ -132,8 +132,13 @@ $(document).ready(function () {
         event.preventDefault();
         search(this.action)
     });
-    $('.select2search').select2({
-        // theme: "classic"
+    $('.select2search').each(function () {
+        $(this).select2({
+            placeholder: $(this).data('placeholder'), // Dynamically fetch the placeholder
+            allowClear: true,                         // Enable clear button
+            theme: "bootstrap-5",                     // Use the Bootstrap 5 theme
+            width: '100%'                             // Ensure responsive width
+        });
     });
     $(document).on('select2:open', () => {
         document.querySelector('.select2-container--open .select2-search__field').focus();

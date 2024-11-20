@@ -32,31 +32,23 @@
     }
 /* end image remove btn css */
 /* start select2search css */
-.select2-container {
-    width: 100% !important
-}
-#frmSearch .select2-container--default .select2-selection--single .select2-selection__rendered {
-    font-size: 14px;
-}
-/* @override select2search css */
-/*.select2-container{width: 100% !important}*/
 .select2-container .select2-selection--single {
+    height: 38px; /* Matches standard Bootstrap input height */
+    line-height: 38px;
     border-radius: 5px;
-    height: 34px;
 }
 
-.select2-container--classic .select2-selection--single .select2-selection__rendered {
-    font-size: 14px;
-    line-height: 32px;
+.select2-container--bootstrap-5 .select2-selection--single {
+    border-color: #ddd;
+    padding: 6px 12px;
 }
 
-.select2-container--default .select2-selection--single .select2-selection__rendered {
-    font-size: 14px;
-    line-height: 32px;
+.select2-container--bootstrap-5 .select2-selection--single .select2-selection__rendered {
+    color: #333;
 }
 
-.select2-container--classic .select2-selection--single .select2-selection__arrow {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    height: 32px;
+.select2-container--bootstrap-5 .select2-selection--single .select2-selection__clear {
+    color: #999;
+    font-size: 0.9375rem;
 }
+/* end select2search css */

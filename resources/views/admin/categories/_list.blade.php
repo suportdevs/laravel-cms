@@ -1,17 +1,17 @@
 <div class="table-responsive text-nowrap" >
     <table class="table table-hover" id="check">
         <thead>
-        <tr class="bg-secondary">
-            <th><input class="form-check-input" type="checkbox" value="" id="check_all"></th>
-            <th>ID</th>
-            <th>NAME</th>
-            <th>DESCRIPTION</th>
-            <th>IMAGE</th>
-            <th>CREATED AT</th>
-            <th>CREATED BY</th>
-            <th>STATUS</th>
-            <th>ACTIONS</th>
-        </tr>
+            <tr class="bg-secondary" id="r_checkAll">
+                <th><input class="form-check-input" type="checkbox" value="" id="check_all"></th>
+                <th>ID</th>
+                <th>NAME</th>
+                <th>DESCRIPTION</th>
+                <th>IMAGE</th>
+                <th>CREATED AT</th>
+                <th>CREATED BY</th>
+                <th>STATUS</th>
+                <th>ACTIONS</th>
+            </tr>
         </thead>
         <tbody class="table-border-bottom-0">
             @forelse ($dataset as $data)

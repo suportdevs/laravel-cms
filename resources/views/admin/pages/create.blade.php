@@ -12,12 +12,13 @@
             <a>Blogs</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="{{route('admin.blog.posts.index')}}">Posts</a>
+            <a href="{{route('admin.blog.pages.index')}}">Pages</a>
         </li>
         <li class="breadcrumb-item active">Create</li>
         </ol>
     </nav>
-    <form action="{{route('admin.blog.posts.store')}}" method="POST" enctype="multipart/form-data">
+
+    <form action="{{route('admin.blog.pages.store')}}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="row">
             <div class="col-md-8">
@@ -28,10 +29,10 @@
                         <input type="text" class="form-control border-radius-5" id="name" name="name" placeholder="Name" required>
                       </div>
                       <div class="mb-5">
-                          <label for="permalink" class="form-label"><b>Permalink</b> <b class="text-danger">*</b></label>
+                          <label for="permalink" class="form-label"><b>Permalink</b> <b class="text-danger">{{$maxId ? '*' : ''}}</b></label>
                           <div class="input-group input-group-merge">
-                            <span class="input-group-text" id="basic-addon34">{{route('admin.blog.posts.index')}}/</span>
-                            <input type="text" class="form-control" name="permalink" id="permalink" required>
+                            <span class="input-group-text text-gray" id="basic-addon34">{{$maxId ? route('home') : ''}}</span>
+                            <input type="text" class="form-control" name="permalink" id="permalink" {{$maxId ? 'required' : ''}} value="{{!$maxId ? route('home') : ''}}" {{!$maxId ? 'readonly' : ''}}>
                           </div>
                         </div>
                         <div class="mb-5">
@@ -41,10 +42,6 @@
                         <div class="mb-5">
                             <label for="content" class="form-label"><b>Content</b></label>
                             <textarea name="content" id="content" rows="10" class="form-control border-radius-5" placeholder="Content"></textarea>
-                        </div>
-                        <div class="form-check form-switch mb-5">
-                            <input class="form-check-input" type="checkbox" id="is_featured" name="is_featured">
-                            <label class="form-check-label" for="is_featured"><b>? Is Featured</b></label>
                         </div>
                     </div>
                 </div>
@@ -138,28 +135,13 @@
                 </div>
                 <div class="card mb-5">
                     <div class="card-header p-4 border-bottom">
-                        <h5>Categories <b class="text-danger">*</b></h5>
+                        <h5>Template <b class="text-danger">*</b></h5>
                     </div>
                     <div class="card-body mt-4">
-                        <select name="categories[]" id="categories" class="form-select select2search" data-control="select2" data-placeholder="Select an option" multiple>
-                            {{-- <option value="">Select</option> --}}
-                            <option ></option>
-                            @foreach ($categories as $category)
-                                @include('admin.layouts.partials.category-option', ['category' => $category, 'level' => 0])
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="card mb-5">
-                    <div class="card-header p-4 border-bottom">
-                        <h5>Tags <b class="text-danger"></b></h5>
-                    </div>
-                    <div class="card-body mt-4">
-                        <select name="tags[]" id="tags" class="form-select select2search" data-control="select2" data-placeholder="Select an option" multiple>
-                            <option value="">Select</option>
-                            @foreach ($tags as $id=>$name)
-                                <option value="{{$id}}">{{$name}}</option>
-                            @endforeach
+                        <label for="template" class="form-label">Selete Template</label>
+                        <select name="template" id="template" class="form-select select2search" data-control="select2" >
+                            <option value="default">Default</option>
+                            <option value="no_sidebar">No Sidebar</option>
                         </select>
                     </div>
                 </div>
@@ -175,7 +157,6 @@
                             <option value="Pending">Pending</option>
                         </select>
                     </div>
-
                 </div>
                 <div class="card mb-5">
                     <div class="card-header p-4 border-bottom">
@@ -273,10 +254,12 @@
 <script>
     function debounce(func, delay) {
         let timeout;
-        return function (...args) {
-            clearTimeout(timeout);
-            timeout = setTimeout(() => func.apply(this, args), delay);
-        };
+        @if($maxId)
+            return function (...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), delay);
+            };
+        @endif
     }
 
     document.getElementById('name').addEventListener('keyup', debounce(function () {
@@ -287,8 +270,9 @@
             .replace(/[^\w\s-]/g, '')
             .replace(/[\s_-]+/g, '-')
             .replace(/^-+|-+$/g, '');
-
-        document.getElementById('permalink').value = slug;
+        @if($maxId)
+            document.getElementById('permalink').value = slug;
+        @endif
     }, 300));
 
     function previewSelectedImage(input) {
@@ -329,7 +313,7 @@
     ClassicEditor
             .create( document.querySelector( '#content' ), {
               ckfinder: {
-                uploadUrl: "{{ route('admin.blog.posts.ckeditor.image.upload').'?_token='.csrf_token() }}"
+                uploadUrl: "{{ route('admin.blog.pages.ckeditor.image.upload').'?_token='.csrf_token() }}"
               }
             } )
             .then((editor) => {

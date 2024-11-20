@@ -41,9 +41,9 @@
                             <textarea name="content" id="content" rows="10" class="form-control border-radius-5" placeholder="Content"></textarea>
                         </div>
                         <div class="form-check form-switch mb-5">
-                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                            <label class="form-check-label" for="flexSwitchCheckDefault"><b>? Is Featured</b></label>
-                          </div>
+                            <input class="form-check-input" type="checkbox" id="is_featured" name="is_featured">
+                            <label class="form-check-label" for="is_featured"><b>? Is Featured</b></label>
+                        </div>
                     </div>
                 </div>
                 <div class="accordion mt-4" id="accordionExample">
@@ -166,12 +166,14 @@
                         <h5>Status <b class="text-danger">*</b></h5>
                     </div>
                     <div class="card-body mt-4">
-                        <select name="status" id="status" class="form-select select2search" data-control="select2" data-placeholder="Select an option">
+                        <label for="status" class="form-label">Select Status</label>
+                        <select name="status" id="status" class="form-select select2search" data-control="select2" >
                             <option value="Published">Published</option>
                             <option value="Draft">Draft</option>
                             <option value="Pending">Pending</option>
                         </select>
                     </div>
+
                 </div>
                 <div class="card mb-5">
                     <div class="card-header p-4 border-bottom">
