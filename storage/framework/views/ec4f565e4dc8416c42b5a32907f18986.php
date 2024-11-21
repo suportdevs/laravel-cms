@@ -123,8 +123,8 @@
               <div class="text-truncate" data-i18n="Analytics">Themes</div>
             </a>
           </li>
-          <li class="menu-item <?php echo e(request()->routeIs('admin.blog.categories.*') ? 'active' : ''); ?>">
-            <a href="<?php echo e(route('admin.blog.categories.index')); ?>" class="menu-link">
+          <li class="menu-item <?php echo e(request()->routeIs('admin.blog.menus.*') ? 'active' : ''); ?>">
+            <a href="<?php echo e(route('admin.blog.menus.index')); ?>" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-folder-open me-2"></i>
               <div class="text-truncate" data-i18n="Analytics">Menues</div>
             </a>

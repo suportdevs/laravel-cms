@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\ImageUploadController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\TagController;
@@ -72,6 +73,11 @@ Route::middleware([
     Route::prefix('admin/blog/members')->name('admin.blog.members.')->group(function () {
         Route::post('/delete', [MemberController::class, 'delete'])->name('delete');
         Route::resource('/', MemberController::class)->parameters(['' => 'key']);
+    });
+    // Menues Resource Route
+    Route::prefix('admin/blog/menus')->name('admin.blog.menus.')->group(function () {
+        Route::post('/delete', [MenuController::class, 'delete'])->name('delete');
+        Route::resource('/', MenuController::class)->parameters(['' => 'key']);
     });
 });
 
