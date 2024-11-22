@@ -1,54 +1,34 @@
+<?php
+    $dataset = json_decode($data->dataset ?? "{}", true);
+?>
+
 <div class="cf nestable-lists">
 
     <div class="dd" id="nestable">
         <ol class="dd-list">
+            <?php $__currentLoopData = $dataset; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 
-            <li class="dd-item" data-id="1">
-                <div class="dd-handle">Item 1</div>
-            </li><li class="dd-item" data-id="2"><button data-action="collapse" type="button">Collapse</button><button data-action="expand" type="button" style="display: none;">Expand</button>
-                <div class="dd-handle">Item 2</div>
-                <ol class="dd-list">
-                    <li class="dd-item" data-id="3"><div class="dd-handle">Item 3</div></li>
-                    <li class="dd-item" data-id="4"><div class="dd-handle">Item 4</div></li>
-                    <li class="dd-item" data-id="5"><button data-action="collapse" type="button">Collapse</button><button data-action="expand" type="button" style="display: none;">Expand</button>
-                        <div class="dd-handle">Item 5</div>
-                        <ol class="dd-list">
-                            <li class="dd-item" data-id="6"><div class="dd-handle">Item 6</div></li>
-                            <li class="dd-item" data-id="7"><div class="dd-handle">Item 7</div></li>
-                            <li class="dd-item" data-id="8"><div class="dd-handle">Item 8</div></li>
-                        </ol>
-                    </li>
-                    <li class="dd-item" data-id="9"><div class="dd-handle">Item 9</div></li>
-                    <div class="dd-placeholder" style="height: 30px;"></div>
-                </ol>
+            <li class="dd-item" data-id="<?php echo e($item['id']); ?>">
+                <div class="dd-handle p-0 d-flex">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center justify-content-between ms-2" style="flex: 1; border-right: 1px solid #ccc">
+                            <span class="flex-1"><?php echo e($item['title']); ?></span>
+                            <span class="text-end me-2 "><?php echo e($item['label'] ?? ''); ?></span>
+                        </div>
+                    </div>
+                    <button type="button" href="#" style="height: 40px; width: 40px;" class="dd-content-collapse-toggle-btn border-1 border-gray text-center d-flex align-items-center justify-content-center" data-id="<?php echo e($item['id']); ?>"><i class="bx bx-chevron-down"></i></button>
+                </div>
+                <div class="dd-content" data-content="<?php echo e($item['id']); ?>" style="display: none;">
+                    <input type="text" name="title" data-name='Home' placeholder="Title" value="item 1 title">
+                    <input type="text" name="link" data-link='Home' placeholder="Link" value="item 1 Link">
+                </div>
             </li>
-            <li class="dd-item" data-id="12">
-                <div class="dd-handle">Item 12</div>
-            </li><li class="dd-item" data-id="11">
-                <div class="dd-handle">Item 11</div>
-            </li>
+            
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
-        </ol>
-    </div>
-
-    <div class="dd" id="nestable2">
-        <ol class="dd-list">
-            <li class="dd-item" data-id="13">
-                <div class="dd-handle">Item 13</div>
-            </li>
-            <li class="dd-item" data-id="14">
-                <div class="dd-handle">Item 14</div>
-            </li>
-            <li class="dd-item" data-id="15"><button data-action="collapse" type="button">Collapse</button><button data-action="expand" type="button" style="display: none;">Expand</button>
-                <div class="dd-handle">Item 15</div>
-                <ol class="dd-list">
-                    <li class="dd-item" data-id="16"><div class="dd-handle">Item 16</div></li>
-                    <li class="dd-item" data-id="17"><div class="dd-handle">Item 17</div></li>
-                    <li class="dd-item" data-id="18"><div class="dd-handle">Item 18</div></li>
-                </ol>
-            </li>
         </ol>
     </div>
 
 </div>
+
 <?php /**PATH /media/anonymous/12a8dd6f-3122-4159-adcf-832ac2c3572d/laravel/cms_api_service/resources/views/admin/menus/partial.blade.php ENDPATH**/ ?>

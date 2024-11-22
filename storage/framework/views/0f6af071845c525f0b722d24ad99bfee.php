@@ -28,7 +28,7 @@
     <script src="<?php echo e(asset('assets/js/config.js')); ?>"></script>
   </head>
 
-  <body>
+  <body data-new-gr-c-s-check-loaded="14.1207.0" data-gr-ext-installed="" data-new-gr-c-s-loaded="14.1207.0">
     <div class="layout-wrapper layout-content-navbar">
       <div class="layout-container">
         <?php echo $__env->make('admin.layouts.sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
