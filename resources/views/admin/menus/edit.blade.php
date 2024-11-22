@@ -120,7 +120,19 @@
      */
 
     .socialite { display: block; float: left; height: 35px; }
-
+    .dd-handle.p-0.d-flex {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: calc(100% - 40px);
+        height: 40px;
+        overflow: hidden;
+        text-indent: 100%;
+        background: transparent;
+        cursor: move;
+        margin: 0;
+        border-radius: 4px 0px 0px 4px;
+    }
         </style>
 @endpush
 
@@ -294,7 +306,7 @@
                                 <div id="ajax_content" class="card-body mt-4 collapse show">
                                     @include("admin.menus.partial")
                                 </div>
-                                <textarea id="nestable-output"></textarea>
+                                <textarea class="hidden" id="nestable-output"></textarea>
                             </div>
                         </div>
                     </div>
@@ -306,8 +318,8 @@
                         <h5>Publish</h5>
                     </div>
                     <div class="card-body mt-4">
-                        <button  type="submit" name="submitter"  class="btn btn-primary"><i class="bx bx-save"></i> Save</button>
-                        <button type="submit" name="submitter" value="save"  class="btn btn-secondary"><i class="bx bx-exit"></i> Save & Exit</button>
+                        <button  type="button" name="submitter" id="saveBtn"  class="btn btn-primary"><i class="bx bx-save"></i> Save</button>
+                        <button type="button" name="submitter" value="save"  class="btn btn-secondary"><i class="bx bx-exit"></i> Save & Exit</button>
                     </div>
                 </div>
                 <div class="card mb-5">
@@ -335,6 +347,7 @@
 <script src="{{asset('assets/js/jquery.nestable.js')}}"></script>
 <script>
 
+    let menuDataset = [];
 $(document).ready(function()
 {
     var updateOutput = function(e)
@@ -342,7 +355,9 @@ $(document).ready(function()
         var list   = e.length ? e : $(e.target),
             output = list.data('output');
         if (window.JSON) {
-            output.val(window.JSON.stringify(list.nestable('serialize')));//, null, 2));
+            let serializeList = list.nestable('serialize');
+            output.val(window.JSON.stringify(serializeList));
+            updateMenuItemDetails(serializeList);
         } else {
             output.val('JSON browser support required for this demo.');
         }
@@ -353,6 +368,11 @@ $(document).ready(function()
         group: 1
     })
     .on('change', updateOutput);
+
+    $('input').nestable({
+                    group: 1
+                })
+                .on('input', updateOutput);
 
     // output initial serialised data
     updateOutput($('#nestable').data('output', $('#nestable-output')));
@@ -371,19 +391,200 @@ $(document).ready(function()
 
     $(document).on('click', '.dd-content-collapse-toggle-btn', function() {
         let button = $(this);
-        let _id = $(this).data('id');
-        console.log(_id)
+        let _id = button.data('id');
         let content = button.closest('.dd-item').find(`.dd-content[data-content="${_id}"]`);
 
         if (content.is(':visible')) {
             content.slideUp();
-            button.text('+');
+            button.find('i').removeClass('bx-chevron-up').addClass('bx-chevron-down');
         } else {
+            button.find('i').removeClass('bx-chevron-down').addClass('bx-chevron-up');
             content.slideDown();
-            button.text('-');
         }
     });
 
+
+    $(".btn-add-to-menu").on("click", function(event) {
+        let menuesProperties = [];
+        if($(this).data('btn-type') === 'Custom Btn'){
+            if($('#custom-menu-node-title-new').val() == ''){
+                toastr.warning('Please provide a Custom Menu title.');
+                return false;
+            }
+            menuesProperties.push({
+                    model_id: $(this).data('menu-id'),
+                    title: $('#custom-menu-node-title-new').val(),
+                    label: 'Custom link',
+                    permalink: $('#custom-menu-node-url-new').val(),
+                    icon_font: $('#custom-menu-node-icon-new').val(),
+                    css_class: $('#custom-menu-node-css-class-new').val(),
+                    target: $('#custom-menu-node-target-new').val(),
+                });
+        }else{
+            let checkedInputs = $(this).closest('.card-body').find('input[type=checkbox]:checked'); // Find checked checkboxes within the same container
+            checkedInputs.each(function () {
+                menuesProperties.push({
+                    model_id: $(this).data('menu-id'),
+                    reference: $(this).data('reference-type'),
+                    title: $(this).data('title'),
+                    label: $(this).data('label'),
+                    permalink: $(this).data('link'),
+                });
+            });
+        }
+
+        if (menuesProperties && menuesProperties.length > 0) {
+            $.ajax({
+                url: "{{ route('admin.blog.menus.ajax.get_node') }}",
+                method: "POST",
+                data: {
+                    menu_id: "{{$data->id}}",
+                    dataset: menuesProperties,
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+                },
+                success: function(response) {
+                    toastr.success('Item added successfull.');
+                    $("#ajax_content").html(response);
+                },
+                eerror: function (xhr, status) {
+                    // Hide the loader
+                    toastr.error('There is some error. Try after some time.');
+                }
+            });
+        }else{
+            toastr.warning("You should must be select any item to add menu");
+        }
+    });
+
+    $("#saveBtn").on("click", function() {
+        updateOutput($('#nestable').data('output', $('#nestable-output')));
+        console.log("saving Menu Dataset:", menuDataset);
+        if (menuDataset && menuDataset.length > 1) {
+            $.ajax({
+                url: "{{ route('admin.blog.menus.save_structure') }}",
+                method: "POST",
+                data: {
+                    id: "{{$data->id}}",
+                    menus: menuDataset
+                },
+                success: function(response) {
+                    alert(response.message);
+                }
+            });
+        }
+    });
 });
+</script>
+<script>
+
+    let updateMenuItemDetails = function(data) {
+        // Reset the global menuDataset to avoid duplication
+        menuDataset = [];
+        data.forEach((item) => {
+            let menuItem = {
+                id: item.id,
+                title: "",
+                permalink: "",
+                icon_font: "",
+                css_class: "",
+                target: "",
+                reference: "",
+                label: "",
+                model_id: "",
+                children: [],
+            };
+            // Add title and link if available in the DOM
+            let currentItem = $(`.dd-item[data-id="${item.id}"]`);
+            menuItem.title = currentItem.find('input[name="title"]').val();
+            menuItem.permalink = currentItem.find('input[name="url"]').val();
+            menuItem.icon_font = currentItem.find('input[name="icon_font"]').val();
+            menuItem.css_class = currentItem.find('input[name="css_class"]').val();
+            menuItem.target = currentItem.find('input[name="target"]').val() || '_self';
+            menuItem.reference = $(`.dd-item[data-id="${item.id}"]`).data('reference');
+            menuItem.label = $(`.dd-item[data-id="${item.id}"]`).data('label');
+            menuItem.model_id = $(`.dd-item[data-id="${item.id}"]`).data('model_id');
+            // Process children recursively if they exist
+            if (item.children && item.children.length > 0) {
+                menuItem.children = processMenuItemChildren(item.children);
+            }
+            // Push the menuItem to the global dataset
+            menuDataset.push(menuItem);
+        });
+        console.log("Updated Menu Dataset:", menuDataset);
+    };
+
+    // let processMenuItemChildren = function(children) {
+    //     let childArray = [];
+    //     children.forEach((child) => {
+    //         let menuItem = {
+    //             id: child.id,
+    //             title: "",
+    //             permalink: "",
+    //             icon_font: "",
+    //             css_class: "",
+    //             target: "",
+    //             reference: "",
+    //             label: "",
+    //             model_id: "",
+    //             children: [],
+    //         };
+
+    //         // Get title and link from the DOM for the child
+    //         let currentChild = $(`.dd-item[data-id="${child.id}"]`);
+    //         menuItem.title = currentItem.find('input[name="title"]').val();
+    //         menuItem.permalink = currentItem.find('input[name="permalink"]').val();
+    //         menuItem.icon_font = currentItem.find('input[name="icon_font"]').val();
+    //         menuItem.css_class = currentItem.find('input[name="css_class"]').val();
+    //         menuItem.target = currentItem.find('input[name="target"]').val();
+    //         menuItem.reference = $(`.dd-item[data-id="${item.id}"]`).data('reference');
+    //         menuItem.label = $(`.dd-item[data-id="${item.id}"]`).data('label');
+    //         menuItem.model_id = $(`.dd-item[data-id="${item.id}"]`).data('model_id');
+
+    //         // Process child elements recursively if they exist
+    //         if (child.children && child.children.length > 0) {
+    //             menuItem.children = processMenuItemChildren(child.children);
+    //         }
+    //         // Add the menuItem to the current child array
+    //         childArray.push(menuItem);
+    //     });
+    //     return childArray;
+    // };
+    let processMenuItemChildren = function(children) {
+    let childArray = [];
+    children.forEach((child) => {
+        let menuItem = {
+            id: child.id,
+            title: "",
+            permalink: "",
+            icon_font: "",
+            css_class: "",
+            target: "",
+            reference: "",
+            label: "",
+            model_id: "",
+            children: [],
+        };
+
+        // Get title and link from the DOM for the child
+        let currentChild = $(`.dd-item[data-id="${child.id}"]`);
+        menuItem.title = currentChild.find('input[name="title"]').val();
+        menuItem.permalink = currentChild.find('input[name="url"]').val();
+        menuItem.icon_font = currentChild.find('input[name="icon_font"]').val();
+        menuItem.css_class = currentChild.find('input[name="css_class"]').val();
+        menuItem.target = currentChild.find('input[name="target"]').val() || '_self';
+        menuItem.reference = currentChild.data('reference');
+        menuItem.label = currentChild.data('label');
+        menuItem.model_id = currentChild.data('model_id');
+
+        // Process child elements recursively if they exist
+        if (child.children && child.children.length > 0) {
+            menuItem.children = processMenuItemChildren(child.children);
+        }
+        // Add the menuItem to the current child array
+        childArray.push(menuItem);
+    });
+    return childArray;
+};
+
 </script>
 @endpush

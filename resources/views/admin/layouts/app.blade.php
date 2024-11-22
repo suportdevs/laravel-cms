@@ -26,6 +26,7 @@
     @stack('style')
     <script src="{{ asset('assets/vendor/js/helpers.js') }}"></script>
     <script src="{{ asset('assets/js/config.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/jquery/jquery.js') }}"></script>
   </head>
 
   <body data-new-gr-c-s-check-loaded="14.1207.0" data-gr-ext-installed="" data-new-gr-c-s-loaded="14.1207.0">
@@ -48,8 +49,6 @@
       @endphp
     </div>
     <!-- Core and Page JS -->
-    <script src="{{ asset('assets/vendor/libs/jquery/jquery.js') }}"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="{{ asset('assets/vendor/libs/popper/popper.js') }}"></script>
     <script src="{{ asset('assets/js/select2.min.js') }}"></script>
     <script src="{{ asset('assets/js/toastr.min.js') }}"></script>

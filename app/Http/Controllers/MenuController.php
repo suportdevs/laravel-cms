@@ -54,15 +54,30 @@ class MenuController extends Controller
             response()->json($Menu) :
             view('categories.show', compact('Menu'));
     }
-
+    function buildNestedMenu(array $items, $parentId = null)
+    {
+        $nested = [];
+        foreach ($items as $item) {
+            if ($item['parent_id'] == $parentId) {
+                $children = $this->buildNestedMenu($items, $item['id']);
+                if ($children) {
+                    $item['children'] = $children;
+                }
+                $nested[] = $item;
+            }
+        }
+        return $nested;
+    }
     public function edit($key) {
         $data = Menu::where('_key', $key)->first();
+        $nestedMenu = $this->buildNestedMenu(json_decode($data->dataset ?? '{}', true));
         return view('admin.menus.edit', [
             'page_title' => "Menus Edit",
             'pages'=> Page::select('name', 'id', 'permalink')->get(),
             'categories'=> Category::select('name', 'id', 'permalink')->get(),
             'tags'=> Tag::select('name', 'id', 'permalink')->get(),
-            'data'=> $data
+            'data'=> $data,
+            'nestedMenu' => $nestedMenu
         ]);
     }
     // Update a Menu
@@ -129,6 +144,83 @@ class MenuController extends Controller
         } catch (Exception $e) {
             DB::rollBack();
             return $this->responseWithError($e, $request);
+        }
+    }
+
+    public function save_structure(Request $request)
+{
+    $id = $request->id;
+    $menus = $request->menus;
+
+    $data = Menu::find($id);
+    $dataset = $menus;
+    $nextId = 1;
+    $preparedDataset = $this->prepareMenuDataset($dataset, $nextId);
+    $data->dataset = json_encode($preparedDataset);
+
+    if (!$data->save()) {
+        throw new \Exception("Something went wrong while saving the menu dataset!");
+    }
+
+    return response()->json([
+        'message' => 'Menu structure saved successfully!',
+    ]);
+}
+
+function prepareMenuDataset(array $items, int &$startId = 1, int $parentId = null, int $order = 1)
+{
+    $prepared = [];
+    foreach ($items as $index => $item) {
+        // Assign a unique ID and order
+        $currentId = $startId++;
+        $preparedItem = [
+            'id' => $currentId,
+            'title' => $item['title'],
+            'permalink' => $item['permalink'],
+            'css_class' => $item['css_class'],
+            'target' => $item['target'],
+            'reference' => $item['reference'] ?? null,
+            'label' => $item['label'],
+            'model_id' => $item['model_id'],
+            'parent_id' => $parentId, // Set the parent ID
+            'order' => $index + 1,   // Set the order property (1-based index)
+        ];
+
+        $prepared[] = $preparedItem;
+
+        // Recursively process children, if any
+        if (!empty($item['children'])) {
+            $prepared = array_merge(
+                $prepared,
+                $this->prepareMenuDataset($item['children'], $startId, $currentId)
+            );
+        }
+    }
+    return $prepared;
+}
+
+
+    private function saveMenuWithOrder($id, $menuData, $parentId)
+    {
+        // Create or update the menu with the generated order
+        $menu = Menu::updateOrCreate(
+            ['id' => $id],
+            [
+                'parent_id' => $parentId,
+                'order' => $menuData['order'],
+                'title' => $menuData['title'] ?? '',
+                'link' => $menuData['link'] ?? ''
+            ]
+        );
+
+        // If there are children, handle them recursively
+        if (isset($menuData['children']) && is_array($menuData['children'])) {
+            $_c_order = 1;
+            foreach ($menuData['children'] as $childMenuData) {
+                $childMenuData['order'] = $_c_order;
+                $this->saveMenuWithOrder($childMenuData, $menu->id);
+                $_c_order++;
+            }
         }
     }
     // Delete a Menu
