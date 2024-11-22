@@ -8,7 +8,7 @@
                 <a href="{{route('admin.dashboard')}}">Dashboard</a>
             </li>
             <li class="breadcrumb-item">
-                <a>Blogs</a>
+                <a>Appearance</a>
             </li>
             <li class="breadcrumb-item active">Menus</li>
             </ol>

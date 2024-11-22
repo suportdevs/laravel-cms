@@ -9,9 +9,6 @@
             <a href="{{route('admin.dashboard')}}">Dashboard</a>
         </li>
         <li class="breadcrumb-item">
-            <a>Blogs</a>
-        </li>
-        <li class="breadcrumb-item">
             <a href="{{route('admin.members.index')}}">Members</a>
         </li>
         <li class="breadcrumb-item active">Create</li>

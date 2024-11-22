@@ -1,15 +1,15 @@
 <?php $__env->startPush('content'); ?>
     <div class="container-xxl flex-grow-1 container-p-y">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb breadcrumb-style1">
-            <li class="breadcrumb-item">
-                <a href="<?php echo e(route('admin.dashboard')); ?>">Dashboard</a>
-            </li>
-            <li class="breadcrumb-item">
-                <a>Blogs</a>
-            </li>
-            <li class="breadcrumb-item active">Members</li>
+        <nav aria-label="breadcrumb" class="d-flex align-items-center justify-content-between mb-5">
+            <ol class="breadcrumb breadcrumb-style1 m-0">
+                <li class="breadcrumb-item">
+                    <a href="<?php echo e(route('admin.dashboard')); ?>">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active">Members</li>
             </ol>
+            <div class="breadcrumb-item">
+                <span id="liveClock" class="text-muted" style="font-size: 0.9rem;"></span>
+            </div>
         </nav>
 
     <div class="card postion-relative">

@@ -149,6 +149,10 @@ $(document).ready(function () {
     $(document).on('select2:open', () => {
         document.querySelector('.select2-container--open .select2-search__field').focus();
     });
+
+    // Initialize the clock
+    updateClock();
+    setInterval(updateClock, 1000);
 });
 
 const showPreloader = () => {
@@ -284,3 +288,13 @@ function showToast(toastData) {
     const toastPlacement = new bootstrap.Toast(toastPlacementExample);
     toastPlacement.show();
 }
+
+
+function updateClock() {
+    const now = new Date();
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const date = now.toLocaleDateString(undefined, options); // Format date
+    const time = now.toLocaleTimeString(); // Format time
+    document.getElementById('liveClock').textContent = `${date} | ${time}`;
+}
+

@@ -8,7 +8,9 @@ use App\Http\Controllers\MemberController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\SliderController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\ThemeController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -44,6 +46,11 @@ Route::middleware([
         Route::post("/ckeditor/image/upload", [PagesController::class, "imageUpload"])->name("ckeditor.image.upload");
         Route::post('/delete', [PagesController::class, 'delete'])->name('delete');
         Route::resource('/', PagesController::class)->parameters(['' => 'key']);
+    });
+    Route::prefix('admin/sliders')->name('admin.sliders.')->group(function () {
+        Route::post("/ckeditor/image/upload", [SliderController::class, "imageUpload"])->name("ckeditor.image.upload");
+        Route::post('/delete', [SliderController::class, 'delete'])->name('delete');
+        Route::resource('/', SliderController::class)->parameters(['' => 'key']);
     });
     // Blog Posts Resource Route
     Route::prefix('admin/blog/posts')->name('admin.blog.posts.')->group(function () {
@@ -81,6 +88,9 @@ Route::middleware([
         Route::post('/delete', [MenuController::class, 'delete'])->name('delete');
         Route::resource('/', MenuController::class)->parameters(['' => 'key']);
     });
+
+    Route::get('/admin/theme/all', [ThemeController::class, 'all'])->name('admin.theme.all');
+    Route::get('/admin/theme/options', [ThemeController::class, 'all'])->name('admin.theme.options');
 });
 
 

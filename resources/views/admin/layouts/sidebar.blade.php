@@ -69,6 +69,12 @@
           <div class="text-truncate" data-i18n="Tables">Pages</div>
         </a>
       </li>
+      <li class="menu-item {{ request()->routeIs('admin.blog.sliders.*') ? 'active' : '' }}">
+        <a href="{{route('admin.sliders.index')}}" class="menu-link">
+          <i class="menu-icon tf-icons bx bx-book-content"></i>
+          <div class="text-truncate" data-i18n="Tables">Sliders</div>
+        </a>
+      </li>
       <!-- Blogs -->
       <li class="menu-item {{ request()->routeIs('admin.blog.posts.*') || request()->routeIs('admin.blog.categories.*') || request()->routeIs('admin.blog.tags.*') ? 'active open' : '' }}">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -117,8 +123,8 @@
           <div class="text-truncate" data-i18n="Blogs">Appearance</div>
         </a>
         <ul class="menu-sub">
-          <li class="menu-item {{ request()->routeIs('admin.blog.posts.*') ? 'active' : '' }}">
-            <a href="{{route('admin.blog.posts.index')}}" class="menu-link ">
+          <li class="menu-item {{ request()->routeIs('admin.theme.all.*') ? 'active' : '' }}">
+            <a href="{{route('admin.theme.all')}}" class="menu-link ">
                 <i class="menu-icon tf-icons bx bx-pallate me-2"></i>
               <div class="text-truncate" data-i18n="Analytics">Themes</div>
             </a>
@@ -133,6 +139,12 @@
             <a href="{{route('admin.blog.tags.index')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-purchase-tag-alt me-2"></i>
               <div class="text-truncate" data-i18n="Analytics">Widgets</div>
+            </a>
+          </li>
+          <li class="menu-item {{ request()->routeIs('admin.theme.options.*') ? 'active' : '' }}">
+            <a href="{{route('admin.theme.options')}}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-customize me-2"></i>
+              <div class="text-truncate" data-i18n="Analytics">Site Options</div>
             </a>
           </li>
         </ul>

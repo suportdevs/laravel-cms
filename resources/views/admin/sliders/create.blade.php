@@ -1,5 +1,19 @@
 @extends('admin.layouts.app')
 
+@push('style')
+    <style>
+        #imagePreview,#bannerImagePreview,#imageIconsPreview img {
+            padding: 4px;
+            transition: transform 0.2s;
+        }
+
+        #imagePreview:hover,#bannerImagePreview:hover,#imageIconsPreview img:hover {
+            transform: scale(1.1);
+        }
+
+    </style>
+@endpush
+
 @push('content')
 
 <div class="container-xxl flex-grow-1 container-p-y">
@@ -9,40 +23,41 @@
             <a href="{{route('admin.dashboard')}}">Dashboard</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="{{route('admin.galleries.index')}}">Galleries</a>
+            <a href="{{route('admin.sliders.index')}}">Sliders</a>
         </li>
         <li class="breadcrumb-item active">Create</li>
         </ol>
     </nav>
-    <form action="{{route('admin.galleries.store')}}" method="POST" enctype="multipart/form-data">
+
+    <form action="{{route('admin.sliders.store')}}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="row">
             <div class="col-md-8">
-                <div class="card">
+                <div class="card border border-light">
                     <div class="card-body">
                       <div class="mb-5">
                         <label for="name" class="form-label"><b>Name</b> <b class="text-danger">*</b></label>
                         <input type="text" class="form-control border-radius-5" id="name" name="name" placeholder="Name" required>
                       </div>
                       <div class="mb-5">
-                          <label for="permalink" class="form-label"><b>Permalink</b> <b class="text-danger">*</b></label>
+                          <label for="permalink" class="form-label"><b>Permalink</b> <b class="text-danger">{{$maxId ? '*' : ''}}</b></label>
                           <div class="input-group input-group-merge">
-                            <span class="input-group-text" id="basic-addon34">{{route('admin.galleries.index')}}/</span>
-                            <input type="text" class="form-control" name="permalink" id="permalink" required>
+                            <span class="input-group-text text-gray" id="basic-addon34">{{$maxId ? route('home') : ''}}</span>
+                            <input type="text" class="form-control" name="permalink" id="permalink" {{$maxId ? 'required' : ''}} value="{{!$maxId ? route('home') : ''}}" {{!$maxId ? 'readonly' : ''}}>
                           </div>
                         </div>
+                        {{-- <div class="mb-5">
+                            <label for="excerpt" class="form-label"><b>Description</b></label>
+                            <textarea name="excerpt" id="excerpt" rows="3" class="form-control border-radius-5" placeholder="Short Description"></textarea>
+                        </div> --}}
                         <div class="mb-5">
-                            <label for="content" class="form-label"><b>Content</b></label>
+                            <label for="content" class="form-label"><b>Content</b> <b class="text-danger">*</b></label>
                             <textarea name="content" id="content" rows="10" class="form-control border-radius-5" placeholder="Content"></textarea>
-                        </div>
-                        <div class="form-check form-switch mb-5">
-                            <input class="form-check-input" type="checkbox" id="is_featured" name="is_featured">
-                            <label class="form-check-label" for="is_featured"><b>? Is Featured</b></label>
                         </div>
                     </div>
                 </div>
                 <div class="accordion mt-4" id="accordionExample">
-                    <div class="card accordion-item active">
+                    <div class="card accordion-item active border border-light">
                         <h2 class="accordion-header border-bottom mb-5" id="headingOne">
                             <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionOne" aria-expanded="true" aria-controls="accordionOne">
                                 Search Engine Optimize
@@ -120,7 +135,7 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card mb-5">
+                <div class="card mb-5 border border-light">
                     <div class="card-header p-4 border-bottom">
                         <h5>Publish</h5>
                     </div>
@@ -129,19 +144,32 @@
                         <button type="submit" name="submitter" value="save"  class="btn btn-secondary"><i class="bx bx-exit"></i> Save & Exit</button>
                     </div>
                 </div>
-                <div class="card mb-5">
+                <div class="card mb-5 border border-light">
+                    <div class="card-header p-4 border-bottom">
+                        <h5>Template <b class="text-danger">*</b></h5>
+                    </div>
+                    <div class="card-body mt-4">
+                        <label for="template" class="form-label">Selete Template</label>
+                        <select name="template" id="template" class="form-select select2search" data-control="select2" >
+                            <option value="default">Default</option>
+                            <option value="no_sidebar">No Sidebar</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="card mb-5 border border-light">
                     <div class="card-header p-4 border-bottom">
                         <h5>Status <b class="text-danger">*</b></h5>
                     </div>
                     <div class="card-body mt-4">
-                        <select name="status" id="status" class="form-select select2search" data-control="select2" data-placeholder="Select an option">
+                        <label for="status" class="form-label">Select Status</label>
+                        <select name="status" id="status" class="form-select select2search" data-control="select2" >
                             <option value="Published">Published</option>
                             <option value="Draft">Draft</option>
                             <option value="Pending">Pending</option>
                         </select>
                     </div>
                 </div>
-                <div class="card mb-5">
+                <div class="card mb-5 border border-light">
                     <div class="card-header p-4 border-bottom">
                         <h5>Image</h5>
                     </div>
@@ -163,6 +191,7 @@
                                     data-target-preview="imagePreview"
                                     data-target-input="formFile"
                                     style="position: absolute; top: 5px; left: 130px; width: 8px; height: 8px;"
+                                    onclick="document.getElementById('formFile').click()"
                                 >
                                     &times;
                                 </button>
@@ -184,6 +213,99 @@
                         </div>
                     </div>
                 </div>
+                <div class="card mb-5 border border-light">
+                    <div class="card-header p-4 border-bottom">
+                        <h5>Banner Image (1920x170px)</h5>
+                    </div>
+                    <div class="card-body mt-4">
+                        <div class="mb-5 text-center">
+                            <div class="image-preview-wrapper">
+                                <img
+                                    id="bannerImagePreview"
+                                    class="preview-image"
+                                    data-default="https://cms.botble.com/vendor/core/core/base/images/placeholder.png"
+                                    src="https://cms.botble.com/vendor/core/core/base/images/placeholder.png"
+                                    alt="Preview image"
+                                    style="width: 150px;"
+                                    onclick="document.getElementById('formFileBanner').click()"
+                                >
+                                <button
+                                    type="button"
+                                    class="btn rounded-pill btn-icon btn-outline-secondary p-2 mt-2 d-none"
+                                    data-remove-button
+                                    data-target-preview="bannerImagePreview"
+                                    data-target-input="formFileBanner"
+                                    style="position: absolute; top: 5px; left: 130px; width: 8px; height: 8px;"
+                                >
+                                    &times;
+                                </button>
+                            </div>
+                            <input
+                                class="form-control"
+                                type="file"
+                                id="formFileBanner"
+                                name="banner_image"
+                                accept="image/jpeg, image/png"
+                                data-preview="bannerImagePreview"
+                                style="opacity: 0; position: absolute; z-index: -1;"
+                                onchange="previewSelectedImage(this)"
+                            >
+                            <br>
+                            <b class="text-primary mt-2" onclick="document.getElementById('formFileBanner').click()" type="button">
+                                Choose Image
+                            </b>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-5 border border-light">
+                    <div class="card-header p-4 border-bottom">
+                        <h5>Image Icons (80x80px)</h5>
+                    </div>
+                    <div class="card-body mt-4">
+                        <div class="mb-5 text-center">
+
+                            {{-- <div class="image-preview-wrapper"> --}}
+                            <div id="imageIconsPreview" class="image-preview-wrapper">
+                                <img
+                                    id="imageIconsPreview"
+                                    class="preview-image"
+                                    data-default="https://cms.botble.com/vendor/core/core/base/images/placeholder.png"
+                                    src="https://cms.botble.com/vendor/core/core/base/images/placeholder.png"
+                                    alt="Preview image"
+                                    style="width: 150px;"
+                                    onclick="document.getElementById('formFileImageIcons').click()"
+                                >
+                                <button
+                                    type="button"
+                                    class="btn rounded-pill btn-icon btn-outline-secondary p-2 mt-2 d-none"
+                                    data-remove-button
+                                    data-target-preview="imageIconsPreview"
+                                    data-target-input="formFileImageIcons"
+                                    style="position: absolute; top: 5px; left: 130px; width: 8px; height: 8px;"
+                                >
+                                    &times;
+                                </button>
+                            </div>
+                            <input
+                                class="form-control"
+                                type="file"
+                                id="formFileImageIcons"
+                                name="image_icons[]"
+                                accept="image/jpeg, image/png"
+                                data-preview="imageIconsPreview"
+                                style="opacity: 0; position: absolute; z-index: -1;"
+                                multiple
+                                onchange="previewSelectedImages(this)"
+                            >
+
+                            <br>
+                            <small class="text-muted">You can select up to 4 images (JPEG, PNG).</small>
+                            <b class="text-primary mt-2" onclick="document.getElementById('formFileImageIcons').click()" type="button">
+                                Choose Image
+                            </b>
+                        </div>
+                    </div>
+                </div>
             </div>
     </form>
 </div>
@@ -194,10 +316,12 @@
 <script>
     function debounce(func, delay) {
         let timeout;
-        return function (...args) {
-            clearTimeout(timeout);
-            timeout = setTimeout(() => func.apply(this, args), delay);
-        };
+        @if($maxId)
+            return function (...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), delay);
+            };
+        @endif
     }
 
     document.getElementById('name').addEventListener('keyup', debounce(function () {
@@ -208,8 +332,9 @@
             .replace(/[^\w\s-]/g, '')
             .replace(/[\s_-]+/g, '-')
             .replace(/^-+|-+$/g, '');
-
-        document.getElementById('permalink').value = slug;
+        @if($maxId)
+            document.getElementById('permalink').value = slug;
+        @endif
     }, 300));
 
     function previewSelectedImage(input) {
@@ -233,6 +358,35 @@
         }
     }
 
+    function previewSelectedImages(input) {
+        const previewContainerId = input.dataset.preview;
+        const previewContainer = document.getElementById(previewContainerId);
+
+        // Clear previous previews
+        previewContainer.innerHTML = '';
+
+        // Loop through all selected files
+        Array.from(input.files).forEach(file => {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.alt = file.name;
+                img.style.width = '80px';
+                img.style.margin = '5px';
+                img.style.border = '2px solid #ddd';
+                img.style.padding = '4px';
+                img.style.transition = 'transform 0.2s';
+                img.addEventListener('mouseover', () => img.style.transform = 'scale(1.1)');
+                img.addEventListener('mouseout', () => img.style.transform = 'scale(1)');
+                previewContainer.appendChild(img);
+            };
+
+            reader.readAsDataURL(file);
+        });
+    }
+
     // Event delegation for removing the selected image
     document.addEventListener('click', function (e) {
         if (e.target.matches('[data-remove-button]')) {
@@ -250,7 +404,7 @@
     ClassicEditor
             .create( document.querySelector( '#content' ), {
               ckfinder: {
-                uploadUrl: "{{ route('admin.galleries.ckeditor.image.upload').'?_token='.csrf_token() }}"
+                uploadUrl: "{{ route('admin.sliders.ckeditor.image.upload').'?_token='.csrf_token() }}"
               }
             } )
             .then((editor) => {

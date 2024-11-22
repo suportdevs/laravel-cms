@@ -7,11 +7,11 @@
             <li class="breadcrumb-item">
                 <a href="{{route('admin.dashboard')}}">Dashboard</a>
             </li>
-            <li class="breadcrumb-item active">Pages</li>
+            <li class="breadcrumb-item active">Sliders</li>
             </ol>
         </nav>
 
-    <div class="card postion-relative">
+    <div class="card postion-relative border border-light">
         <!-- Loader Overlay -->
         <div class="loader-overlay d-none">
             <div class="spinner-border text-primary" role="status">
@@ -19,7 +19,7 @@
             </div> <b>Loading...</b>
         </div>
         <div class="card-header">
-            <form action="{{route('admin.pages.index')}}" method="POST" id="frmSearch">
+            <form action="{{route('admin.sliders.index')}}" method="POST" id="frmSearch">
                 @csrf
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="d-flex items-center">
@@ -29,7 +29,7 @@
                         </div>
                     </div>
                     <div class="">
-                        <a href="{{route('admin.pages.create')}}" class="btn btn-sm btn-primary"><i class="bx bx-plus"></i> Create</a>
+                        <a href="{{route('admin.sliders.create')}}" class="btn btn-sm btn-primary"><i class="bx bx-plus"></i> Create</a>
                         <button type="submit" class="btn btn-sm btn-dark text-white"><i class="bx bx-sync"></i> Reload</button>
                             <button type="button" class="btn btn-sm btn-danger" disabled="" id="deleteMultiple">
                                 <i class="bx bx-trash"></i> Delete
@@ -38,10 +38,10 @@
                 </div>
             </form>
         </div>
-        <form action="{{route('admin.pages.delete')}}" id="frmList" method="POST">
+        <form action="{{route('admin.sliders.delete')}}" id="frmList" method="POST">
             @csrf
             <div id="ajax_content">
-                @include('admin.pages._list')
+                @include('admin.sliders._list')
             </div>
         </form>
     </div>

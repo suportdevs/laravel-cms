@@ -1,17 +1,15 @@
-@extends('admin.layouts.app')
-
-@push('content')
+<?php $__env->startPush('content'); ?>
     <div class="container-xxl flex-grow-1 container-p-y">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb breadcrumb-style1">
             <li class="breadcrumb-item">
-                <a href="{{route('admin.dashboard')}}">Dashboard</a>
+                <a href="<?php echo e(route('admin.dashboard')); ?>">Dashboard</a>
             </li>
-            <li class="breadcrumb-item active">Pages</li>
+            <li class="breadcrumb-item active">Sliders</li>
             </ol>
         </nav>
 
-    <div class="card postion-relative">
+    <div class="card postion-relative border border-light">
         <!-- Loader Overlay -->
         <div class="loader-overlay d-none">
             <div class="spinner-border text-primary" role="status">
@@ -19,17 +17,18 @@
             </div> <b>Loading...</b>
         </div>
         <div class="card-header">
-            <form action="{{route('admin.pages.index')}}" method="POST" id="frmSearch">
-                @csrf
+            <form action="<?php echo e(route('admin.sliders.index')); ?>" method="POST" id="frmSearch">
+                <?php echo csrf_field(); ?>
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="d-flex items-center">
-                        {!! page_size_dropdown() !!}
+                        <?php echo page_size_dropdown(); ?>
+
                         <div class="col-md-3">
                             <input class="form-control border-radius-5" type="text" name="name" placeholder="Search..." style="min-width: 150px;">
                         </div>
                     </div>
                     <div class="">
-                        <a href="{{route('admin.pages.create')}}" class="btn btn-sm btn-primary"><i class="bx bx-plus"></i> Create</a>
+                        <a href="<?php echo e(route('admin.sliders.create')); ?>" class="btn btn-sm btn-primary"><i class="bx bx-plus"></i> Create</a>
                         <button type="submit" class="btn btn-sm btn-dark text-white"><i class="bx bx-sync"></i> Reload</button>
                             <button type="button" class="btn btn-sm btn-danger" disabled="" id="deleteMultiple">
                                 <i class="bx bx-trash"></i> Delete
@@ -38,12 +37,14 @@
                 </div>
             </form>
         </div>
-        <form action="{{route('admin.pages.delete')}}" id="frmList" method="POST">
-            @csrf
+        <form action="<?php echo e(route('admin.sliders.delete')); ?>" id="frmList" method="POST">
+            <?php echo csrf_field(); ?>
             <div id="ajax_content">
-                @include('admin.pages._list')
+                <?php echo $__env->make('admin.sliders._list', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             </div>
         </form>
     </div>
 </div>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('admin.layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /media/anonymous/12a8dd6f-3122-4159-adcf-832ac2c3572d/laravel/cms_api_service/resources/views/admin/sliders/index.blade.php ENDPATH**/ ?>

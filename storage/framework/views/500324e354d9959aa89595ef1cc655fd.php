@@ -4,8 +4,9 @@
         <tr class="bg-secondary" id="r_checkAll">
             <th><input class="form-check-input" type="checkbox" value="" id="check_all"></th>
             <th>ID</th>
+            
             <th>NAME</th>
-            <th>LOCATIONS</th>
+            <th>TEMPLATE</th>
             <th>CREATED AT</th>
             <th>CREATED BY</th>
             <th>STATUS</th>
@@ -14,21 +15,14 @@
         </thead>
         <tbody class="table-border-bottom-0">
             <?php $__empty_1 = true; $__currentLoopData = $dataset; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-            <?php
-            $locations_str = '';
-                if(!empty($data->locations) && count($data->locations) > 0){
-                    foreach ($data->locations as $location) {
-                        $locations_str .= "<span class='badge bg-primary me-1'>$location</span>";
-                    }
-                }
-            ?>
             <tr>
                 <td><input class="form-check-input" type="checkbox" name="data[]" value="<?php echo e($data->_key); ?>"></td>
                 <td><?php echo e(serialNo($loop->iteration, $dataset->perPage())); ?></td>
-                <td><a href="<?php echo e(route('admin.menus.edit', $data->_key)); ?>"><?php echo e($data->name); ?></a></td>
-                <td><?php echo $locations_str; ?></td>
+                
+                <td><a href="<?php echo e(route('admin.sliders.edit', $data->_key)); ?>"><?php echo e($data->name); ?></a></td>
+                <td><?php echo e(ucfirst($data->template)); ?></td>
                 <td><?php echo e(date('d-m-Y', strtotime($data->created_at))); ?></td>
-                <td><?php echo e($data->createdBy->name ?? ''); ?></td>
+                <td><?php echo e($data->author->name ?? ''); ?></td>
                 <td class="text-center">
                     <span class="badge <?php echo e($data->status == 'Published' ? 'bg-success' : ($data->status == 'Draft' ? 'bg-secondary' : 'bg-warning')); ?>">
                         <?php echo e($data->status); ?>
@@ -37,8 +31,8 @@
                 </td>
 
                 <td>
-                    <a class=" btn btn-icon btn-sm btn-primary" href="<?php echo e(route('admin.menus.edit', $data->_key)); ?>"><i class="bx bx-edit-alt me-1"></i></a>
-                    <a class=" btn btn-icon btn-sm btn-danger" href="javascript:void(0);" onclick="singleDelete('<?php echo e(route('admin.menus.destroy', $data->_key)); ?>')"><i class="bx bx-trash me-1"></i></a>
+                    <a class=" btn btn-icon btn-sm btn-primary" href="<?php echo e(route('admin.sliders.edit', $data->_key)); ?>"><i class="bx bx-edit-alt me-1"></i></a>
+                    <a class=" btn btn-icon btn-sm btn-danger" href="javascript:void(0);" onclick="singleDelete('<?php echo e(route('admin.sliders.destroy', $data->_key)); ?>')"><i class="bx bx-trash me-1"></i></a>
                 </td>
             </tr>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
@@ -53,4 +47,4 @@
 
     </div>
 </div>
-<?php /**PATH /media/anonymous/12a8dd6f-3122-4159-adcf-832ac2c3572d/laravel/cms_api_service/resources/views/admin/menus/_list.blade.php ENDPATH**/ ?>
+<?php /**PATH /media/anonymous/12a8dd6f-3122-4159-adcf-832ac2c3572d/laravel/cms_api_service/resources/views/admin/sliders/_list.blade.php ENDPATH**/ ?>
