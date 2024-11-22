@@ -17,4 +17,5 @@ class Menu extends Model
     public function scopeFilter($query, $filters) {
         $query->when($filters->name ?? false, fn($query, $name) => $query->where('name', 'LIKE', "%". trim($name) . "%"));
     }
+
 }

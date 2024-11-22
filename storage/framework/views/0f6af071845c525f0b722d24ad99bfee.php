@@ -48,7 +48,6 @@
       ?>
     </div>
     <!-- Core and Page JS -->
-    <script src="<?php echo e(asset('assets/vendor/libs/jquery/jquery.js')); ?>"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="<?php echo e(asset('assets/vendor/libs/popper/popper.js')); ?>"></script>
     <script src="<?php echo e(asset('assets/js/select2.min.js')); ?>"></script>
@@ -70,4 +69,4 @@
     <?php echo $__env->yieldPushContent('scripts'); ?>
   </body>
 </html>
-<?php /**PATH /media/anonymous/12a8dd6f-3122-4159-adcf-832ac2c3572d/laravel/cms_api_service/resources/views/admin/layouts/app.blade.php ENDPATH**/ ?>
+<?php /**PATH /media/anonymous/12a8dd6f-3122-4159-adcf-832ac2c3572d/laravel/cms_api_service/resources/views/admin/layouts/app2.blade.php ENDPATH**/ ?>

@@ -76,6 +76,8 @@ Route::middleware([
     });
     // Menues Resource Route
     Route::prefix('admin/blog/menus')->name('admin.blog.menus.')->group(function () {
+        Route::post('/ajax/get_node', [MenuController::class, 'get_node'])->name('ajax.get_node');
+        Route::post('/save_structure', [MenuController::class, 'save_structure'])->name('save_structure');
         Route::post('/delete', [MenuController::class, 'delete'])->name('delete');
         Route::resource('/', MenuController::class)->parameters(['' => 'key']);
     });

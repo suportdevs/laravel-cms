@@ -59,9 +59,9 @@ class MenuController extends Controller
         $data = Menu::where('_key', $key)->first();
         return view('admin.menus.edit', [
             'page_title' => "Menus Edit",
-            'pages'=> Page::pluck('name', 'id'),
-            'categories'=> Category::pluck('name', 'id'),
-            'tags'=> Tag::pluck('name', 'id'),
+            'pages'=> Page::select('name', 'id', 'permalink')->get(),
+            'categories'=> Category::select('name', 'id', 'permalink')->get(),
+            'tags'=> Tag::select('name', 'id', 'permalink')->get(),
             'data'=> $data
         ]);
     }
@@ -85,6 +85,52 @@ class MenuController extends Controller
         }
     }
 
+    // Store a new Menu
+    public function get_node(Request $request)
+    {
+        // pr(json_encode($request->dataset));
+        // $attributes = $this->validateRequest($request);
+        try {
+            DB::beginTransaction();
+            $data = Menu::find($request->menu_id);
+            if (is_null($data->dataset)) {
+                $preparedDataset = collect($request->dataset)->map(function ($item, $key) {
+                    return [
+                        'id' => $key + 1,
+                        'parent_id' => null,
+                    ] + $item;
+                })->toArray();
+
+                $data->dataset = json_encode($preparedDataset);
+            } else {
+                $exist_dataset = json_decode($data->dataset, true);
+                $nextId = collect($exist_dataset)->max('id') + 1;
+                $preparedDataset = collect($request->dataset)->map(function ($item, $key) use ($nextId) {
+                    return [
+                        'id' => $nextId + $key,
+                        'parent_id' => null,
+                    ] + $item;
+                })->toArray();
+
+                $new_dataset = array_merge($exist_dataset, $preparedDataset);
+                $data->dataset = json_encode($new_dataset);
+            }
+
+            if(!$data->save()){
+                throw new \Exception("Something went wrong while saving the menu dataset!");
+            }
+
+            DB::commit();
+            return view('admin.menus.partial', [
+                'data' => $data,
+                'status' => 'Success',
+                'message' => 'Record saved successfull.'
+            ]);
+        } catch (Exception $e) {
+            DB::rollBack();
+            return $this->responseWithError($e, $request);
+        }
+    }
     // Delete a Menu
     public function destroy($key)
     {

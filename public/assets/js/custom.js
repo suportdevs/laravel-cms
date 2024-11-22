@@ -2,6 +2,12 @@
 const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
 
 $(document).ready(function () {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': csrfToken
+        }
+    });
+
     $(document).on("change", "#check_all", function () {
         if ($(this).is(":checked")) {
             $("#check input[type='checkbox']").prop("checked", true);

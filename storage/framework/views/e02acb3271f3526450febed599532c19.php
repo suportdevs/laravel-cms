@@ -8,7 +8,7 @@
             <li class="breadcrumb-item">
                 <a>Blogs</a>
             </li>
-            <li class="breadcrumb-item active">Tags</li>
+            <li class="breadcrumb-item active">Menus</li>
             </ol>
         </nav>
 
