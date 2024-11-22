@@ -26,8 +26,8 @@
             <!-- Icon Font Field -->
             <div class="mb-3 position-relative">
                 <label for="icon_font" class="form-label" data-update="icon">Icon</label>
-                <select name="icon" id="custom-menu-node-icon-new" class="form-select" data-control="select2" data-placeholder="Ex: box box-home">
-                    <option></option>
+                <select name="icon_font" class="form-select" data-control="select2" data-placeholder="Ex: box box-home">
+                    <option value=""></option>
                     @foreach (get_box_icons() as $icon)
                         <option value="{{$icon}}" data-icon="{{$icon}}" {{($item['icon_font'] ?? NULL) == $icon ? 'selected' : ''}}>{{$icon}}</option>
                     @endforeach
@@ -42,9 +42,9 @@
             <!-- Target Field -->
             <div class="mb-3 position-relative">
                 <label for="menu-node-target-new" class="form-label" data-update="target">Target</label>
-                <select class="form-control form-select" id="custom-menu-node-target-new" name="target">
-                    <option value="_self" {{($item['target'] ?? NULL) == '_self' ? 'seleted' : ''}}>Open link directly</option>
-                    <option value="_blank" {{($item['target'] ?? NULL) == '_blank' ? 'seleted' : ''}}>Open link in new tab</option>
+                <select class="form-control" id="custom-menu-node-target-new" name="target">
+                    <option value="_self" {{(isset($item['target']) && $item['target'] == '_self') ? "seleted" : ''}}>Open link directly</option>
+                    <option value="_blank" {{(isset($item['target']) && $item['target'] == '_blank') ? "seleted" : ''}}>Open link in new tab</option>
                 </select>
             </div>
             <div class="mb-3 position-relative text-end">

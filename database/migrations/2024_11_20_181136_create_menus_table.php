@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->text('dataset')->nullable();
             $table->string('location')->nullable();
+            $table->enum('status', ['Published', 'Draft', 'Pending'])->default('Published');
             $table->timestamps();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();

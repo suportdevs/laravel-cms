@@ -148,56 +148,58 @@ class MenuController extends Controller
     }
 
     public function save_structure(Request $request)
-{
-    $id = $request->id;
-    $menus = $request->menus;
+    {
+        $id = $request->id;
+        $menus = $request->menus;
 
-    $data = Menu::find($id);
-    $dataset = $menus;
-    $nextId = 1;
-    $preparedDataset = $this->prepareMenuDataset($dataset, $nextId);
-    $data->dataset = json_encode($preparedDataset);
+        $data = Menu::find($id);
+        $dataset = $menus;
+        $nextId = 1;
+        $preparedDataset = $this->prepareMenuDataset($dataset, $nextId);
+        $data->dataset = json_encode($preparedDataset);
+        $data->status = $request->status;
 
-    if (!$data->save()) {
-        throw new \Exception("Something went wrong while saving the menu dataset!");
-    }
-
-    return response()->json([
-        'message' => 'Menu structure saved successfully!',
-    ]);
-}
-
-function prepareMenuDataset(array $items, int &$startId = 1, int $parentId = null, int $order = 1)
-{
-    $prepared = [];
-    foreach ($items as $index => $item) {
-        // Assign a unique ID and order
-        $currentId = $startId++;
-        $preparedItem = [
-            'id' => $currentId,
-            'title' => $item['title'],
-            'permalink' => $item['permalink'],
-            'css_class' => $item['css_class'],
-            'target' => $item['target'],
-            'reference' => $item['reference'] ?? null,
-            'label' => $item['label'],
-            'model_id' => $item['model_id'],
-            'parent_id' => $parentId, // Set the parent ID
-            'order' => $index + 1,   // Set the order property (1-based index)
-        ];
-
-        $prepared[] = $preparedItem;
-
-        // Recursively process children, if any
-        if (!empty($item['children'])) {
-            $prepared = array_merge(
-                $prepared,
-                $this->prepareMenuDataset($item['children'], $startId, $currentId)
-            );
+        if (!$data->save()) {
+            throw new \Exception("Something went wrong while saving the menu dataset!");
         }
+
+        return response()->json([
+            'message' => 'Menu structure saved successfully!',
+        ]);
     }
-    return $prepared;
-}
+
+    function prepareMenuDataset(array $items, int &$startId = 1, int $parentId = null, int $order = 1)
+    {
+        $prepared = [];
+        foreach ($items as $index => $item) {
+            // Assign a unique ID and order
+            $currentId = $startId++;
+            $preparedItem = [
+                'id' => $currentId,
+                'title' => $item['title'],
+                'permalink' => $item['permalink'],
+                'icon_font' => $item['icon_font'],
+                'css_class' => $item['css_class'],
+                'target' => $item['target'],
+                'reference' => $item['reference'] ?? null,
+                'label' => $item['label'],
+                'model_id' => $item['model_id'],
+                'parent_id' => $parentId, // Set the parent ID
+                'order' => $index + 1,   // Set the order property (1-based index)
+            ];
+
+            $prepared[] = $preparedItem;
+
+            // Recursively process children, if any
+            if (!empty($item['children'])) {
+                $prepared = array_merge(
+                    $prepared,
+                    $this->prepareMenuDataset($item['children'], $startId, $currentId)
+                );
+            }
+        }
+        return $prepared;
+    }
 
 
     private function saveMenuWithOrder($id, $menuData, $parentId)

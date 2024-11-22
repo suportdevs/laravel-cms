@@ -8,9 +8,7 @@
         <ol class="dd-list">
             <?php $__currentLoopData = $dataset; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <?php echo $__env->make('admin.menus.partial-item', ['item' => $item], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-            
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-
         </ol>
     </div>
 </div>

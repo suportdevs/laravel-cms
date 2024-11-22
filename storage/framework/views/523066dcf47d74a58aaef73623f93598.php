@@ -5,22 +5,6 @@
     * html .cf { zoom: 1; }
     *:first-child+html .cf { zoom: 1; }
 
-    html { margin: 0; padding: 0; }
-    body { font-size: 100%; margin: 0; padding: 1.75em; font-family: 'Helvetica Neue', Arial, sans-serif; }
-
-    h1 { font-size: 1.75em; margin: 0 0 0.6em 0; }
-
-    a { color: #2996cc; }
-    a:hover { text-decoration: none; }
-
-    p { line-height: 1.5em; }
-    .small { color: #666; font-size: 0.875em; }
-    .large { font-size: 1.25em; }
-
-    /**
-     * Nestable
-     */
-
     .dd { position: relative; display: block; margin: 0; padding: 0; max-width: 600px; list-style: none; font-size: 13px; line-height: 20px; }
 
     .dd-list { display: block; position: relative; margin: 0; padding: 0; list-style: none; }
@@ -70,7 +54,7 @@
      * Nestable Extras
      */
 
-    .nestable-lists { display: block; clear: both; padding: 30px 0; width: 100%; border: 0; border-top: 2px solid #ddd; border-bottom: 2px solid #ddd; }
+    .nestable-lists { display: block; clear: both; padding: 30px 0; width: 100%; }
 
     #nestable-menu { padding: 0; margin: 20px 0; }
 
@@ -263,7 +247,7 @@
                                         <!-- Icon Font Field -->
                                         <div class="mb-3 position-relative">
                                             <label for="icon_font" class="form-label" data-update="icon">Icon</label>
-                                            <select name="icon" id="custom-menu-node-icon-new" class="form-select" data-control="select2" data-placeholder="Ex: box box-home">
+                                            <select name="icon" id="custom-menu-node-icon-new" class="form-select custom-menu-node-icon-new" data-control="select2" data-placeholder="Ex: box box-home">
                                                 <option></option>
                                                 <?php $__currentLoopData = get_box_icons(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $icon): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                     <option value="<?php echo e($icon); ?>" data-icon="<?php echo e($icon); ?>"><?php echo e($icon); ?></option>
@@ -307,7 +291,7 @@
                                 <div id="ajax_content" class="card-body mt-4 collapse show">
                                     <?php echo $__env->make("admin.menus.partial", \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                                 </div>
-                                <textarea class="hidden" id="nestable-output"></textarea>
+                                <textarea class="hidden" id="nestable-output" style="visibility: hidden; opacity: 0;" readonly></textarea>
                             </div>
                         </div>
                     </div>
@@ -343,14 +327,41 @@
 <?php $__env->stopPush(); ?>
 
 <?php $__env->startPush('scripts'); ?>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="<?php echo e(asset('assets/js/jquery.nestable.js')); ?>"></script>
 <script>
 
     let menuDataset = [];
 $(document).ready(function()
 {
+    $('.custom-menu-node-icon-new').select2({
+        templateResult: formatIcon, // Format dropdown options
+        templateSelection: formatIcon, // Format selected option
+        escapeMarkup: function (markup) {
+            return markup; // Allow HTML rendering
+        },
+        allowClear: true,                         // Enable clear button
+        theme: "bootstrap-5",                     // Use the Bootstrap 5 theme
+        width: '100%'                             // Ensure dropdown matches the parent element's width
+    });
+    $('.form-select').select2({
+        templateResult: formatIcon, // Format dropdown options
+        templateSelection: formatIcon, // Format selected option
+        escapeMarkup: function (markup) {
+            return markup; // Allow HTML rendering
+        },
+        allowClear: true,                         // Enable clear button
+        theme: "bootstrap-5",                     // Use the Bootstrap 5 theme
+        width: '100%'                             // Ensure dropdown matches the parent element's width
+    });
+
+    // Function to format the icon in the dropdown options and selected option
+    function formatIcon(state) {
+        if (!state.id) {
+            return state.text; // Default text when no icon
+        }
+        return `<i class="${state.element.dataset.icon}"></i> ${state.text}`; // Return icon with text
+    }
+
     var updateOutput = function(e)
     {
         var list   = e.length ? e : $(e.target),
@@ -466,11 +477,24 @@ $(document).ready(function()
                 method: "POST",
                 data: {
                     id: "<?php echo e($data->id); ?>",
-                    menus: menuDataset
+                    menus: menuDataset,
+                    status: $("#status").val()
                 },
                 success: function(response) {
-                    alert(response.message);
-                }
+                    toastr.success(response.message);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                // Capture and display the error message
+                let errorMessage = jqXHR.responseJSON?.message || errorThrown || "An unexpected error occurred.";
+                toastr.error(errorMessage);
+
+                // Optionally log the full error for debugging
+                console.error("AJAX Error:", {
+                    textStatus: textStatus,
+                    errorThrown: errorThrown,
+                    responseJSON: jqXHR.responseJSON
+                });
+            }
             });
         }
     });
@@ -496,11 +520,13 @@ $(document).ready(function()
             };
             // Add title and link if available in the DOM
             let currentItem = $(`.dd-item[data-id="${item.id}"]`);
+            console.log(currentItem.find('select option:selected').val());
+
             menuItem.title = currentItem.find('input[name="title"]').val();
             menuItem.permalink = currentItem.find('input[name="url"]').val();
-            menuItem.icon_font = currentItem.find('input[name="icon_font"]').val();
+            menuItem.icon_font = currentItem.find('select option:selected').val();
             menuItem.css_class = currentItem.find('input[name="css_class"]').val();
-            menuItem.target = currentItem.find('input[name="target"]').val() || '_self';
+            menuItem.target = currentItem.find('select[name="target"] option:selected').val() || '_self';
             menuItem.reference = $(`.dd-item[data-id="${item.id}"]`).data('reference');
             menuItem.label = $(`.dd-item[data-id="${item.id}"]`).data('label');
             menuItem.model_id = $(`.dd-item[data-id="${item.id}"]`).data('model_id');
@@ -511,7 +537,6 @@ $(document).ready(function()
             // Push the menuItem to the global dataset
             menuDataset.push(menuItem);
         });
-        console.log("Updated Menu Dataset:", menuDataset);
     };
 
     // let processMenuItemChildren = function(children) {
@@ -551,41 +576,42 @@ $(document).ready(function()
     //     return childArray;
     // };
     let processMenuItemChildren = function(children) {
-    let childArray = [];
-    children.forEach((child) => {
-        let menuItem = {
-            id: child.id,
-            title: "",
-            permalink: "",
-            icon_font: "",
-            css_class: "",
-            target: "",
-            reference: "",
-            label: "",
-            model_id: "",
-            children: [],
-        };
+        let childArray = [];
+        children.forEach((child) => {
+            let menuItem = {
+                id: child.id,
+                title: "",
+                permalink: "",
+                icon_font: "",
+                css_class: "",
+                target: "",
+                reference: "",
+                label: "",
+                model_id: "",
+                children: [],
+            };
 
-        // Get title and link from the DOM for the child
-        let currentChild = $(`.dd-item[data-id="${child.id}"]`);
-        menuItem.title = currentChild.find('input[name="title"]').val();
-        menuItem.permalink = currentChild.find('input[name="url"]').val();
-        menuItem.icon_font = currentChild.find('input[name="icon_font"]').val();
-        menuItem.css_class = currentChild.find('input[name="css_class"]').val();
-        menuItem.target = currentChild.find('input[name="target"]').val() || '_self';
-        menuItem.reference = currentChild.data('reference');
-        menuItem.label = currentChild.data('label');
-        menuItem.model_id = currentChild.data('model_id');
+            // Get title and link from the DOM for the child
+            let currentChild = $(`.dd-item[data-id="${child.id}"]`);
+            menuItem.title = currentChild.find('input[name="title"]').val();
+            menuItem.permalink = currentChild.find('input[name="url"]').val();
+            menuItem.icon_font = currentChild.find('select[name="icon_font"] option:selected').val();
+            menuItem.css_class = currentChild.find('input[name="css_class"]').val();
+            menuItem.target = currentChild.find('select[name="target"] option:selected').val() || '_self';
+            menuItem.reference = currentChild.data('reference');
+            menuItem.label = currentChild.data('label');
+            menuItem.model_id = currentChild.data('model_id');
 
-        // Process child elements recursively if they exist
-        if (child.children && child.children.length > 0) {
-            menuItem.children = processMenuItemChildren(child.children);
-        }
-        // Add the menuItem to the current child array
-        childArray.push(menuItem);
-    });
-    return childArray;
-};
+            // Process child elements recursively if they exist
+            if (child.children && child.children.length > 0) {
+                menuItem.children = processMenuItemChildren(child.children);
+            }
+            // Add the menuItem to the current child array
+            childArray.push(menuItem);
+        });
+        return childArray;
+    };
+
 
 </script>
 <?php $__env->stopPush(); ?>

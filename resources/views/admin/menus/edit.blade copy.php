@@ -501,7 +501,7 @@
                                 <div id="ajax_content" class="card-body mt-4 collapse show">
                                     @include("admin.menus.partial")
                                 </div>
-                                <textarea id="nestable-output"></textarea>
+                                <textarea id="nestable-output" style="r" readonly></textarea>
                             </div>
                         </div>
                     </div>
