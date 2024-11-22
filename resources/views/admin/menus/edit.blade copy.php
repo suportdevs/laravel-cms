@@ -336,12 +336,12 @@
             <a>Blogs</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="{{route('admin.blog.menus.index')}}">Menus</a>
+            <a href="{{route('admin.menus.index')}}">Menus</a>
         </li>
         <li class="breadcrumb-item active">Edit ** {{$data->name}} **</li>
         </ol>
     </nav>
-    <form action="{{route('admin.blog.menus.update', $data->_key)}}" method="POST" enctype="multipart/form-data">
+    <form action="{{route('admin.menus.update', $data->_key)}}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="row">
@@ -588,7 +588,7 @@
 
             if (menuesProperties && menuesProperties.length > 0) {
                 $.ajax({
-                    url: "{{ route('admin.blog.menus.ajax.get_node') }}",
+                    url: "{{ route('admin.menus.ajax.get_node') }}",
                     method: "POST",
                     data: {
                         menu_id: "{{$data->id}}",
@@ -680,7 +680,7 @@
             updateOutput($('#nestable').data('output', $('#nestable-output')));
             if (menuDataset && menuDataset.length > 1) {
                 $.ajax({
-                    url: "{{ route('admin.blog.menus.save_structure') }}",
+                    url: "{{ route('admin.menus.save_structure') }}",
                     method: "POST",
                     data: {
                         menus: menuDataset,

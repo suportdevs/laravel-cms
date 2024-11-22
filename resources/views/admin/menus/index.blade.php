@@ -22,7 +22,7 @@
             </div> <b>Loading...</b>
         </div>
         <div class="card-header">
-            <form action="{{route('admin.blog.menus.index')}}" method="POST" id="frmSearch">
+            <form action="{{route('admin.menus.index')}}" method="POST" id="frmSearch">
                 @csrf
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="d-flex items-center">
@@ -32,7 +32,7 @@
                         </div>
                     </div>
                     <div class="">
-                        <a href="{{route('admin.blog.menus.create')}}" class="btn btn-sm btn-primary"><i class="bx bx-plus"></i> Create</a>
+                        <a href="{{route('admin.menus.create')}}" class="btn btn-sm btn-primary"><i class="bx bx-plus"></i> Create</a>
                         <button type="submit" class="btn btn-sm btn-dark text-white"><i class="bx bx-sync"></i> Reload</button>
                             <button type="button" class="btn btn-sm btn-danger" disabled="" id="deleteMultiple">
                                 <i class="bx bx-trash"></i> Delete
@@ -41,7 +41,7 @@
                 </div>
             </form>
         </div>
-        <form action="{{route('admin.blog.menus.delete')}}" id="frmList" method="POST">
+        <form action="{{route('admin.menus.delete')}}" id="frmList" method="POST">
             @csrf
             <div id="ajax_content">
                 @include('admin.menus._list')

@@ -19,7 +19,7 @@
                 <td><input class="form-check-input" type="checkbox" name="data[]" value="<?php echo e($data->_key); ?>"></td>
                 <td><?php echo e(serialNo($loop->iteration, $dataset->perPage())); ?></td>
                 
-                <td><a href="<?php echo e(route('admin.blog.pages.edit', $data->_key)); ?>"><?php echo e($data->name); ?></a></td>
+                <td><a href="<?php echo e(route('admin.pages.edit', $data->_key)); ?>"><?php echo e($data->name); ?></a></td>
                 <td><?php echo e(ucfirst($data->template)); ?></td>
                 <td><?php echo e(date('d-m-Y', strtotime($data->created_at))); ?></td>
                 <td><?php echo e($data->author->name ?? ''); ?></td>
@@ -31,8 +31,8 @@
                 </td>
 
                 <td>
-                    <a class=" btn btn-icon btn-sm btn-primary" href="<?php echo e(route('admin.blog.pages.edit', $data->_key)); ?>"><i class="bx bx-edit-alt me-1"></i></a>
-                    <a class=" btn btn-icon btn-sm btn-danger" href="javascript:void(0);" onclick="singleDelete('<?php echo e(route('admin.blog.pages.destroy', $data->_key)); ?>')"><i class="bx bx-trash me-1"></i></a>
+                    <a class=" btn btn-icon btn-sm btn-primary" href="<?php echo e(route('admin.pages.edit', $data->_key)); ?>"><i class="bx bx-edit-alt me-1"></i></a>
+                    <a class=" btn btn-icon btn-sm btn-danger" href="javascript:void(0);" onclick="singleDelete('<?php echo e(route('admin.pages.destroy', $data->_key)); ?>')"><i class="bx bx-trash me-1"></i></a>
                 </td>
             </tr>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>

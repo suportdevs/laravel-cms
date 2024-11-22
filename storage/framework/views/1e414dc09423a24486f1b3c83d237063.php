@@ -20,7 +20,7 @@
             </div> <b>Loading...</b>
         </div>
         <div class="card-header">
-            <form action="<?php echo e(route('admin.blog.members.index')); ?>" method="POST" id="frmSearch">
+            <form action="<?php echo e(route('admin.members.index')); ?>" method="POST" id="frmSearch">
                 <?php echo csrf_field(); ?>
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="d-flex items-center">
@@ -31,7 +31,7 @@
                         </div>
                     </div>
                     <div class="">
-                        <a href="<?php echo e(route('admin.blog.members.create')); ?>" class="btn btn-sm btn-primary"><i class="bx bx-plus"></i> Create</a>
+                        <a href="<?php echo e(route('admin.members.create')); ?>" class="btn btn-sm btn-primary"><i class="bx bx-plus"></i> Create</a>
                         <button type="submit" class="btn btn-sm btn-dark text-white"><i class="bx bx-sync"></i> Reload</button>
                             <button type="button" class="btn btn-sm btn-danger" disabled="" id="deleteMultiple">
                                 <i class="bx bx-trash"></i> Delete
@@ -40,7 +40,7 @@
                 </div>
             </form>
         </div>
-        <form action="<?php echo e(route('admin.blog.members.delete')); ?>" id="frmList" method="POST">
+        <form action="<?php echo e(route('admin.members.delete')); ?>" id="frmList" method="POST">
             <?php echo csrf_field(); ?>
             <div id="ajax_content">
                 <?php echo $__env->make('admin.members._list', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>

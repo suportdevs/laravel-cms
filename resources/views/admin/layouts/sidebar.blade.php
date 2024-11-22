@@ -64,7 +64,7 @@
     <ul class="menu-inner py-1">
       {{-- Galleries  --}}
       <li class="menu-item {{ request()->routeIs('admin.blog.pages.*') ? 'active' : '' }}">
-        <a href="{{route('admin.blog.pages.index')}}" class="menu-link">
+        <a href="{{route('admin.pages.index')}}" class="menu-link">
           <i class="menu-icon tf-icons bx bx-book-content"></i>
           <div class="text-truncate" data-i18n="Tables">Pages</div>
         </a>
@@ -98,14 +98,14 @@
       </li>
       {{-- Galleries  --}}
       <li class="menu-item {{ request()->routeIs('admin.blog.galleries.*') ? 'active' : '' }}">
-        <a href="{{route('admin.blog.galleries.index')}}" class="menu-link">
+        <a href="{{route('admin.galleries.index')}}" class="menu-link">
           <i class="menu-icon tf-icons bx bx-camera"></i>
           <div class="text-truncate" data-i18n="Tables">Galleries</div>
         </a>
       </li>
       {{-- Members  --}}
       <li class="menu-item {{ request()->routeIs('admin.blog.members.*') ? 'active' : '' }}">
-        <a href="{{route('admin.blog.members.index')}}" class="menu-link">
+        <a href="{{route('admin.members.index')}}" class="menu-link">
           <i class="menu-icon tf-icons bx bx-group"></i>
           <div class="text-truncate" data-i18n="Tables">Members</div>
         </a>
@@ -124,7 +124,7 @@
             </a>
           </li>
           <li class="menu-item {{ request()->routeIs('admin.blog.menus.*') ? 'active' : '' }}">
-            <a href="{{route('admin.blog.menus.index')}}" class="menu-link">
+            <a href="{{route('admin.menus.index')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-folder-open me-2"></i>
               <div class="text-truncate" data-i18n="Analytics">Menues</div>
             </a>

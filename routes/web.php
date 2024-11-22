@@ -40,7 +40,7 @@ Route::middleware([
     'verified',
 ])->group(function () {
     // Pages Resource Route
-    Route::prefix('admin/blog/pages')->name('admin.blog.pages.')->group(function () {
+    Route::prefix('admin/pages')->name('admin.pages.')->group(function () {
         Route::post("/ckeditor/image/upload", [PagesController::class, "imageUpload"])->name("ckeditor.image.upload");
         Route::post('/delete', [PagesController::class, 'delete'])->name('delete');
         Route::resource('/', PagesController::class)->parameters(['' => 'key']);
@@ -64,18 +64,18 @@ Route::middleware([
         Route::resource('/', TagController::class)->parameters(['' => 'key']);
     });
     // Blog Galleries Resource Route
-    Route::prefix('admin/blog/galleries')->name('admin.blog.galleries.')->group(function () {
+    Route::prefix('admin/galleries')->name('admin.galleries.')->group(function () {
         Route::post("/ckeditor/image/upload", [GalleryController::class, "imageUpload"])->name("ckeditor.image.upload");
         Route::post('/delete', [GalleryController::class, 'delete'])->name('delete');
         Route::resource('/', GalleryController::class)->parameters(['' => 'key']);
     });
     // Blog Members Resource Route
-    Route::prefix('admin/blog/members')->name('admin.blog.members.')->group(function () {
+    Route::prefix('admin/members')->name('admin.members.')->group(function () {
         Route::post('/delete', [MemberController::class, 'delete'])->name('delete');
         Route::resource('/', MemberController::class)->parameters(['' => 'key']);
     });
     // Menues Resource Route
-    Route::prefix('admin/blog/menus')->name('admin.blog.menus.')->group(function () {
+    Route::prefix('admin/menus')->name('admin.menus.')->group(function () {
         Route::post('/ajax/get_node', [MenuController::class, 'get_node'])->name('ajax.get_node');
         Route::post('/save_structure', [MenuController::class, 'save_structure'])->name('save_structure');
         Route::post('/delete', [MenuController::class, 'delete'])->name('delete');

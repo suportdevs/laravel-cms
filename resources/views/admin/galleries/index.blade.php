@@ -22,7 +22,7 @@
             </div> <b>Loading...</b>
         </div>
         <div class="card-header">
-            <form action="{{route('admin.blog.galleries.index')}}" method="POST" id="frmSearch">
+            <form action="{{route('admin.galleries.index')}}" method="POST" id="frmSearch">
                 @csrf
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="d-flex items-center">
@@ -32,7 +32,7 @@
                         </div>
                     </div>
                     <div class="">
-                        <a href="{{route('admin.blog.galleries.create')}}" class="btn btn-sm btn-primary"><i class="bx bx-plus"></i> Create</a>
+                        <a href="{{route('admin.galleries.create')}}" class="btn btn-sm btn-primary"><i class="bx bx-plus"></i> Create</a>
                         <button type="submit" class="btn btn-sm btn-dark text-white"><i class="bx bx-sync"></i> Reload</button>
                             <button type="button" class="btn btn-sm btn-danger" disabled="" id="deleteMultiple">
                                 <i class="bx bx-trash"></i> Delete
@@ -41,7 +41,7 @@
                 </div>
             </form>
         </div>
-        <form action="{{route('admin.blog.galleries.delete')}}" id="frmList" method="POST">
+        <form action="{{route('admin.galleries.delete')}}" id="frmList" method="POST">
             @csrf
             <div id="ajax_content">
                 @include('admin.galleries._list')

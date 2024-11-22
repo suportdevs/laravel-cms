@@ -10,12 +10,12 @@
             <a>Blogs</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="<?php echo e(route('admin.blog.members.index')); ?>">Members</a>
+            <a href="<?php echo e(route('admin.members.index')); ?>">Members</a>
         </li>
         <li class="breadcrumb-item active">Edit ** <?php echo e($data->name); ?> **</li>
         </ol>
     </nav>
-    <form action="<?php echo e(route('admin.blog.members.update', $data->_key)); ?>" method="POST" enctype="multipart/form-data">
+    <form action="<?php echo e(route('admin.members.update', $data->_key)); ?>" method="POST" enctype="multipart/form-data">
         <?php echo csrf_field(); ?>
         <?php echo method_field('PUT'); ?>
         <div class="row">

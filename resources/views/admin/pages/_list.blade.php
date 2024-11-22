@@ -19,7 +19,7 @@
                 <td><input class="form-check-input" type="checkbox" name="data[]" value="{{$data->_key}}"></td>
                 <td>{{serialNo($loop->iteration, $dataset->perPage())}}</td>
                 {{-- <td><img src="{{$data->getFirstMediaUrl('image')}}" alt="{{$data->name}}" style="width: 50px;"></td> --}}
-                <td><a href="{{route('admin.blog.pages.edit', $data->_key)}}">{{$data->name}}</a></td>
+                <td><a href="{{route('admin.pages.edit', $data->_key)}}">{{$data->name}}</a></td>
                 <td>{{ucfirst($data->template)}}</td>
                 <td>{{date('d-m-Y', strtotime($data->created_at))}}</td>
                 <td>{{$data->author->name ?? ''}}</td>
@@ -30,8 +30,8 @@
                 </td>
 
                 <td>
-                    <a class=" btn btn-icon btn-sm btn-primary" href="{{route('admin.blog.pages.edit', $data->_key)}}"><i class="bx bx-edit-alt me-1"></i></a>
-                    <a class=" btn btn-icon btn-sm btn-danger" href="javascript:void(0);" onclick="singleDelete('{{ route('admin.blog.pages.destroy', $data->_key) }}')"><i class="bx bx-trash me-1"></i></a>
+                    <a class=" btn btn-icon btn-sm btn-primary" href="{{route('admin.pages.edit', $data->_key)}}"><i class="bx bx-edit-alt me-1"></i></a>
+                    <a class=" btn btn-icon btn-sm btn-danger" href="javascript:void(0);" onclick="singleDelete('{{ route('admin.pages.destroy', $data->_key) }}')"><i class="bx bx-trash me-1"></i></a>
                 </td>
             </tr>
             @empty

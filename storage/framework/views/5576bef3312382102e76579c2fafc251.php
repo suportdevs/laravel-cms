@@ -18,7 +18,7 @@
             <tr>
                 <td><input class="form-check-input" type="checkbox" name="data[]" value="<?php echo e($data->_key); ?>"></td>
                 <td><?php echo e(serialNo($loop->iteration, $dataset->perPage())); ?></td>
-                <td><?php echo e($data->name); ?></td>
+                <td><a href="<?php echo e(route('admin.blog.categories.edit', $data->_key)); ?>"><?php echo e($data->name); ?></a></td>
                 <td><?php echo e($data->description); ?></td>
                 <td><img src="<?php echo e($data->getFirstMediaUrl('image')); ?>" alt="<?php echo e($data->name); ?>" style="width: 50px;"></td>
                 <td><?php echo e(date('d-m-Y', strtotime($data->created_at))); ?></td>

@@ -14,6 +14,19 @@ class Menu extends Model
     protected $guarded = ['id'];
     public $timestamps = false;
 
+    protected function casts(): array
+    {
+        return [
+            'locations' => 'array',
+        ];
+    }
+
+    public function createdBy() {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+
+
     public function scopeFilter($query, $filters) {
         $query->when($filters->name ?? false, fn($query, $name) => $query->where('name', 'LIKE', "%". trim($name) . "%"));
     }

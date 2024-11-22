@@ -10,13 +10,13 @@
             <a>Blogs</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="<?php echo e(route('admin.blog.pages.index')); ?>">Pages</a>
+            <a href="<?php echo e(route('admin.pages.index')); ?>">Pages</a>
         </li>
         <li class="breadcrumb-item active">Create</li>
         </ol>
     </nav>
 
-    <form action="<?php echo e(route('admin.blog.pages.store')); ?>" method="POST" enctype="multipart/form-data">
+    <form action="<?php echo e(route('admin.pages.store')); ?>" method="POST" enctype="multipart/form-data">
         <?php echo csrf_field(); ?>
         <div class="row">
             <div class="col-md-8">
@@ -311,7 +311,7 @@
     ClassicEditor
             .create( document.querySelector( '#content' ), {
               ckfinder: {
-                uploadUrl: "<?php echo e(route('admin.blog.pages.ckeditor.image.upload').'?_token='.csrf_token()); ?>"
+                uploadUrl: "<?php echo e(route('admin.pages.ckeditor.image.upload').'?_token='.csrf_token()); ?>"
               }
             } )
             .then((editor) => {

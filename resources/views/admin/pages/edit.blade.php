@@ -12,12 +12,12 @@
             <a>Blogs</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="{{route('admin.blog.pages.index')}}">Pages</a>
+            <a href="{{route('admin.pages.index')}}">Pages</a>
         </li>
         <li class="breadcrumb-item active">Edit ** {{$data->name}} **</li>
         </ol>
     </nav>
-    <form action="{{route('admin.blog.pages.update', $data->_key)}}" method="POST" enctype="multipart/form-data">
+    <form action="{{route('admin.pages.update', $data->_key)}}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="row">
@@ -312,7 +312,7 @@
     ClassicEditor
             .create( document.querySelector( '#content' ), {
               ckfinder: {
-                uploadUrl: "{{ route('admin.blog.pages.ckeditor.image.upload').'?_token='.csrf_token() }}"
+                uploadUrl: "{{ route('admin.pages.ckeditor.image.upload').'?_token='.csrf_token() }}"
               }
             } )
             .then((editor) => {

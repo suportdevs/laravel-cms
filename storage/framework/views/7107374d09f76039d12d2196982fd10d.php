@@ -10,12 +10,12 @@
             <a>Blogs</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="<?php echo e(route('admin.blog.menus.index')); ?>">Menus</a>
+            <a href="<?php echo e(route('admin.menus.index')); ?>">Menus</a>
         </li>
         <li class="breadcrumb-item active">Create</li>
         </ol>
     </nav>
-    <form action="<?php echo e(route('admin.blog.menus.store')); ?>" method="POST" enctype="multipart/form-data">
+    <form action="<?php echo e(route('admin.menus.store')); ?>" method="POST" enctype="multipart/form-data">
         <?php echo csrf_field(); ?>
         <div class="row">
             <div class="col-md-8">

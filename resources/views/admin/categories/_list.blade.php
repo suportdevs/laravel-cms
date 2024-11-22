@@ -18,7 +18,7 @@
             <tr>
                 <td><input class="form-check-input" type="checkbox" name="data[]" value="{{$data->_key}}"></td>
                 <td>{{serialNo($loop->iteration, $dataset->perPage())}}</td>
-                <td>{{$data->name}}</td>
+                <td><a href="{{route('admin.blog.categories.edit', $data->_key)}}">{{$data->name}}</a></td>
                 <td>{{$data->description}}</td>
                 <td><img src="{{$data->getFirstMediaUrl('image')}}" alt="{{$data->name}}" style="width: 50px;"></td>
                 <td>{{date('d-m-Y', strtotime($data->created_at))}}</td>

@@ -12,12 +12,12 @@
             <a>Blogs</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="{{route('admin.blog.menus.index')}}">Menus</a>
+            <a href="{{route('admin.menus.index')}}">Menus</a>
         </li>
         <li class="breadcrumb-item active">Create</li>
         </ol>
     </nav>
-    <form action="{{route('admin.blog.menus.store')}}" method="POST" enctype="multipart/form-data">
+    <form action="{{route('admin.menus.store')}}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="row">
             <div class="col-md-8">

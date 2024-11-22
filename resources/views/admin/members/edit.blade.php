@@ -12,12 +12,12 @@
             <a>Blogs</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="{{route('admin.blog.members.index')}}">Members</a>
+            <a href="{{route('admin.members.index')}}">Members</a>
         </li>
         <li class="breadcrumb-item active">Edit ** {{$data->name}} **</li>
         </ol>
     </nav>
-    <form action="{{route('admin.blog.members.update', $data->_key)}}" method="POST" enctype="multipart/form-data">
+    <form action="{{route('admin.members.update', $data->_key)}}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="row">

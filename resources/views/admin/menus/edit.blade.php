@@ -131,17 +131,17 @@
             <a>Blogs</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="{{route('admin.blog.menus.index')}}">Menus</a>
+            <a href="{{route('admin.menus.index')}}">Menus</a>
         </li>
         <li class="breadcrumb-item active">Edit ** {{$data->name}} **</li>
         </ol>
     </nav>
-    <form action="{{route('admin.blog.menus.update', $data->_key)}}" method="POST" enctype="multipart/form-data">
+    <form action="{{route('admin.menus.update', $data->_key)}}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="row">
             <div class="col-md-9">
-                <div class="card mb-5">
+                <div class="card mb-5 border border-light">
                     <div class="card-body">
                       <div class="mb-5">
                         <label for="name" class="form-label">Name <b class="text-danger">*</b></label>
@@ -151,7 +151,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-4">
-                        <div class="card mb-5">
+                        <div class="card mb-5 border border-light">
                             <div class="card-header p-4 border-bottom d-flex justify-content-between align-items-center">
                                 <h5 class="mb-0">Pages</h5>
                                 <button type="button" class="btn p-1" data-bs-toggle="collapse" data-bs-target="#pagesLinkBody" aria-expanded="true" aria-controls="pagesLinkBody">
@@ -174,7 +174,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card mb-5">
+                        <div class="card mb-5 border border-light">
                             <div class="card-header p-4 border-bottom d-flex justify-content-between align-items-center">
                                 <h5 class="mb-0">Categories</h5>
                                 <button type="button" class="btn p-1" data-bs-toggle="collapse" data-bs-target="#categoriesLinkBody" aria-expanded="true" aria-controls="categoriesLinkBody">
@@ -197,7 +197,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card mb-5">
+                        <div class="card mb-5 border border-light">
                             <div class="card-header p-4 border-bottom d-flex justify-content-between align-items-center">
                                 <h5 class="mb-0">Tags</h5>
                                 <button type="button" class="btn p-1" data-bs-toggle="collapse" data-bs-target="#tagsLinkBody" aria-expanded="true" aria-controls="tagsLinkBody">
@@ -220,7 +220,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card mb-5">
+                        <div class="card mb-5 border border-light">
                             <div class="card-header p-4 border-bottom d-flex justify-content-between align-items-center">
                                 <h5 class="mb-0">Custom Link <b class="text-danger"></b></h5>
                                 <button type="button" class="btn p-1" data-bs-toggle="collapse" data-bs-target="#customLinkBody" aria-expanded="true" aria-controls="customLinkBody">
@@ -280,7 +280,7 @@
                     </div>
                     <div class="col-md-8">
                         <div class="accordion mb-4" id="accordionExample">
-                            <div class="card accordion-item active">
+                            <div class="card accordion-item active border border-light">
                                 <div class="card-header p-4 border-bottom d-flex justify-content-between align-items-center">
                                     <h5 class="mb-0">Menu Structure</h5>
                                     <button type="button" class="btn p-1" data-bs-toggle="collapse" data-bs-target="#" aria-expanded="true" aria-controls="">
@@ -293,20 +293,45 @@
                                 <textarea class="hidden" id="nestable-output" style="visibility: hidden; opacity: 0;" readonly></textarea>
                             </div>
                         </div>
+                        <div class="card mb-5 border border-light">
+                            <div class="card-header p-4 border-bottom">
+                                <h5>Menu Settings</h5>
+                            </div>
+                            <div class="card-body mt-4">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <label for="">Display location</label>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <label class="form-check">
+                                            <input type="checkbox" class="form-check-input" name="locations[]" value="main-menu"> <span class="form-check-label">Main Navigation</span>
+                                        </label>
+                                    </div>
+                                    {{-- <div class="col-md-5">
+                                        <label for="">Display location</label>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <label class="form-check">
+                                            <input type="checkbox" class="form-check-input" name="locations[]" value="side-menu"> <span class="form-check-label">Main Navigation</span>
+                                        </label>
+                                    </div> --}}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card mb-5">
+                <div class="card mb-5 border border-light">
                     <div class="card-header p-4 border-bottom">
                         <h5>Publish</h5>
                     </div>
                     <div class="card-body mt-4">
-                        <button  type="button" name="submitter" id="saveBtn"  class="btn btn-primary"><i class="bx bx-save"></i> Save</button>
+                        <button  type="button" name="submitter" id="saveBtn"  class="btn btn-primary mb-3"><i class="bx bx-save"></i> Save</button>
                         <button type="button" name="submitter" value="save"  class="btn btn-secondary"><i class="bx bx-exit"></i> Save & Exit</button>
                     </div>
                 </div>
-                <div class="card mb-5">
+                <div class="card mb-5 border border-light">
                     <div class="card-header p-4 border-bottom">
                         <h5>Status <b class="text-danger">*</b></h5>
                     </div>
@@ -330,27 +355,27 @@
 <script>
 
     let menuDataset = [];
-$(document).ready(function()
-{
+    let menuLocations = [];
+$(document).ready(function(){
     $('.custom-menu-node-icon-new').select2({
-        templateResult: formatIcon, // Format dropdown options
-        templateSelection: formatIcon, // Format selected option
+        templateResult: formatIcon,
+        templateSelection: formatIcon,
         escapeMarkup: function (markup) {
-            return markup; // Allow HTML rendering
+            return markup;
         },
-        allowClear: true,                         // Enable clear button
-        theme: "bootstrap-5",                     // Use the Bootstrap 5 theme
-        width: '100%'                             // Ensure dropdown matches the parent element's width
+        allowClear: true,
+        theme: "bootstrap-5",
+        width: '100%'
     });
     $('.form-select').select2({
-        templateResult: formatIcon, // Format dropdown options
-        templateSelection: formatIcon, // Format selected option
+        templateResult: formatIcon,
+        templateSelection: formatIcon,
         escapeMarkup: function (markup) {
-            return markup; // Allow HTML rendering
+            return markup;
         },
-        allowClear: true,                         // Enable clear button
-        theme: "bootstrap-5",                     // Use the Bootstrap 5 theme
-        width: '100%'                             // Ensure dropdown matches the parent element's width
+        allowClear: true,
+        theme: "bootstrap-5",
+        width: '100%'
     });
 
     // Function to format the icon in the dropdown options and selected option
@@ -414,7 +439,6 @@ $(document).ready(function()
         }
     });
 
-
     $(".btn-add-to-menu").on("click", function(event) {
         let menuesProperties = [];
         if($(this).data('btn-type') === 'Custom Btn'){
@@ -446,7 +470,7 @@ $(document).ready(function()
 
         if (menuesProperties && menuesProperties.length > 0) {
             $.ajax({
-                url: "{{ route('admin.blog.menus.ajax.get_node') }}",
+                url: "{{ route('admin.menus.ajax.get_node') }}",
                 method: "POST",
                 data: {
                     menu_id: "{{$data->id}}",
@@ -469,15 +493,23 @@ $(document).ready(function()
 
     $("#saveBtn").on("click", function() {
         updateOutput($('#nestable').data('output', $('#nestable-output')));
-        console.log("saving Menu Dataset:", menuDataset);
+        let locationsCheckbox = $('input[name="locations[]"]:checked');
+        menuLocations = [];
+        if (locationsCheckbox && locationsCheckbox.length > 0) {
+            locationsCheckbox.each(function() {
+                menuLocations.push($(this).val());
+            });
+        }
+
         if (menuDataset && menuDataset.length > 1) {
             $.ajax({
-                url: "{{ route('admin.blog.menus.save_structure') }}",
+                url: "{{ route('admin.menus.save_structure') }}",
                 method: "POST",
                 data: {
                     id: "{{$data->id}}",
                     menus: menuDataset,
-                    status: $("#status").val()
+                    status: $("#status").val(),
+                    locations: menuLocations,
                 },
                 success: function(response) {
                     toastr.success(response.message);
@@ -519,8 +551,6 @@ $(document).ready(function()
             };
             // Add title and link if available in the DOM
             let currentItem = $(`.dd-item[data-id="${item.id}"]`);
-            console.log(currentItem.find('select option:selected').val());
-
             menuItem.title = currentItem.find('input[name="title"]').val();
             menuItem.permalink = currentItem.find('input[name="url"]').val();
             menuItem.icon_font = currentItem.find('select option:selected').val();
@@ -538,42 +568,6 @@ $(document).ready(function()
         });
     };
 
-    // let processMenuItemChildren = function(children) {
-    //     let childArray = [];
-    //     children.forEach((child) => {
-    //         let menuItem = {
-    //             id: child.id,
-    //             title: "",
-    //             permalink: "",
-    //             icon_font: "",
-    //             css_class: "",
-    //             target: "",
-    //             reference: "",
-    //             label: "",
-    //             model_id: "",
-    //             children: [],
-    //         };
-
-    //         // Get title and link from the DOM for the child
-    //         let currentChild = $(`.dd-item[data-id="${child.id}"]`);
-    //         menuItem.title = currentItem.find('input[name="title"]').val();
-    //         menuItem.permalink = currentItem.find('input[name="permalink"]').val();
-    //         menuItem.icon_font = currentItem.find('input[name="icon_font"]').val();
-    //         menuItem.css_class = currentItem.find('input[name="css_class"]').val();
-    //         menuItem.target = currentItem.find('input[name="target"]').val();
-    //         menuItem.reference = $(`.dd-item[data-id="${item.id}"]`).data('reference');
-    //         menuItem.label = $(`.dd-item[data-id="${item.id}"]`).data('label');
-    //         menuItem.model_id = $(`.dd-item[data-id="${item.id}"]`).data('model_id');
-
-    //         // Process child elements recursively if they exist
-    //         if (child.children && child.children.length > 0) {
-    //             menuItem.children = processMenuItemChildren(child.children);
-    //         }
-    //         // Add the menuItem to the current child array
-    //         childArray.push(menuItem);
-    //     });
-    //     return childArray;
-    // };
     let processMenuItemChildren = function(children) {
         let childArray = [];
         children.forEach((child) => {

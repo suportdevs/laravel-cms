@@ -39,7 +39,7 @@ class MenuController extends Controller
             $data = Menu::create($attributes);
 
             DB::commit();
-            $url = $request->submitter ? route('admin.blog.menus.index') : route('admin.blog.menus.edit', $data->_key);
+            $url = $request->submitter ? route('admin.menus.index') : route('admin.menus.edit', $data->_key);
             return $this->responseWithData($data, 'Record created successfully', 'success', 201, $url);
         } catch (Exception $e) {
             DB::rollBack();
@@ -92,7 +92,7 @@ class MenuController extends Controller
             $data->update($attributes);
 
             DB::commit();
-            $url = $request->submitter ? route('admin.blog.menus.index') : NULL;
+            $url = $request->submitter ? route('admin.menus.index') : NULL;
             return $this->responseWithData($data, 'Record updated successfully', 'success', 201, $url);
         } catch (Exception $e) {
             DB::rollBack();
@@ -158,6 +158,7 @@ class MenuController extends Controller
         $preparedDataset = $this->prepareMenuDataset($dataset, $nextId);
         $data->dataset = json_encode($preparedDataset);
         $data->status = $request->status;
+        $data->locations = $request->locations ? json_encode($request->locations) : NULL;
 
         if (!$data->save()) {
             throw new \Exception("Something went wrong while saving the menu dataset!");

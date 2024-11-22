@@ -52,7 +52,7 @@ class PagesController extends Controller
             }
 
             DB::commit();
-            $url = $request->submitter ? route('admin.blog.pages.index') : NULL;
+            $url = $request->submitter ? route('admin.pages.index') : NULL;
             return $this->responseWithData($data, 'Record created successfully', 'success', 201, $url);
         } catch (Exception $e) {
             DB::rollBack();
@@ -102,7 +102,7 @@ class PagesController extends Controller
             $data->update($attributes);
 
             DB::commit();
-            $url = $request->submitter ? route('admin.blog.pages.index') : NULL;
+            $url = $request->submitter ? route('admin.pages.index') : NULL;
             return $this->responseWithData($data, 'Record updated successfully', 'success', 201, $url);
         } catch (Exception $e) {
             DB::rollBack();

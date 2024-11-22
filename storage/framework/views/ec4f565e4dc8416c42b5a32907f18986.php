@@ -64,7 +64,7 @@
     <ul class="menu-inner py-1">
       
       <li class="menu-item <?php echo e(request()->routeIs('admin.blog.pages.*') ? 'active' : ''); ?>">
-        <a href="<?php echo e(route('admin.blog.pages.index')); ?>" class="menu-link">
+        <a href="<?php echo e(route('admin.pages.index')); ?>" class="menu-link">
           <i class="menu-icon tf-icons bx bx-book-content"></i>
           <div class="text-truncate" data-i18n="Tables">Pages</div>
         </a>
@@ -98,14 +98,14 @@
       </li>
       
       <li class="menu-item <?php echo e(request()->routeIs('admin.blog.galleries.*') ? 'active' : ''); ?>">
-        <a href="<?php echo e(route('admin.blog.galleries.index')); ?>" class="menu-link">
+        <a href="<?php echo e(route('admin.galleries.index')); ?>" class="menu-link">
           <i class="menu-icon tf-icons bx bx-camera"></i>
           <div class="text-truncate" data-i18n="Tables">Galleries</div>
         </a>
       </li>
       
       <li class="menu-item <?php echo e(request()->routeIs('admin.blog.members.*') ? 'active' : ''); ?>">
-        <a href="<?php echo e(route('admin.blog.members.index')); ?>" class="menu-link">
+        <a href="<?php echo e(route('admin.members.index')); ?>" class="menu-link">
           <i class="menu-icon tf-icons bx bx-group"></i>
           <div class="text-truncate" data-i18n="Tables">Members</div>
         </a>
@@ -124,7 +124,7 @@
             </a>
           </li>
           <li class="menu-item <?php echo e(request()->routeIs('admin.blog.menus.*') ? 'active' : ''); ?>">
-            <a href="<?php echo e(route('admin.blog.menus.index')); ?>" class="menu-link">
+            <a href="<?php echo e(route('admin.menus.index')); ?>" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-folder-open me-2"></i>
               <div class="text-truncate" data-i18n="Analytics">Menues</div>
             </a>

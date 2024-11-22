@@ -5,6 +5,7 @@
             <th><input class="form-check-input" type="checkbox" value="" id="check_all"></th>
             <th>ID</th>
             <th>NAME</th>
+            <th>LOCATIONS</th>
             <th>CREATED AT</th>
             <th>CREATED BY</th>
             <th>STATUS</th>
@@ -13,10 +14,17 @@
         </thead>
         <tbody class="table-border-bottom-0">
             @forelse ($dataset as $data)
+            @php
+            $locations_str = '';
+                foreach ($data->locations as $location) {
+                    $locations_str .= "<span class='badge bg-primary me-1'>$location</span>";
+                }
+            @endphp
             <tr>
                 <td><input class="form-check-input" type="checkbox" name="data[]" value="{{$data->_key}}"></td>
                 <td>{{serialNo($loop->iteration, $dataset->perPage())}}</td>
-                <td>{{$data->name}}</td>
+                <td><a href="{{route('admin.menus.edit', $data->_key)}}">{{$data->name}}</a></td>
+                <td>{!!$locations_str!!}</td>
                 <td>{{date('d-m-Y', strtotime($data->created_at))}}</td>
                 <td>{{$data->createdBy->name ?? ''}}</td>
                 <td class="text-center">
@@ -26,8 +34,8 @@
                 </td>
 
                 <td>
-                    <a class=" btn btn-icon btn-sm btn-primary" href="{{route('admin.blog.menus.edit', $data->_key)}}"><i class="bx bx-edit-alt me-1"></i></a>
-                    <a class=" btn btn-icon btn-sm btn-danger" href="javascript:void(0);" onclick="singleDelete('{{ route('admin.blog.menus.destroy', $data->_key) }}')"><i class="bx bx-trash me-1"></i></a>
+                    <a class=" btn btn-icon btn-sm btn-primary" href="{{route('admin.menus.edit', $data->_key)}}"><i class="bx bx-edit-alt me-1"></i></a>
+                    <a class=" btn btn-icon btn-sm btn-danger" href="javascript:void(0);" onclick="singleDelete('{{ route('admin.menus.destroy', $data->_key) }}')"><i class="bx bx-trash me-1"></i></a>
                 </td>
             </tr>
             @empty

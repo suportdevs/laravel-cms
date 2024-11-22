@@ -10,12 +10,12 @@
             <a>Blogs</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="<?php echo e(route('admin.blog.galleries.index')); ?>">Galleries</a>
+            <a href="<?php echo e(route('admin.galleries.index')); ?>">Galleries</a>
         </li>
         <li class="breadcrumb-item active">Edit ** <?php echo e($data->name); ?> **</li>
         </ol>
     </nav>
-    <form action="<?php echo e(route('admin.blog.galleries.update', $data->_key)); ?>" method="POST" enctype="multipart/form-data">
+    <form action="<?php echo e(route('admin.galleries.update', $data->_key)); ?>" method="POST" enctype="multipart/form-data">
         <?php echo csrf_field(); ?>
         <?php echo method_field('PUT'); ?>
         <div class="row">
@@ -29,7 +29,7 @@
                       <div class="mb-5">
                           <label for="permalink" class="form-label">Permalink <b class="text-danger">*</b></label>
                           <div class="input-group input-group-merge">
-                            <span class="input-group-text" id="basic-addon34"><?php echo e(route('admin.blog.galleries.index')); ?>/</span>
+                            <span class="input-group-text" id="basic-addon34"><?php echo e(route('admin.galleries.index')); ?>/</span>
                             <input type="text" class="form-control" name="permalink" id="permalink" value="<?php echo e($data->permalink); ?>" required>
                           </div>
                         </div>
@@ -256,7 +256,7 @@
     ClassicEditor
             .create( document.querySelector( '#content' ), {
               ckfinder: {
-                uploadUrl: "<?php echo e(route('admin.blog.galleries.ckeditor.image.upload').'?_token='.csrf_token()); ?>"
+                uploadUrl: "<?php echo e(route('admin.galleries.ckeditor.image.upload').'?_token='.csrf_token()); ?>"
               }
             } )
             .then((editor) => {

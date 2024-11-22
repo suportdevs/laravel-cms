@@ -45,7 +45,7 @@ class MemberController extends Controller
             }
 
             DB::commit();
-            $url = $request->submitter ? route('admin.blog.members.index') : route('admin.blog.members.edit', $data->_key);
+            $url = $request->submitter ? route('admin.members.index') : route('admin.members.edit', $data->_key);
             return $this->responseWithData($data, 'Record created successfully', 'success', 201, $url);
         } catch (Exception $e) {
             DB::rollBack();
@@ -88,7 +88,7 @@ class MemberController extends Controller
             $data->update($attributes);
 
             DB::commit();
-            $url = $request->submitter ? route('admin.blog.members.index') : NULL;
+            $url = $request->submitter ? route('admin.members.index') : NULL;
             return $this->responseWithData($data, 'Record updated successfully', 'success', 201, $url);
         } catch (Exception $e) {
             DB::rollBack();
