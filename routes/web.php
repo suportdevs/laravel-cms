@@ -11,6 +11,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\ThemeController;
+use App\Http\Controllers\ThemeSettingController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -90,7 +91,8 @@ Route::middleware([
     });
 
     Route::get('/admin/theme/all', [ThemeController::class, 'all'])->name('admin.theme.all');
-    Route::get('/admin/theme/options', [ThemeController::class, 'all'])->name('admin.theme.options');
+    Route::get('/admin/theme/settings', [ThemeSettingController::class, 'index'])->name('admin.theme.settings');
+    Route::post('/admin/theme/settings', [ThemeSettingController::class, 'store'])->name('admin.theme.settings.store');
 });
 
 

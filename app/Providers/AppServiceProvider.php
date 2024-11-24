@@ -4,10 +4,13 @@ namespace App\Providers;
 
 use Illuminate\Pagination\Paginator;
 use App\Helpers\NodeHelper;
+use App\Models\Setting;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Cache;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,6 +35,12 @@ class AppServiceProvider extends ServiceProvider
                 },
             ]);
         });
+
+        $settings = Cache::remember('site_settings', 60 * 60, function () {
+            return Setting::first();
+        });
+
+        View::share('settings', $settings);
 
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());

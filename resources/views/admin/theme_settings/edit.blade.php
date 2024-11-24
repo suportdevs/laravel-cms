@@ -1,4 +1,6 @@
-<?php $__env->startPush('style'); ?>
+@extends('admin.layouts.app')
+
+@push('style')
 <style type="text/css">
 
     .cf:after { visibility: hidden; display: block; font-size: 0; content: " "; clear: both; height: 0; }
@@ -116,34 +118,34 @@
         border-radius: 4px 0px 0px 4px;
     }
         </style>
-<?php $__env->stopPush(); ?>
+@endpush
 
-<?php $__env->startPush('content'); ?>
+@push('content')
 <div class="container-xxl flex-grow-1 container-p-y">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-style1">
         <li class="breadcrumb-item">
-            <a href="<?php echo e(route('admin.dashboard')); ?>">Dashboard</a>
+            <a href="{{route('admin.dashboard')}}">Dashboard</a>
         </li>
         <li class="breadcrumb-item">
             <a>Appearance</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="<?php echo e(route('admin.menus.index')); ?>">Menus</a>
+            <a href="{{route('admin.menus.index')}}">Menus</a>
         </li>
-        <li class="breadcrumb-item active">Edit ** <?php echo e($data->name); ?> **</li>
+        <li class="breadcrumb-item active">Edit ** {{$data->name}} **</li>
         </ol>
     </nav>
-    <form action="<?php echo e(route('admin.menus.update', $data->_key)); ?>" method="POST" enctype="multipart/form-data">
-        <?php echo csrf_field(); ?>
-        <?php echo method_field('PUT'); ?>
+    <form action="{{route('admin.menus.update', $data->_key)}}" method="POST" enctype="multipart/form-data">
+        @csrf
+        @method('PUT')
         <div class="row">
             <div class="col-md-9">
                 <div class="card mb-5 border border-light">
                     <div class="card-body">
                       <div class="mb-5">
                         <label for="name" class="form-label">Name <b class="text-danger">*</b></label>
-                        <input type="text" class="form-control border-radius-5" id="name" name="name" placeholder="Name" value="<?php echo e($data->name); ?>" required>
+                        <input type="text" class="form-control border-radius-5" id="name" name="name" placeholder="Name" value="{{$data->name}}" required>
                       </div>
                     </div>
                 </div>
@@ -158,13 +160,12 @@
                             </div>
                             <div id="pagesLinkBody" class="card-body mt-4 collapse show">
                                 <div class="list-group">
-                                    <?php $__currentLoopData = $pages; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    @foreach ($pages as $value)
                                         <label class="list-group-item border-none px-0">
-                                        <input class="form-check-input me-3" type="checkbox" name="menu_id[]" data-title="<?php echo e($value->name); ?>" data-reference-id="<?php echo e($value->id); ?>" data-reference-type="App\Models\Page" data-menu-id="<?php echo e($value->id); ?>" data-link="<?php echo e($value->permalink); ?>" data-label="Page" value="<?php echo e($value->id); ?>">
-                                        <?php echo e($value->name); ?>
-
+                                        <input class="form-check-input me-3" type="checkbox" name="menu_id[]" data-title="{{$value->name}}" data-reference-id="{{$value->id}}" data-reference-type="App\Models\Page" data-menu-id="{{$value->id}}" data-link="{{$value->permalink}}" data-label="Page" value="{{$value->id}}">
+                                        {{$value->name}}
                                         </label>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    @endforeach
                                 </div>
                                 <div class="mt-5">
                                     <button type="button" class="btn p-1 border btn-add-to-menu">
@@ -182,13 +183,12 @@
                             </div>
                             <div id="categoriesLinkBody" class="card-body mt-4 collapse">
                                 <div class="list-group">
-                                    <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    @foreach ($categories as $value)
                                         <label class="list-group-item border-none px-0">
-                                        <input class="form-check-input me-3" type="checkbox" name="menu_id" data-title="<?php echo e($value->name); ?>" data-reference-id="<?php echo e($value->id); ?>" data-reference-type="App\Models\Category" data-menu-id="<?php echo e($value->id); ?>" data-link="<?php echo e($value->permalink); ?>" data-label="Category" value="<?php echo e($value->id); ?>">
-                                        <?php echo e($value->name); ?>
-
+                                        <input class="form-check-input me-3" type="checkbox" name="menu_id" data-title="{{$value->name}}" data-reference-id="{{$value->id}}" data-reference-type="App\Models\Category" data-menu-id="{{$value->id}}" data-link="{{$value->permalink}}" data-label="Category" value="{{$value->id}}">
+                                        {{$value->name}}
                                         </label>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    @endforeach
                                 </div>
                                 <div class="mt-5">
                                     <button type="button" class="btn p-1 border btn-add-to-menu">
@@ -206,13 +206,12 @@
                             </div>
                             <div id="tagsLinkBody" class="card-body mt-4 collapse">
                                 <div class="list-group">
-                                    <?php $__currentLoopData = $tags; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    @foreach ($tags as $value)
                                         <label class="list-group-item border-none px-0">
-                                        <input class="form-check-input me-3" type="checkbox" name="menu_id" data-title="<?php echo e($value->name); ?>" data-reference-id="<?php echo e($value->id); ?>" data-reference-type="App\Models\Tag" data-menu-id="<?php echo e($value->id); ?>" ddata-link="<?php echo e($value->permalink); ?>" ata-label="Tag" value="<?php echo e($value->id); ?>">
-                                        <?php echo e($value->name); ?>
-
+                                        <input class="form-check-input me-3" type="checkbox" name="menu_id" data-title="{{$value->name}}" data-reference-id="{{$value->id}}" data-reference-type="App\Models\Tag" data-menu-id="{{$value->id}}" ddata-link="{{$value->permalink}}" ata-label="Tag" value="{{$value->id}}">
+                                        {{$value->name}}
                                         </label>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    @endforeach
                                 </div>
                                 <div class="mt-5">
                                     <button type="button" class="btn p-1 border btn-add-to-menu">
@@ -249,9 +248,9 @@
                                             <label for="icon_font" class="form-label" data-update="icon">Icon</label>
                                             <select name="icon" id="custom-menu-node-icon-new" class="form-select custom-menu-node-icon-new" data-control="select2" data-placeholder="Ex: box box-home">
                                                 <option></option>
-                                                <?php $__currentLoopData = get_box_icons(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $icon): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                    <option value="<?php echo e($icon); ?>" data-icon="<?php echo e($icon); ?>"><?php echo e($icon); ?></option>
-                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                @foreach (get_box_icons() as $icon)
+                                                    <option value="{{$icon}}" data-icon="{{$icon}}">{{$icon}}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                         <!-- CSS Class Field -->
@@ -271,7 +270,7 @@
                                     </div>
                                 </div>
                                 <div class="mt-5">
-                                    <button type="button" class="btn p-1 border btn-add-to-menu" data-menu-id="<?php echo e($data->id); ?>" data-btn-type="Custom Btn">
+                                    <button type="button" class="btn p-1 border btn-add-to-menu" data-menu-id="{{$data->id}}" data-btn-type="Custom Btn">
                                         <i class="tf-icons bx bx-plus"></i> Add to menu
                                     </button>
                                 </div>
@@ -289,7 +288,7 @@
                                     </button>
                                 </div>
                                 <div id="ajax_content" class="card-body mt-4 collapse show">
-                                    <?php echo $__env->make("admin.menus.partial", \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+                                    @include("admin.menus.partial")
                                 </div>
                                 <textarea class="hidden" id="nestable-output" style="visibility: hidden; opacity: 0;" readonly></textarea>
                             </div>
@@ -308,7 +307,14 @@
                                             <input type="checkbox" class="form-check-input" name="locations[]" value="main-menu"> <span class="form-check-label">Main Navigation</span>
                                         </label>
                                     </div>
-                                    
+                                    {{-- <div class="col-md-5">
+                                        <label for="">Display location</label>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <label class="form-check">
+                                            <input type="checkbox" class="form-check-input" name="locations[]" value="side-menu"> <span class="form-check-label">Main Navigation</span>
+                                        </label>
+                                    </div> --}}
                                 </div>
                             </div>
                         </div>
@@ -331,9 +337,9 @@
                     </div>
                     <div class="card-body mt-4">
                         <select name="status" id="status" class="form-select">
-                            <option value="Published" <?php echo e($data->status == 'Published' ? 'selected' : ''); ?>>Published</option>
-                            <option value="Draft" <?php echo e($data->status == 'Draft' ? 'selected' : ''); ?>>Draft</option>
-                            <option value="Pending" <?php echo e($data->status == 'Pending' ? 'selected' : ''); ?>>Pending</option>
+                            <option value="Published" {{$data->status == 'Published' ? 'selected' : ''}}>Published</option>
+                            <option value="Draft" {{$data->status == 'Draft' ? 'selected' : ''}}>Draft</option>
+                            <option value="Pending" {{$data->status == 'Pending' ? 'selected' : ''}}>Pending</option>
                         </select>
                     </div>
                 </div>
@@ -342,10 +348,10 @@
     </form>
 </div>
 
-<?php $__env->stopPush(); ?>
+@endpush
 
-<?php $__env->startPush('scripts'); ?>
-<script src="<?php echo e(asset('assets/js/jquery.nestable.js')); ?>"></script>
+@push('scripts')
+<script src="{{asset('assets/js/jquery.nestable.js')}}"></script>
 <script>
 
     let menuDataset = [];
@@ -464,10 +470,10 @@ $(document).ready(function(){
 
         if (menuesProperties && menuesProperties.length > 0) {
             $.ajax({
-                url: "<?php echo e(route('admin.menus.ajax.get_node')); ?>",
+                url: "{{ route('admin.menus.ajax.get_node') }}",
                 method: "POST",
                 data: {
-                    menu_id: "<?php echo e($data->id); ?>",
+                    menu_id: "{{$data->id}}",
                     dataset: menuesProperties,
                     _token: $('meta[name="csrf-token"]').attr('content'),
                 },
@@ -497,10 +503,10 @@ $(document).ready(function(){
 
         if (menuDataset && menuDataset.length > 1) {
             $.ajax({
-                url: "<?php echo e(route('admin.menus.save_structure')); ?>",
+                url: "{{ route('admin.menus.save_structure') }}",
                 method: "POST",
                 data: {
-                    id: "<?php echo e($data->id); ?>",
+                    id: "{{$data->id}}",
                     menus: menuDataset,
                     status: $("#status").val(),
                     locations: menuLocations,
@@ -601,6 +607,4 @@ $(document).ready(function(){
 
 
 </script>
-<?php $__env->stopPush(); ?>
-
-<?php echo $__env->make('admin.layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /media/anonymous/12a8dd6f-3122-4159-adcf-832ac2c3572d/laravel/cms_api_service/resources/views/admin/menus/edit.blade.php ENDPATH**/ ?>
+@endpush

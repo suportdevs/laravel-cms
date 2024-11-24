@@ -12,7 +12,16 @@ class Setting extends Model implements HasMedia
 {
     use SoftDeletes, EntityCreateUpdateDeletingTraits, InteractsWithMedia;
 
-    public $table = 'posts';
+    public $table = 'setting';
     protected $guarded = ['id'];
     public $timestamps = false;
+
+    protected function casts(): array
+    {
+        return [
+            'general' => 'array',
+            'page' => 'array',
+            'blog' => 'array'
+        ];
+    }
 }

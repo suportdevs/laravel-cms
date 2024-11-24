@@ -5,9 +5,6 @@
             <li class="breadcrumb-item">
                 <a href="<?php echo e(route('admin.dashboard')); ?>">Dashboard</a>
             </li>
-            <li class="breadcrumb-item">
-                <a>Blogs</a>
-            </li>
             <li class="breadcrumb-item active">Pages</li>
             </ol>
         </nav>

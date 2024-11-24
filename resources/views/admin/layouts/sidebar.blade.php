@@ -141,10 +141,10 @@
               <div class="text-truncate" data-i18n="Analytics">Widgets</div>
             </a>
           </li>
-          <li class="menu-item {{ request()->routeIs('admin.theme.options.*') ? 'active' : '' }}">
-            <a href="{{route('admin.theme.options')}}" class="menu-link">
+          <li class="menu-item {{ request()->routeIs('admin.theme.settings.*') ? 'active' : '' }}">
+            <a href="{{route('admin.theme.settings')}}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-customize me-2"></i>
-              <div class="text-truncate" data-i18n="Analytics">Site Options</div>
+              <div class="text-truncate" data-i18n="Analytics">Settings</div>
             </a>
           </li>
         </ul>

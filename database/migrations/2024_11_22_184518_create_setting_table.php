@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('setting', function (Blueprint $table) {
             $table->id();
             $table->text('general')->nullable();
-            $table->text('pages')->nullable();
-            $table->text('logos')->nullable();
+            $table->text('page')->nullable();
+            $table->text('logo')->nullable();
             $table->text('blog')->nullable();
             $table->text('member')->nullable();
             $table->text('typegraphy')->nullable();
