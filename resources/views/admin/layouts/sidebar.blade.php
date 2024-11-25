@@ -102,6 +102,13 @@
           </li>
         </ul>
       </li>
+      {{-- Products  --}}
+      <li class="menu-item {{ request()->routeIs('admin.products.*') ? 'active' : '' }}">
+        <a href="{{route('admin.products.index')}}" class="menu-link">
+          <i class="menu-icon tf-icons bx bxl-product-hunt"></i>
+          <div class="text-truncate" data-i18n="Tables">Products</div>
+        </a>
+      </li>
       {{-- Galleries  --}}
       <li class="menu-item {{ request()->routeIs('admin.galleries.*') ? 'active' : '' }}">
         <a href="{{route('admin.galleries.index')}}" class="menu-link">

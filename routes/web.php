@@ -10,6 +10,7 @@ use App\Http\Controllers\MemberController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\ThemeController;
@@ -69,6 +70,13 @@ Route::middleware([
     Route::prefix('admin/blog/tags')->name('admin.blog.tags.')->group(function () {
         Route::post('/delete', [TagController::class, 'delete'])->name('delete');
         Route::resource('/', TagController::class)->parameters(['' => 'key']);
+    });
+
+    // Blog Posts Resource Route
+    Route::prefix('admin/products')->name('admin.products.')->group(function () {
+        Route::post("/ckeditor/image/upload", [ProductController::class, "imageUpload"])->name("ckeditor.image.upload");
+        Route::post('/delete', [ProductController::class, 'delete'])->name('delete');
+        Route::resource('/', ProductController::class)->parameters(['' => 'key']);
     });
     // Blog Galleries Resource Route
     Route::prefix('admin/galleries')->name('admin.galleries.')->group(function () {

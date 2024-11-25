@@ -1,62 +1,60 @@
-@extends('admin.layouts.app')
-
-@push('content')
+<?php $__env->startPush('content'); ?>
 
 <div class="container-xxl flex-grow-1 container-p-y">
     <nav aria-label="breadcrumb" class="d-flex align-items-center justify-content-between mb-5">
-        <ol class="breadcrumb breadcrumb-style1  m-0">
-        <li class="breadcrumb-item">
-            <a href="{{route('admin.dashboard')}}">Dashboard</a>
-        </li>
-        <li class="breadcrumb-item">
-            <a href="{{route('admin.members.index')}}">Members</a>
-        </li>
-        <li class="breadcrumb-item active">Create</li>
+        <ol class="breadcrumb breadcrumb-style1">
+            <li class="breadcrumb-item">
+                <a href="<?php echo e(route('admin.dashboard')); ?>">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="<?php echo e(route('admin.members.index')); ?>">Members</a>
+            </li>
+            <li class="breadcrumb-item active">Edit ** <?php echo e($data->name); ?> **</li>
         </ol>
-
         <div class="breadcrumb-item">
             <span id="liveClock" class="text-muted" style="font-size: 0.9rem;"></span>
         </div>
     </nav>
-    <form action="{{route('admin.members.store')}}" method="POST" enctype="multipart/form-data">
-        @csrf
+    <form action="<?php echo e(route('admin.members.update', $data->_key)); ?>" method="POST" enctype="multipart/form-data">
+        <?php echo csrf_field(); ?>
+        <?php echo method_field('PUT'); ?>
         <div class="row">
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-body row">
-                      <div class="mb-5 col-md-6">
-                        <label for="first_name" class="form-label"><b>First Name</b> <b class="text-danger">*</b></label>
-                        <input type="text" class="form-control border-radius-5" id="first_name" name="first_name" placeholder="First Name" required>
-                      </div>
-                      <div class="mb-5 col-md-6">
-                        <label for="last_name" class="form-label"><b>Last Name</b> <b class="text-danger">*</b></label>
-                        <input type="text" class="form-control border-radius-5" id="last_name" name="last_name" placeholder="Last Name" required>
-                      </div>
-                      <div class="mb-5 col-md-6">
-                        <label for="email" class="form-label"><b>Email</b> <b class="text-danger">*</b></label>
-                        <input type="email" class="form-control border-radius-5" id="email" name="email" placeholder="e.g:example@domain.com" required>
-                      </div>
-                      <div class="mb-5 col-md-6">
-                        <label for="phone" class="form-label"><b>Phone</b> <b class="text-danger"></b></label>
-                        <input type="text" class="form-control border-radius-5" id="phone" name="phone" placeholder="Phone">
-                      </div>
-                      <div class="mb-5 col-md-12">
-                        <label for="dob" class="form-label"><b>Date of Birth</b> <b class="text-danger"></b></label>
-                        <input type="date" class="form-control border-radius-5" id="dob" name="dob" placeholder="Phone">
-                      </div>
-                        <div class="mb-5">
-                            <label for="description" class="form-label"><b>Description</b></label>
-                            <textarea name="description" id="description" rows="5" class="form-control border-radius-5" placeholder="Description"></textarea>
+                        <div class="mb-5 col-md-6">
+                          <label for="first_name" class="form-label"><b>First Name</b> <b class="text-danger">*</b></label>
+                          <input type="text" class="form-control border-radius-5" id="first_name" name="first_name" placeholder="First Name" value="<?php echo e($data->first_name); ?>" required>
                         </div>
                         <div class="mb-5 col-md-6">
-                          <label for="password" class="form-label"><b>Password</b> <b class="text-danger">*</b></label>
-                          <input type="password" class="form-control border-radius-5" id="password" name="password" placeholder="" required>
+                          <label for="last_name" class="form-label"><b>Last Name</b> <b class="text-danger">*</b></label>
+                          <input type="text" class="form-control border-radius-5" id="last_name" name="last_name" placeholder="Last Name" value="<?php echo e($data->last_name); ?>" required>
                         </div>
                         <div class="mb-5 col-md-6">
-                          <label for="password_confirmation" class="form-label"><b>Password confirmation</b> <b class="text-danger">*</b></label>
-                          <input type="password" class="form-control border-radius-5" id="password_confirmation" name="password_confirmation" placeholder="" required>
+                          <label for="email" class="form-label"><b>Email</b> <b class="text-danger">*</b></label>
+                          <input type="email" class="form-control border-radius-5" id="email" name="email" placeholder="e.g:example@domain.com" value="<?php echo e($data->email); ?>" required>
                         </div>
-                    </div>
+                        <div class="mb-5 col-md-6">
+                          <label for="phone" class="form-label"><b>Phone</b> <b class="text-danger"></b></label>
+                          <input type="text" class="form-control border-radius-5" id="phone" name="phone" placeholder="Phone"  value="<?php echo e($data->phone); ?>">
+                        </div>
+                        <div class="mb-5 col-md-12">
+                          <label for="dob" class="form-label"><b>Date of Birth</b> <b class="text-danger"></b></label>
+                          <input type="date" class="form-control border-radius-5" id="dob" name="dob" placeholder="Phone"  value="<?php echo e(date('d-m-Y', strtotime($data->dob))); ?>">
+                        </div>
+                          <div class="mb-5">
+                              <label for="description" class="form-label"><b>Description</b></label>
+                              <textarea name="description" id="description" rows="5" class="form-control border-radius-5" placeholder="Description"><?php echo e($data->description); ?></textarea>
+                          </div>
+                          <div class="mb-5 col-md-6">
+                            <label for="password" class="form-label"><b>Password</b> <b class="text-danger">*</b></label>
+                            <input type="password" class="form-control border-radius-5" id="password" name="password" placeholder="">
+                          </div>
+                          <div class="mb-5 col-md-6">
+                            <label for="password_confirmation" class="form-label"><b>Password confirmation</b> <b class="text-danger">*</b></label>
+                            <input type="password" class="form-control border-radius-5" id="password_confirmation" name="password_confirmation" placeholder="">
+                          </div>
+                      </div>
                 </div>
             </div>
             <div class="col-md-4">
@@ -74,10 +72,10 @@
                         <h5>Status <b class="text-danger">*</b></h5>
                     </div>
                     <div class="card-body mt-4">
-                        <select name="status" id="status" class="form-select select2search" data-control="select2" data-placeholder="Select an option">
-                            <option value="Published">Published</option>
-                            <option value="Draft">Draft</option>
-                            <option value="Pending">Pending</option>
+                        <select name="status" id="status" class="form-select">
+                            <option value="Published" <?php echo e($data->status == 'Published' ? 'selected' : ''); ?>>Published</option>
+                            <option value="Draft" <?php echo e($data->status == 'Draft' ? 'selected' : ''); ?>>Draft</option>
+                            <option value="Pending" <?php echo e($data->status == 'Pending' ? 'selected' : ''); ?>>Pending</option>
                         </select>
                     </div>
                 </div>
@@ -91,8 +89,8 @@
                                 <img
                                     id="imagePreview"
                                     class="preview-image"
-                                    data-default="https://cms.botble.com/vendor/core/core/base/images/placeholder.png"
-                                    src="https://cms.botble.com/vendor/core/core/base/images/placeholder.png"
+                                    data-default="<?php echo e(!is_null($data->image) ? $data->getFirstMediaUrl('image') : 'https://cms.botble.com/vendor/core/core/base/images/placeholder.png'); ?>"
+                                    src="<?php echo e(!is_null($data->image) ? $data->getFirstMediaUrl('image') : 'https://cms.botble.com/vendor/core/core/base/images/placeholder.png'); ?>"
                                     alt="Preview image"
                                     style="width: 150px;"
                                 >
@@ -127,9 +125,9 @@
             </div>
     </form>
 </div>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script>
     function previewSelectedImage(input) {
         const file = input.files[0];
@@ -159,12 +157,16 @@
             const inputId = e.target.dataset.targetInput;
             const previewImage = document.getElementById(previewId);
             const fileInput = document.getElementById(inputId);
+            // Reset to default image
             const defaultImage = previewImage.dataset.default || '';
             previewImage.src = defaultImage;
+            // Hide the remove button
             e.target.classList.add('d-none');
+            // Clear the file input
             fileInput.value = '';
         }
     });
-
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('admin.layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /media/anonymous/12a8dd6f-3122-4159-adcf-832ac2c3572d/laravel/cms_api_service/resources/views/admin/members/edit.blade.php ENDPATH**/ ?>

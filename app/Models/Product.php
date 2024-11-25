@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Post extends Model implements HasMedia
+class Product extends Model implements HasMedia
 {
     use SoftDeletes, EntityCreateUpdateDeletingTraits, InteractsWithMedia;
 
-    public $table = 'posts';
+    public $table = 'products';
     protected $guarded = ['id'];
     public $timestamps = false;
 
@@ -28,12 +28,7 @@ class Post extends Model implements HasMedia
 
     public function categories()
     {
-        return $this->belongsToMany(Category::class, 'post_category');
-    }
-
-    public function tags()
-    {
-        return $this->belongsToMany(Tag::class, 'post_tag');
+        return $this->belongsToMany(Category::class, 'product_category');
     }
 
     public function author()

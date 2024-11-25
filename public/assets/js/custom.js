@@ -150,13 +150,6 @@ $(document).ready(function () {
         document.querySelector('.select2-container--open .select2-search__field').focus();
     });
 
-    function updateClock() {
-        const now = new Date();
-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        const date = now.toLocaleDateString(undefined, options); // Format date
-        const time = now.toLocaleTimeString(); // Format time
-        $('#liveClock').textContent = `${date} | ${time}`;
-    }
 
     // Initialize the clock
     updateClock();
@@ -297,3 +290,11 @@ function showToast(toastData) {
     toastPlacement.show();
 }
 
+
+function updateClock() {
+    const now = new Date();
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const date = now.toLocaleDateString(undefined, options); // Format date
+    const time = now.toLocaleTimeString(); // Format time
+    $('#liveClock').text(`${date} | ${time}`);
+}

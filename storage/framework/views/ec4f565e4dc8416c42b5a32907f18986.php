@@ -103,6 +103,13 @@
         </ul>
       </li>
       
+      <li class="menu-item <?php echo e(request()->routeIs('admin.products.*') ? 'active' : ''); ?>">
+        <a href="<?php echo e(route('admin.products.index')); ?>" class="menu-link">
+          <i class="menu-icon tf-icons bx bxl-product-hunt"></i>
+          <div class="text-truncate" data-i18n="Tables">Products</div>
+        </a>
+      </li>
+      
       <li class="menu-item <?php echo e(request()->routeIs('admin.galleries.*') ? 'active' : ''); ?>">
         <a href="<?php echo e(route('admin.galleries.index')); ?>" class="menu-link">
           <i class="menu-icon tf-icons bx bx-camera"></i>
