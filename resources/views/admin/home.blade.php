@@ -9,12 +9,11 @@
             <div class="d-flex align-items-start row">
                 <div class="col-sm-7">
                 <div class="card-body">
-                    <h5 class="card-title text-primary mb-3">Congratulations John! 🎉</h5>
-                    <p class="mb-6">
+                    <h5 class="card-title text-primary mb-3">Welcome back {{auth()->user()->name}}! 🎉</h5>
+                    {{-- <p class="mb-6">
                     You have done 72% more sales today.<br />Check your new badge in your profile.
-                    </p>
-
-                    <a href="javascript:;" class="btn btn-sm btn-outline-primary">View Badges</a>
+                    </p> --}}
+                    <a href="{{route('profile.show')}}" class="btn btn-sm btn-outline-primary">View Profile</a>
                 </div>
                 </div>
                 <div class="col-sm-5 text-center text-sm-left">
@@ -29,17 +28,19 @@
             </div>
             </div>
         </div>
-        <div class="col-lg-4 col-md-4 order-1">
+        <div class="col-lg-12 col-md-12 order-1">
             <div class="row">
-            <div class="col-lg-6 col-md-12 col-6 mb-6">
+            @if($pageCount > 0)
+            <div class="col-lg-3 col-md-3 col-3 mb-6">
                 <div class="card h-100">
                 <div class="card-body">
                     <div class="card-title d-flex align-items-start justify-content-between mb-4">
                     <div class="avatar flex-shrink-0">
-                        <img
+                        {{-- <img
                         src="{{asset('/')}}assets/img/icons/unicons/chart-success.png"
                         alt="chart success"
-                        class="rounded" />
+                        class="rounded" /> --}}
+                        <i class="bx bx-book-content rounded bg-success" style="font-size: 30px"></i>
                     </div>
                     <div class="dropdown">
                         <button
@@ -52,17 +53,158 @@
                         <i class="bx bx-dots-vertical-rounded text-muted"></i>
                         </button>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
-                        <a class="dropdown-item" href="javascript:void(0);">View More</a>
-                        <a class="dropdown-item" href="javascript:void(0);">Delete</a>
+                        <a class="dropdown-item" href="{{route('admin.pages.index')}}">View More</a>
+                        {{-- <a class="dropdown-item" href="javascript:void(0);">Delete</a> --}}
                         </div>
                     </div>
                     </div>
-                    <p class="mb-1">Profit</p>
-                    <h4 class="card-title mb-3">$12,628</h4>
-                    <small class="text-success fw-medium"><i class="bx bx-up-arrow-alt"></i> +72.80%</small>
+                    <p class="mb-1">Pages</p>
+                    <h4 class="card-title mb-3">{{$pageCount}}</h4>
+                    {{-- <small class="text-success fw-medium"><i class="bx bx-up-arrow-alt"></i> +72.80%</small> --}}
                 </div>
                 </div>
             </div>
+            @endif
+            @if($sliderCount > 0)
+            <div class="col-lg-3 col-md-3 col-3 mb-6">
+                <div class="card h-100">
+                <div class="card-body">
+                    <div class="card-title d-flex align-items-start justify-content-between mb-4">
+                    <div class="avatar flex-shrink-0">
+                        {{-- <img
+                        src="{{asset('/')}}assets/img/icons/unicons/chart-success.png"
+                        alt="chart success"
+                        class="rounded" /> --}}
+                        <i class="bx bx-book-content rounded bg-info" style="font-size: 30px"></i>
+                    </div>
+                    <div class="dropdown">
+                        <button
+                        class="btn p-0"
+                        type="button"
+                        id="cardOpt3"
+                        data-bs-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                        <i class="bx bx-dots-vertical-rounded text-muted"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
+                        <a class="dropdown-item" href="{{route('admin.sliders.index')}}">View More</a>
+                        {{-- <a class="dropdown-item" href="javascript:void(0);">Delete</a> --}}
+                        </div>
+                    </div>
+                    </div>
+                    <p class="mb-1">Sliders</p>
+                    <h4 class="card-title mb-3">{{$sliderCount}}</h4>
+                    {{-- <small class="text-success fw-medium"><i class="bx bx-up-arrow-alt"></i> +72.80%</small> --}}
+                </div>
+                </div>
+            </div>
+            @endif
+            @if($categoryCount > 0)
+            <div class="col-lg-3 col-md-3 col-3 mb-6">
+                <div class="card h-100">
+                <div class="card-body">
+                    <div class="card-title d-flex align-items-start justify-content-between mb-4">
+                    <div class="avatar flex-shrink-0">
+                        {{-- <img
+                        src="{{asset('/')}}assets/img/icons/unicons/chart-success.png"
+                        alt="chart success"
+                        class="rounded" /> --}}
+                        <i class="bx bx-folder-open rounded bg-danger" style="font-size: 30px"></i>
+                    </div>
+                    <div class="dropdown">
+                        <button
+                        class="btn p-0"
+                        type="button"
+                        id="cardOpt3"
+                        data-bs-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                        <i class="bx bx-dots-vertical-rounded text-muted"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
+                        <a class="dropdown-item" href="{{route('admin.blog.categories.index')}}">View More</a>
+                        {{-- <a class="dropdown-item" href="javascript:void(0);">Delete</a> --}}
+                        </div>
+                    </div>
+                    </div>
+                    <p class="mb-1">Categories</p>
+                    <h4 class="card-title mb-3">{{$categoryCount}}</h4>
+                    {{-- <small class="text-success fw-medium"><i class="bx bx-up-arrow-alt"></i> +72.80%</small> --}}
+                </div>
+                </div>
+            </div>
+            @endif
+            @if($tagCount > 0)
+            <div class="col-lg-3 col-md-3 col-3 mb-6">
+                <div class="card h-100">
+                <div class="card-body">
+                    <div class="card-title d-flex align-items-start justify-content-between mb-4">
+                    <div class="avatar flex-shrink-0">
+                        {{-- <img
+                        src="{{asset('/')}}assets/img/icons/unicons/chart-success.png"
+                        alt="chart success"
+                        class="rounded" /> --}}
+                        <i class="tf-icons bx bx-purchase-tag-alt me-2 rounded bg-warning" style="font-size: 30px"></i>
+                    </div>
+                    <div class="dropdown">
+                        <button
+                        class="btn p-0"
+                        type="button"
+                        id="cardOpt3"
+                        data-bs-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                        <i class="bx bx-dots-vertical-rounded text-muted"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
+                        <a class="dropdown-item" href="{{route('admin.blog.tags.index')}}">View More</a>
+                        {{-- <a class="dropdown-item" href="javascript:void(0);">Delete</a> --}}
+                        </div>
+                    </div>
+                    </div>
+                    <p class="mb-1">Tags</p>
+                    <h4 class="card-title mb-3">{{$tagCount}}</h4>
+                    {{-- <small class="text-success fw-medium"><i class="bx bx-up-arrow-alt"></i> +72.80%</small> --}}
+                </div>
+                </div>
+            </div>
+            @endif
+            @if($postCount > 0)
+            <div class="col-lg-3 col-md-3 col-3 mb-6">
+                <div class="card h-100">
+                <div class="card-body">
+                    <div class="card-title d-flex align-items-start justify-content-between mb-4">
+                    <div class="avatar flex-shrink-0">
+                        {{-- <img
+                        src="{{asset('/')}}assets/img/icons/unicons/chart-success.png"
+                        alt="chart success"
+                        class="rounded" /> --}}
+                        <i class="tf-icons bx bx-file me-2 rounded bg-warning" style="font-size: 30px"></i>
+                    </div>
+                    <div class="dropdown">
+                        <button
+                        class="btn p-0"
+                        type="button"
+                        id="cardOpt3"
+                        data-bs-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                        <i class="bx bx-dots-vertical-rounded text-muted"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
+                        <a class="dropdown-item" href="{{route('admin.blog.posts.index')}}">View More</a>
+                        {{-- <a class="dropdown-item" href="javascript:void(0);">Delete</a> --}}
+                        </div>
+                    </div>
+                    </div>
+                    <p class="mb-1">Posts</p>
+                    <h4 class="card-title mb-3">{{$postCount}}</h4>
+                    {{-- <small class="text-success fw-medium"><i class="bx bx-up-arrow-alt"></i> +72.80%</small> --}}
+                </div>
+                </div>
+            </div>
+            @endif
             <div class="col-lg-6 col-md-12 col-6 mb-6">
                 <div class="card h-100">
                 <div class="card-body">
@@ -98,7 +240,7 @@
             </div>
         </div>
         <!-- Total Revenue -->
-        <div class="col-12 col-xxl-8 order-2 order-md-3 order-xxl-2 mb-6">
+        {{-- <div class="col-12 col-xxl-8 order-2 order-md-3 order-xxl-2 mb-6">
             <div class="card">
             <div class="row row-bordered g-0">
                 <div class="col-lg-8">
@@ -552,7 +694,7 @@
                 </ul>
             </div>
             </div>
-        </div>
+        </div> --}}
         <!--/ Transactions -->
         </div>
     </div>

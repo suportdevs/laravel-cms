@@ -76,14 +76,12 @@
                     </li>
                     <li>
                         <form method="POST" action="<?php echo e(route('logout')); ?>" x-data>
-                        <a class="dropdown-item" href="<?php echo e(route('logout')); ?>"
-                        @click.prevent="$root.submit();">
-                                <?php echo csrf_field(); ?>
-                            <i class="bx bx-power-off bx-md me-3"></i>
-                            <span><?php echo e(__('Log Out')); ?></span>
-                            </a>
+                            <?php echo csrf_field(); ?>
+                            
+                            <button class="dropdown-item"> <i class="bx bx-power-off bx-md me-3"></i> <?php echo e(__('Log Out')); ?></button>
                         </form>
                     </li>
+
                   </ul>
                 </li>
                 <!--/ User -->

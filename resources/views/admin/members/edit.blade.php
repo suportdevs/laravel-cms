@@ -3,16 +3,19 @@
 @push('content')
 
 <div class="container-xxl flex-grow-1 container-p-y">
-    <nav aria-label="breadcrumb">
+    <nav aria-label="breadcrumb" class="d-flex align-items-center justify-content-between mb-5">
         <ol class="breadcrumb breadcrumb-style1">
-        <li class="breadcrumb-item">
-            <a href="{{route('admin.dashboard')}}">Dashboard</a>
-        </li>
-        <li class="breadcrumb-item">
-            <a href="{{route('admin.members.index')}}">Members</a>
-        </li>
-        <li class="breadcrumb-item active">Edit ** {{$data->name}} **</li>
+            <li class="breadcrumb-item">
+                <a href="{{route('admin.dashboard')}}">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{{route('admin.members.index')}}">Members</a>
+            </li>
+            <li class="breadcrumb-item active">Edit ** {{$data->name}} **</li>
         </ol>
+        <div class="breadcrumb-item">
+            <span id="liveClock" class="text-muted" style="font-size: 0.9rem;"></span>
+        </div>
     </nav>
     <form action="{{route('admin.members.update', $data->_key)}}" method="POST" enctype="multipart/form-data">
         @csrf

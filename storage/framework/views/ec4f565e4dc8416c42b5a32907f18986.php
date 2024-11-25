@@ -63,13 +63,13 @@
 
     <ul class="menu-inner py-1">
       
-      <li class="menu-item <?php echo e(request()->routeIs('admin.blog.pages.*') ? 'active' : ''); ?>">
+      <li class="menu-item <?php echo e(request()->routeIs('admin.pages.*') ? 'active' : ''); ?>">
         <a href="<?php echo e(route('admin.pages.index')); ?>" class="menu-link">
           <i class="menu-icon tf-icons bx bx-book-content"></i>
           <div class="text-truncate" data-i18n="Tables">Pages</div>
         </a>
       </li>
-      <li class="menu-item <?php echo e(request()->routeIs('admin.blog.sliders.*') ? 'active' : ''); ?>">
+      <li class="menu-item <?php echo e(request()->routeIs('admin.sliders.*') ? 'active' : ''); ?>">
         <a href="<?php echo e(route('admin.sliders.index')); ?>" class="menu-link">
           <i class="menu-icon tf-icons bx bx-book-content"></i>
           <div class="text-truncate" data-i18n="Tables">Sliders</div>
@@ -103,21 +103,21 @@
         </ul>
       </li>
       
-      <li class="menu-item <?php echo e(request()->routeIs('admin.blog.galleries.*') ? 'active' : ''); ?>">
+      <li class="menu-item <?php echo e(request()->routeIs('admin.galleries.*') ? 'active' : ''); ?>">
         <a href="<?php echo e(route('admin.galleries.index')); ?>" class="menu-link">
           <i class="menu-icon tf-icons bx bx-camera"></i>
           <div class="text-truncate" data-i18n="Tables">Galleries</div>
         </a>
       </li>
       
-      <li class="menu-item <?php echo e(request()->routeIs('admin.blog.members.*') ? 'active' : ''); ?>">
+      <li class="menu-item <?php echo e(request()->routeIs('admin.members.*') ? 'active' : ''); ?>">
         <a href="<?php echo e(route('admin.members.index')); ?>" class="menu-link">
           <i class="menu-icon tf-icons bx bx-group"></i>
           <div class="text-truncate" data-i18n="Tables">Members</div>
         </a>
       </li>
       <!-- Blogs -->
-      <li class="menu-item <?php echo e(request()->routeIs('admin.blog.*') ? 'active open' : ''); ?>">
+      <li class="menu-item <?php echo e(request()->routeIs('admin.theme.*') ? 'active open' : ''); ?>">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
           <i class="menu-icon tf-icons bx bx-brush"></i>
           <div class="text-truncate" data-i18n="Blogs">Appearance</div>
@@ -150,19 +150,15 @@
         </ul>
       </li>
       <!-- Layouts -->
-      <li class="menu-item">
-        <a href="javascript:void(0);" class="menu-link menu-toggle">
-          <i class="menu-icon tf-icons bx bx-layout"></i>
-          <div class="text-truncate" data-i18n="Layouts">Layouts</div>
-        </a>
-      </li>
+      
+<li class="menu-item">
+    <form method="POST" action="<?php echo e(route('logout')); ?>" x-data>
+        <?php echo csrf_field(); ?>
+        
+        <button class="menu-link bg-white" style="border:none; outline: none; "> <i class="bx bx-power-off bx-md me-3"></i> <?php echo e(__('Log Out')); ?></button>
+    </form>
+</li>
 
-      <li class="menu-item">
-        <a href="icons-boxicons.html" class="menu-link">
-          <i class="menu-icon tf-icons bx bx-crown"></i>
-          <div class="text-truncate" data-i18n="Boxicons">Boxicons</div>
-        </a>
-      </li>
     </ul>
   </aside>
 <?php /**PATH /media/anonymous/12a8dd6f-3122-4159-adcf-832ac2c3572d/laravel/cms_api_service/resources/views/admin/layouts/sidebar.blade.php ENDPATH**/ ?>

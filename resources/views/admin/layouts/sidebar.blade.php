@@ -63,13 +63,13 @@
 
     <ul class="menu-inner py-1">
       {{-- Galleries  --}}
-      <li class="menu-item {{ request()->routeIs('admin.blog.pages.*') ? 'active' : '' }}">
+      <li class="menu-item {{ request()->routeIs('admin.pages.*') ? 'active' : '' }}">
         <a href="{{route('admin.pages.index')}}" class="menu-link">
           <i class="menu-icon tf-icons bx bx-book-content"></i>
           <div class="text-truncate" data-i18n="Tables">Pages</div>
         </a>
       </li>
-      <li class="menu-item {{ request()->routeIs('admin.blog.sliders.*') ? 'active' : '' }}">
+      <li class="menu-item {{ request()->routeIs('admin.sliders.*') ? 'active' : '' }}">
         <a href="{{route('admin.sliders.index')}}" class="menu-link">
           <i class="menu-icon tf-icons bx bx-book-content"></i>
           <div class="text-truncate" data-i18n="Tables">Sliders</div>
@@ -103,21 +103,21 @@
         </ul>
       </li>
       {{-- Galleries  --}}
-      <li class="menu-item {{ request()->routeIs('admin.blog.galleries.*') ? 'active' : '' }}">
+      <li class="menu-item {{ request()->routeIs('admin.galleries.*') ? 'active' : '' }}">
         <a href="{{route('admin.galleries.index')}}" class="menu-link">
           <i class="menu-icon tf-icons bx bx-camera"></i>
           <div class="text-truncate" data-i18n="Tables">Galleries</div>
         </a>
       </li>
       {{-- Members  --}}
-      <li class="menu-item {{ request()->routeIs('admin.blog.members.*') ? 'active' : '' }}">
+      <li class="menu-item {{ request()->routeIs('admin.members.*') ? 'active' : '' }}">
         <a href="{{route('admin.members.index')}}" class="menu-link">
           <i class="menu-icon tf-icons bx bx-group"></i>
           <div class="text-truncate" data-i18n="Tables">Members</div>
         </a>
       </li>
       <!-- Blogs -->
-      <li class="menu-item {{ request()->routeIs('admin.blog.*') ? 'active open' : '' }}">
+      <li class="menu-item {{ request()->routeIs('admin.theme.*') ? 'active open' : '' }}">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
           <i class="menu-icon tf-icons bx bx-brush"></i>
           <div class="text-truncate" data-i18n="Blogs">Appearance</div>
@@ -150,18 +150,23 @@
         </ul>
       </li>
       <!-- Layouts -->
-      <li class="menu-item">
+      {{-- <li class="menu-item">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
           <i class="menu-icon tf-icons bx bx-layout"></i>
           <div class="text-truncate" data-i18n="Layouts">Layouts</div>
         </a>
       </li>
+--}}
+<li class="menu-item">
+    <form method="POST" action="{{ route('logout') }}" x-data>
+        @csrf
+        {{-- <a href="#" class="menu-link" @click.prevent="$root.submit();">
+            <i class="menu-icon tf-icons bx bx-power-off"></i>
+            <div class="text-truncate" data-i18n="Boxicons">Logout</div>
+        </a> --}}
+        <button class="menu-link bg-white" style="border:none; outline: none; "> <i class="bx bx-power-off bx-md me-3"></i> {{ __('Log Out') }}</button>
+    </form>
+</li>
 
-      <li class="menu-item">
-        <a href="icons-boxicons.html" class="menu-link">
-          <i class="menu-icon tf-icons bx bx-crown"></i>
-          <div class="text-truncate" data-i18n="Boxicons">Boxicons</div>
-        </a>
-      </li>
     </ul>
   </aside>

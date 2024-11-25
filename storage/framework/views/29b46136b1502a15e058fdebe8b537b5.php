@@ -20,18 +20,18 @@
 
      <?php $__env->slot('content', null, []); ?> 
         <h3 class="text-lg font-medium text-gray-900">
-            <?php if($this->enabled): ?>
-                <?php if($showingConfirmation): ?>
+            <!--[if BLOCK]><![endif]--><?php if($this->enabled): ?>
+                <!--[if BLOCK]><![endif]--><?php if($showingConfirmation): ?>
                     <?php echo e(__('Finish enabling two factor authentication.')); ?>
 
                 <?php else: ?>
                     <?php echo e(__('You have enabled two factor authentication.')); ?>
 
-                <?php endif; ?>
+                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
             <?php else: ?>
                 <?php echo e(__('You have not enabled two factor authentication.')); ?>
 
-            <?php endif; ?>
+            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
         </h3>
 
         <div class="mt-3 max-w-xl text-sm text-gray-600">
@@ -41,17 +41,17 @@
             </p>
         </div>
 
-        <?php if($this->enabled): ?>
-            <?php if($showingQrCode): ?>
+        <!--[if BLOCK]><![endif]--><?php if($this->enabled): ?>
+            <!--[if BLOCK]><![endif]--><?php if($showingQrCode): ?>
                 <div class="mt-4 max-w-xl text-sm text-gray-600">
                     <p class="font-semibold">
-                        <?php if($showingConfirmation): ?>
+                        <!--[if BLOCK]><![endif]--><?php if($showingConfirmation): ?>
                             <?php echo e(__('To finish enabling two factor authentication, scan the following QR code using your phone\'s authenticator application or enter the setup key and provide the generated OTP code.')); ?>
 
                         <?php else: ?>
                             <?php echo e(__('Two factor authentication is now enabled. Scan the following QR code using your phone\'s authenticator application or enter the setup key.')); ?>
 
-                        <?php endif; ?>
+                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                     </p>
                 </div>
 
@@ -67,7 +67,7 @@
                     </p>
                 </div>
 
-                <?php if($showingConfirmation): ?>
+                <!--[if BLOCK]><![endif]--><?php if($showingConfirmation): ?>
                     <div class="mt-4">
                         <?php if (isset($component)) { $__componentOriginald8ba2b4c22a13c55321e34443c386276 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginald8ba2b4c22a13c55321e34443c386276 = $attributes; } ?>
@@ -132,10 +132,10 @@
 <?php unset($__componentOriginalf94ed9c5393ef72725d159fe01139746); ?>
 <?php endif; ?>
                     </div>
-                <?php endif; ?>
-            <?php endif; ?>
+                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-            <?php if($showingRecoveryCodes): ?>
+            <!--[if BLOCK]><![endif]--><?php if($showingRecoveryCodes): ?>
                 <div class="mt-4 max-w-xl text-sm text-gray-600">
                     <p class="font-semibold">
                         <?php echo e(__('Store these recovery codes in a secure password manager. They can be used to recover access to your account if your two factor authentication device is lost.')); ?>
@@ -144,15 +144,15 @@
                 </div>
 
                 <div class="grid gap-1 max-w-xl mt-4 px-4 py-4 font-mono text-sm bg-gray-100 rounded-lg">
-                    <?php $__currentLoopData = json_decode(decrypt($this->user->two_factor_recovery_codes), true); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $code): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = json_decode(decrypt($this->user->two_factor_recovery_codes), true); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $code): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div><?php echo e($code); ?></div>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                 </div>
-            <?php endif; ?>
-        <?php endif; ?>
+            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
         <div class="mt-5">
-            <?php if(! $this->enabled): ?>
+            <!--[if BLOCK]><![endif]--><?php if(! $this->enabled): ?>
                 <?php if (isset($component)) { $__componentOriginalbec74c427ea01267d1faf57b533fd04e = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalbec74c427ea01267d1faf57b533fd04e = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.confirms-password','data' => ['wire:then' => 'enableTwoFactorAuthentication']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -196,7 +196,7 @@
 <?php unset($__componentOriginalbec74c427ea01267d1faf57b533fd04e); ?>
 <?php endif; ?>
             <?php else: ?>
-                <?php if($showingRecoveryCodes): ?>
+                <!--[if BLOCK]><![endif]--><?php if($showingRecoveryCodes): ?>
                     <?php if (isset($component)) { $__componentOriginalbec74c427ea01267d1faf57b533fd04e = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalbec74c427ea01267d1faf57b533fd04e = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.confirms-password','data' => ['wire:then' => 'regenerateRecoveryCodes']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -325,9 +325,9 @@
 <?php $component = $__componentOriginalbec74c427ea01267d1faf57b533fd04e; ?>
 <?php unset($__componentOriginalbec74c427ea01267d1faf57b533fd04e); ?>
 <?php endif; ?>
-                <?php endif; ?>
+                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-                <?php if($showingConfirmation): ?>
+                <!--[if BLOCK]><![endif]--><?php if($showingConfirmation): ?>
                     <?php if (isset($component)) { $__componentOriginalbec74c427ea01267d1faf57b533fd04e = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalbec74c427ea01267d1faf57b533fd04e = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.confirms-password','data' => ['wire:then' => 'disableTwoFactorAuthentication']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -413,9 +413,9 @@
 <?php $component = $__componentOriginalbec74c427ea01267d1faf57b533fd04e; ?>
 <?php unset($__componentOriginalbec74c427ea01267d1faf57b533fd04e); ?>
 <?php endif; ?>
-                <?php endif; ?>
+                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-            <?php endif; ?>
+            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
         </div>
      <?php $__env->endSlot(); ?>
  <?php echo $__env->renderComponent(); ?>

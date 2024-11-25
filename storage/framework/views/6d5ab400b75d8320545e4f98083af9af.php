@@ -20,7 +20,7 @@
 
      <?php $__env->slot('form', null, []); ?> 
         <!-- Profile Photo -->
-        <?php if(Laravel\Jetstream\Jetstream::managesProfilePhotos()): ?>
+        <!--[if BLOCK]><![endif]--><?php if(Laravel\Jetstream\Jetstream::managesProfilePhotos()): ?>
             <div x-data="{photoName: null, photoPreview: null}" class="col-span-6 sm:col-span-4">
                 <!-- Profile Photo File Input -->
                 <input type="file" id="photo" class="hidden"
@@ -91,7 +91,7 @@
 <?php unset($__componentOriginal3b0e04e43cf890250cc4d85cff4d94af); ?>
 <?php endif; ?>
 
-                <?php if($this->user->profile_photo_path): ?>
+                <!--[if BLOCK]><![endif]--><?php if($this->user->profile_photo_path): ?>
                     <?php if (isset($component)) { $__componentOriginal3b0e04e43cf890250cc4d85cff4d94af = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal3b0e04e43cf890250cc4d85cff4d94af = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.secondary-button','data' => ['type' => 'button','class' => 'mt-2','wire:click' => 'deleteProfilePhoto']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -114,7 +114,7 @@
 <?php $component = $__componentOriginal3b0e04e43cf890250cc4d85cff4d94af; ?>
 <?php unset($__componentOriginal3b0e04e43cf890250cc4d85cff4d94af); ?>
 <?php endif; ?>
-                <?php endif; ?>
+                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
                 <?php if (isset($component)) { $__componentOriginalf94ed9c5393ef72725d159fe01139746 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalf94ed9c5393ef72725d159fe01139746 = $attributes; } ?>
@@ -137,7 +137,7 @@
 <?php unset($__componentOriginalf94ed9c5393ef72725d159fe01139746); ?>
 <?php endif; ?>
             </div>
-        <?php endif; ?>
+        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
         <!-- Name -->
         <div class="col-span-6 sm:col-span-4">
@@ -266,7 +266,7 @@
 <?php unset($__componentOriginalf94ed9c5393ef72725d159fe01139746); ?>
 <?php endif; ?>
 
-            <?php if(Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::emailVerification()) && ! $this->user->hasVerifiedEmail()): ?>
+            <!--[if BLOCK]><![endif]--><?php if(Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::emailVerification()) && ! $this->user->hasVerifiedEmail()): ?>
                 <p class="text-sm mt-2">
                     <?php echo e(__('Your email address is unverified.')); ?>
 
@@ -277,13 +277,13 @@
                     </button>
                 </p>
 
-                <?php if($this->verificationLinkSent): ?>
+                <!--[if BLOCK]><![endif]--><?php if($this->verificationLinkSent): ?>
                     <p class="mt-2 font-medium text-sm text-green-600">
                         <?php echo e(__('A new verification link has been sent to your email address.')); ?>
 
                     </p>
-                <?php endif; ?>
-            <?php endif; ?>
+                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
         </div>
      <?php $__env->endSlot(); ?>
 

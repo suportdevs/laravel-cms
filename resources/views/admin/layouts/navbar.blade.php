@@ -84,14 +84,15 @@
                     </li>
                     <li>
                         <form method="POST" action="{{ route('logout') }}" x-data>
-                        <a class="dropdown-item" href="{{ route('logout') }}"
-                        @click.prevent="$root.submit();">
-                                @csrf
-                            <i class="bx bx-power-off bx-md me-3"></i>
-                            <span>{{ __('Log Out') }}</span>
-                            </a>
+                            @csrf
+                            {{-- <a href="#" class="dropdown-item" @click.prevent="document.querySelector('form').submit();">
+                                <i class="bx bx-power-off bx-md me-3"></i>
+                                <span>{{ __('Log Out') }}</span>
+                            </a> --}}
+                            <button class="dropdown-item"> <i class="bx bx-power-off bx-md me-3"></i> {{ __('Log Out') }}</button>
                         </form>
                     </li>
+
                   </ul>
                 </li>
                 <!--/ User -->

@@ -61,12 +61,12 @@ unset($__defined_vars); ?>
                 </div>
             </div>
 
-            <?php if(isset($actions)): ?>
+            <!--[if BLOCK]><![endif]--><?php if(isset($actions)): ?>
                 <div class="flex items-center justify-end px-4 py-3 bg-gray-50 text-end sm:px-6 shadow sm:rounded-bl-md sm:rounded-br-md">
                     <?php echo e($actions); ?>
 
                 </div>
-            <?php endif; ?>
+            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
         </form>
     </div>
 </div>
