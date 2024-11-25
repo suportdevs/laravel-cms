@@ -3,6 +3,7 @@
 use App\Helpers\ShortcodeParser;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\ImageUploadController;
 use App\Http\Controllers\MemberController;
@@ -15,9 +16,8 @@ use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\ThemeSettingController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/category/{permalink}', [HomeController::class, 'index'])->name('category.index');
 
 Route::middleware([
     'auth:sanctum',

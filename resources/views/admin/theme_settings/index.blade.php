@@ -207,12 +207,12 @@
                             <div class="tab-pane fade" id="list-logo" role="tabpanel" aria-labelledby="list-logo-list">
                                 <form id="logoForm" enctype="multipart/form-data" method="POST">
                                     <div class="mb-5">
-                                        <label for="faviconFormFile" class="mb-3" class="form-label">Favicon</label>
+                                        <label for="faviconFormFile" class="mb-3" class="form-label"><b>Favicon</b></label>
                                         <br />
                                         <div class="image-preview-wrapper">
                                             <img id="faviconLogoPreview" class="preview-image"
                                                 data-default="https://cms.botble.com/vendor/core/core/base/images/placeholder.png"
-                                                src="https://cms.botble.com/vendor/core/core/base/images/placeholder.png"
+                                                src="{{$data->getFirstMediaUrl('favicon') ?? 'https://cms.botble.com/vendor/core/core/base/images/placeholder.png'}}"
                                                 alt="Preview image" style="width: 150px" />
                                             <button type="button"
                                                 class="btn rounded-pill btn-icon btn-outline-secondary p-2 mt-2 d-none"
@@ -237,14 +237,16 @@
                                             onclick="document.getElementById('faviconFormFile').click()" type="button">
                                             Choose Image
                                         </b>
+                                        <br>
+                                        <small>The image must be 60*60px max width and accepted image file is .jpg.jpeg.png</small>
                                     </div>
                                     <div class="mb-5">
-                                        <label for="logoFormFile" class="mb-3" class="form-label">Logo</label>
+                                        <label for="logoFormFile" class="mb-3" class="form-label"><b>Logo</b></label>
                                         <br />
                                         <div class="image-preview-wrapper">
                                             <img id="logoPreview" class="preview-image"
                                                 data-default="https://cms.botble.com/vendor/core/core/base/images/placeholder.png"
-                                                src="https://cms.botble.com/vendor/core/core/base/images/placeholder.png"
+                                                src="{{$data->getFirstMediaUrl('logo') ?? 'https://cms.botble.com/vendor/core/core/base/images/placeholder.png'}}"
                                                 alt="Preview image" style="width: 150px" />
                                             <button type="button"
                                                 class="btn rounded-pill btn-icon btn-outline-secondary p-2 mt-2 d-none"
@@ -269,6 +271,8 @@
                                             type="button">
                                             Choose Image
                                         </b>
+                                        <br>
+                                        <small>The image must be 120px max width and accepted image file is .jpg.jpeg.png</small>
                                     </div>
                                 </form>
                             </div>

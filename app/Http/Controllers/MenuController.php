@@ -158,7 +158,7 @@ class MenuController extends Controller
         $preparedDataset = $this->prepareMenuDataset($dataset, $nextId);
         $data->dataset = json_encode($preparedDataset);
         $data->status = $request->status;
-        $data->locations = $request->locations ? json_encode($request->locations) : NULL;
+        $data->locations = $request->locations ? $request->locations : NULL;
 
         if (!$data->save()) {
             throw new \Exception("Something went wrong while saving the menu dataset!");

@@ -150,6 +150,14 @@ $(document).ready(function () {
         document.querySelector('.select2-container--open .select2-search__field').focus();
     });
 
+    function updateClock() {
+        const now = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const date = now.toLocaleDateString(undefined, options); // Format date
+        const time = now.toLocaleTimeString(); // Format time
+        $('#liveClock').textContent = `${date} | ${time}`;
+    }
+
     // Initialize the clock
     updateClock();
     setInterval(updateClock, 1000);
@@ -287,14 +295,5 @@ function showToast(toastData) {
     // Show the toast
     const toastPlacement = new bootstrap.Toast(toastPlacementExample);
     toastPlacement.show();
-}
-
-
-function updateClock() {
-    const now = new Date();
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    const date = now.toLocaleDateString(undefined, options); // Format date
-    const time = now.toLocaleTimeString(); // Format time
-    document.getElementById('liveClock').textContent = `${date} | ${time}`;
 }
 

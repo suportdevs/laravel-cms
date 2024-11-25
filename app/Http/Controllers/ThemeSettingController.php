@@ -52,10 +52,10 @@ class ThemeSettingController extends Controller
                     ->toMediaCollection('seo_image');
             }
 
-            if ($request->hasFile('facicon')) {
-                $data->clearMediaCollection('facicon');
-                $data->addMedia($request->file('facicon'))
-                    ->toMediaCollection('facicon');
+            if ($request->hasFile('favicon')) {
+                $data->clearMediaCollection('favicon');
+                $data->addMedia($request->file('favicon'))
+                    ->toMediaCollection('favicon');
             }
             if ($request->hasFile('logo')) {
                 $data->clearMediaCollection('logo');

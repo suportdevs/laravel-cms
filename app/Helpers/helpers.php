@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Menu;
 use Illuminate\Support\Str;
 
 if (!function_exists('uniqueKey')) {
@@ -1689,4 +1690,21 @@ if(!function_exists('get_box_icons')){
             'bx bxs-zoom-out',
         ];
     }
+}
+
+
+// Function to build nested menu
+function buildNestedMenu(array $items, $parentId = null)
+{
+    $nested = [];
+    foreach ($items as $item) {
+        if ($item['parent_id'] == $parentId) {
+            $children = buildNestedMenu($items, $item['id']);
+            if ($children) {
+                $item['children'] = $children;
+            }
+            $nested[] = $item;
+        }
+    }
+    return $nested;
 }

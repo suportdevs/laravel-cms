@@ -15,7 +15,7 @@
         <tbody class="table-border-bottom-0">
             @forelse ($dataset as $data)
             @php
-            $locations_str = '';
+                $locations_str = '';
                 if(!empty($data->locations) && count($data->locations) > 0){
                     foreach ($data->locations as $location) {
                         $locations_str .= "<span class='badge bg-primary me-1'>$location</span>";

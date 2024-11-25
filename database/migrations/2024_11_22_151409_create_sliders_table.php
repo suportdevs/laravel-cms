@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->string('banner_image')->nullable();
             $table->string('image_icons')->nullable();
-            $table->string('permalink')->unique();
+            $table->string('permalink')->nullable();
             $table->enum('status', ['Published', 'Draft', 'Pending'])->default('Published');
             $table->string('seo_title')->nullable();
             $table->string('seo_description')->nullable();

@@ -186,38 +186,70 @@
                 </div>
             </div>
             <?php endif; ?>
-            <div class="col-lg-6 col-md-12 col-6 mb-6">
+            <?php if($gallaryCount > 0): ?>
+            <div class="col-lg-3 col-md-3 col-3 mb-6">
                 <div class="card h-100">
                 <div class="card-body">
                     <div class="card-title d-flex align-items-start justify-content-between mb-4">
                     <div class="avatar flex-shrink-0">
-                        <img
-                        src="<?php echo e(asset('/')); ?>assets/img/icons/unicons/wallet-info.png"
-                        alt="wallet info"
-                        class="rounded" />
+                        
+                        <i class="tf-icons bx bx-file me-2 rounded bg-warning" style="font-size: 30px"></i>
                     </div>
                     <div class="dropdown">
                         <button
                         class="btn p-0"
                         type="button"
-                        id="cardOpt6"
+                        id="cardOpt3"
                         data-bs-toggle="dropdown"
                         aria-haspopup="true"
                         aria-expanded="false">
                         <i class="bx bx-dots-vertical-rounded text-muted"></i>
                         </button>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt6">
-                        <a class="dropdown-item" href="javascript:void(0);">View More</a>
-                        <a class="dropdown-item" href="javascript:void(0);">Delete</a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
+                        <a class="dropdown-item" href="<?php echo e(route('admin.galleries.index')); ?>">View More</a>
+                        
                         </div>
                     </div>
                     </div>
-                    <p class="mb-1">Sales</p>
-                    <h4 class="card-title mb-3">$4,679</h4>
-                    <small class="text-success fw-medium"><i class="bx bx-up-arrow-alt"></i> +28.42%</small>
+                    <p class="mb-1">Galleries</p>
+                    <h4 class="card-title mb-3"><?php echo e($gallaryCount); ?></h4>
+                    
                 </div>
                 </div>
             </div>
+            <?php endif; ?>
+            <?php if($memberCount > 0): ?>
+            <div class="col-lg-3 col-md-3 col-3 mb-6">
+                <div class="card h-100">
+                <div class="card-body">
+                    <div class="card-title d-flex align-items-start justify-content-between mb-4">
+                    <div class="avatar flex-shrink-0">
+                        
+                        <i class="tf-icons bx bx-file me-2 rounded bg-warning" style="font-size: 30px"></i>
+                    </div>
+                    <div class="dropdown">
+                        <button
+                        class="btn p-0"
+                        type="button"
+                        id="cardOpt3"
+                        data-bs-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                        <i class="bx bx-dots-vertical-rounded text-muted"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
+                        <a class="dropdown-item" href="<?php echo e(route('admin.members.index')); ?>">View More</a>
+                        
+                        </div>
+                    </div>
+                    </div>
+                    <p class="mb-1">Members</p>
+                    <h4 class="card-title mb-3"><?php echo e($memberCount); ?></h4>
+                    
+                </div>
+                </div>
+            </div>
+            <?php endif; ?>
             </div>
         </div>
         <!-- Total Revenue -->

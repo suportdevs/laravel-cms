@@ -201,11 +201,11 @@ class SliderController extends Controller
         return $request->validate([
             'name' => 'required|string|max:255|unique:sliders,name,' . $ignoreKey . ',_key',
             'content' => 'required|string',
-            'permalink' => 'required|string|unique:sliders,permalink,' . $ignoreKey . ',_key',
+            'permalink' => 'required|string',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:1024',
             'banner_image' => 'nullable|image|mimes:jpg,jpeg,png|max:1024',
             'image_icons' => 'nullable|array',
-            'image_icons.*' => 'nullable|image|mimes:jpg,jpeg,png|max:1024|dimensions:max_width=80',
+            // 'image_icons.*' => 'nullable|image|mimes:jpg,jpeg,png|max:1024|dimensions:max_width=80',
             'seo_title' => 'nullable|string|max:255',
             'seo_description' => 'nullable|string|max:1000',
             'seo_image' => 'nullable|image|mimes:jpg,jpeg,png|max:1024',

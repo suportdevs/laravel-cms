@@ -208,7 +208,7 @@
                                 <div class="list-group">
                                     @foreach ($tags as $value)
                                         <label class="list-group-item border-none px-0">
-                                        <input class="form-check-input me-3" type="checkbox" name="menu_id" data-title="{{$value->name}}" data-reference-id="{{$value->id}}" data-reference-type="App\Models\Tag" data-menu-id="{{$value->id}}" ddata-link="{{$value->permalink}}" ata-label="Tag" value="{{$value->id}}">
+                                        <input class="form-check-input me-3" type="checkbox" name="menu_id" data-title="{{$value->name}}" data-reference-id="{{$value->id}}" data-reference-type="App\Models\Tag" data-menu-id="{{$value->id}}" ddata-link="{{$value->permalink}}" data-label="Tag" value="{{$value->id}}">
                                         {{$value->name}}
                                         </label>
                                     @endforeach
@@ -353,100 +353,167 @@
 @push('scripts')
 <script src="{{asset('assets/js/jquery.nestable.js')}}"></script>
 <script>
-
     let menuDataset = [];
     let menuLocations = [];
-$(document).ready(function(){
-    $('.custom-menu-node-icon-new').select2({
-        templateResult: formatIcon,
-        templateSelection: formatIcon,
-        escapeMarkup: function (markup) {
-            return markup;
-        },
-        allowClear: true,
-        theme: "bootstrap-5",
-        width: '100%'
-    });
-    $('.form-select').select2({
-        templateResult: formatIcon,
-        templateSelection: formatIcon,
-        escapeMarkup: function (markup) {
-            return markup;
-        },
-        allowClear: true,
-        theme: "bootstrap-5",
-        width: '100%'
-    });
 
-    // Function to format the icon in the dropdown options and selected option
-    function formatIcon(state) {
-        if (!state.id) {
-            return state.text; // Default text when no icon
+    $(document).ready(function() {
+        // Initialize Select2 with icons
+        $('.custom-menu-node-icon-new').select2({
+            templateResult: formatIcon,
+            templateSelection: formatIcon,
+            escapeMarkup: function(markup) {
+                return markup;
+            },
+            allowClear: true,
+            theme: "bootstrap-5",
+            width: '100%'
+        });
+
+        $('.form-select').select2({
+            templateResult: formatIcon,
+            templateSelection: formatIcon,
+            escapeMarkup: function(markup) {
+                return markup;
+            },
+            allowClear: true,
+            theme: "bootstrap-5",
+            width: '100%'
+        });
+
+        // Function to format icons in Select2
+        function formatIcon(state) {
+            if (!state.id) return state.text; // Default text if no icon
+            return `<i class="${state.element.dataset.icon}"></i> ${state.text}`;
         }
-        return `<i class="${state.element.dataset.icon}"></i> ${state.text}`; // Return icon with text
-    }
 
-    var updateOutput = function(e)
-    {
-        var list   = e.length ? e : $(e.target),
-            output = list.data('output');
-        if (window.JSON) {
-            let serializeList = list.nestable('serialize');
-            output.val(window.JSON.stringify(serializeList));
-            updateMenuItemDetails(serializeList);
-        } else {
-            output.val('JSON browser support required for this demo.');
-        }
-    };
+        // Define updateMenuItemDetails first
+        let updateMenuItemDetails = function(data) {
+            menuDataset = [];
+            data.forEach((item) => {
+                let menuItem = {
+                    id: item.id,
+                    title: "",
+                    permalink: "",
+                    icon_font: "",
+                    css_class: "",
+                    target: "",
+                    reference: "",
+                    label: "",
+                    model_id: "",
+                    children: [],
+                };
 
-    // activate Nestable for list 1
-    $('#nestable').nestable({
-        group: 1
-    })
-    .on('change', updateOutput);
+                let currentItem = $(`.dd-item[data-id="${item.id}"]`);
+                menuItem.title = currentItem.find('input[name="title"]').val();
+                menuItem.permalink = currentItem.find('input[name="url"]').val();
+                menuItem.icon_font = currentItem.find('select option:selected').val();
+                menuItem.css_class = currentItem.find('input[name="css_class"]').val();
+                menuItem.target = currentItem.find('select[name="target"] option:selected').val() || '_self';
+                menuItem.reference = currentItem.data('reference');
+                menuItem.label = currentItem.data('label');
+                menuItem.model_id = currentItem.data('model_id');
 
-    $('input').nestable({
-                    group: 1
-                })
-                .on('input', updateOutput);
+                if (item.children && item.children.length > 0) {
+                    menuItem.children = processMenuItemChildren(item.children);
+                }
 
-    // output initial serialised data
-    updateOutput($('#nestable').data('output', $('#nestable-output')));
+                menuDataset.push(menuItem);
+            });
+        };
 
-    $('#nestable-menu').on('click', function(e)
-    {
-        var target = $(e.target),
-            action = target.data('action');
-        if (action === 'expand-all') {
-            $('.dd').nestable('expandAll');
-        }
-        if (action === 'collapse-all') {
-            $('.dd').nestable('collapseAll');
-        }
-    });
+        // Define processMenuItemChildren after updateMenuItemDetails
+        let processMenuItemChildren = function(children) {
+            let childArray = [];
+            children.forEach((child) => {
+                let menuItem = {
+                    id: child.id,
+                    title: "",
+                    permalink: "",
+                    icon_font: "",
+                    css_class: "",
+                    target: "",
+                    reference: "",
+                    label: "",
+                    model_id: "",
+                    children: [],
+                };
 
-    $(document).on('click', '.dd-content-collapse-toggle-btn', function() {
-        let button = $(this);
-        let _id = button.data('id');
-        let content = button.closest('.dd-item').find(`.dd-content[data-content="${_id}"]`);
+                let currentChild = $(`.dd-item[data-id="${child.id}"]`);
+                menuItem.title = currentChild.find('input[name="title"]').val();
+                menuItem.permalink = currentChild.find('input[name="url"]').val();
+                menuItem.icon_font = currentChild.find('select[name="icon_font"] option:selected').val();
+                menuItem.css_class = currentChild.find('input[name="css_class"]').val();
+                menuItem.target = currentChild.find('select[name="target"] option:selected').val() || '_self';
+                menuItem.reference = currentChild.data('reference');
+                menuItem.label = currentChild.data('label');
+                menuItem.model_id = currentChild.data('model_id');
 
-        if (content.is(':visible')) {
-            content.slideUp();
-            button.find('i').removeClass('bx-chevron-up').addClass('bx-chevron-down');
-        } else {
-            button.find('i').removeClass('bx-chevron-down').addClass('bx-chevron-up');
-            content.slideDown();
-        }
-    });
+                if (child.children && child.children.length > 0) {
+                    menuItem.children = processMenuItemChildren(child.children);
+                }
 
-    $(".btn-add-to-menu").on("click", function(event) {
-        let menuesProperties = [];
-        if($(this).data('btn-type') === 'Custom Btn'){
-            if($('#custom-menu-node-title-new').val() == ''){
-                toastr.warning('Please provide a Custom Menu title.');
-                return false;
+                childArray.push(menuItem);
+            });
+            return childArray;
+        };
+
+        // Call updateMenuItemDetails at the appropriate time in your script
+        var updateOutput = function(e) {
+            var list = e.length ? e : $(e.target),
+                output = list.data('output');
+            if (window.JSON) {
+                let serializeList = list.nestable('serialize');
+                output.val(window.JSON.stringify(serializeList));
+                updateMenuItemDetails(serializeList);
+            } else {
+                output.val('JSON browser support required for this demo.');
             }
-            menuesProperties.push({
+        };
+
+        // Activate Nestable with collapsible items
+        $('#nestable').nestable({
+            group: 1,
+            maxDepth: 5 // optional, set max depth for nesting
+        }).on('change', updateOutput);
+
+        // Output initial serialized data
+        updateOutput($('#nestable').data('output', $('#nestable-output')));
+
+        // Expand and collapse functionality
+        $('#nestable-menu').on('click', function(e) {
+            var target = $(e.target);
+            var action = target.data('action');
+            if (action === 'expand-all') {
+                $('.dd').nestable('expandAll');
+            }
+            if (action === 'collapse-all') {
+                $('.dd').nestable('collapseAll');
+            }
+        });
+        $(document).on('click', '.dd-content-collapse-toggle-btn', function() {
+            let button = $(this);
+            let _id = $(this).data('id');
+            console.log(_id)
+            let content = button.closest('.dd-item').find(`.dd-content[data-content="${_id}"]`);
+
+            if (content.is(':visible')) {
+                content.slideUp();
+                button.text('+');
+            } else {
+                content.slideDown();
+                button.text('-');
+            }
+        });
+
+        // Add menu items
+        $(".btn-add-to-menu").on("click", function() {
+            let menuesProperties = [];
+            if ($(this).data('btn-type') === 'Custom Btn') {
+                if ($('#custom-menu-node-title-new').val() == '') {
+                    toastr.warning('Please provide a Custom Menu title.');
+                    return false;
+                }
+                menuesProperties.push({
                     model_id: $(this).data('menu-id'),
                     title: $('#custom-menu-node-title-new').val(),
                     label: 'Custom link',
@@ -455,156 +522,73 @@ $(document).ready(function(){
                     css_class: $('#custom-menu-node-css-class-new').val(),
                     target: $('#custom-menu-node-target-new').val(),
                 });
-        }else{
-            let checkedInputs = $(this).closest('.card-body').find('input[type=checkbox]:checked'); // Find checked checkboxes within the same container
-            checkedInputs.each(function () {
-                menuesProperties.push({
-                    model_id: $(this).data('menu-id'),
-                    reference: $(this).data('reference-type'),
-                    title: $(this).data('title'),
-                    label: $(this).data('label'),
-                    permalink: $(this).data('link'),
+            } else {
+                let checkedInputs = $(this).closest('.card-body').find('input[type=checkbox]:checked');
+                checkedInputs.each(function() {
+                    menuesProperties.push({
+                        model_id: $(this).data('menu-id'),
+                        reference: $(this).data('reference-type'),
+                        title: $(this).data('title'),
+                        label: $(this).data('label'),
+                        permalink: $(this).data('link'),
+                    });
                 });
-            });
-        }
+            }
 
-        if (menuesProperties && menuesProperties.length > 0) {
-            $.ajax({
-                url: "{{ route('admin.menus.ajax.get_node') }}",
-                method: "POST",
-                data: {
-                    menu_id: "{{$data->id}}",
-                    dataset: menuesProperties,
-                    _token: $('meta[name="csrf-token"]').attr('content'),
-                },
-                success: function(response) {
-                    toastr.success('Item added successfull.');
-                    $("#ajax_content").html(response);
-                },
-                eerror: function (xhr, status) {
-                    // Hide the loader
-                    toastr.error('There is some error. Try after some time.');
-                }
-            });
-        }else{
-            toastr.warning("You should must be select any item to add menu");
-        }
-    });
+            if (menuesProperties.length > 0) {
+                $.ajax({
+                    url: "{{ route('admin.menus.ajax.get_node') }}",
+                    method: "POST",
+                    data: {
+                        menu_id: "{{$data->id}}",
+                        dataset: menuesProperties,
+                        _token: $('meta[name="csrf-token"]').attr('content'),
+                    },
+                    success: function(response) {
+                        toastr.success('Item added successfully.');
+                        $("#ajax_content").html(response);
+                    },
+                    error: function(xhr) {
+                        toastr.error('There is some error. Try after some time.');
+                    }
+                });
+            } else {
+                toastr.warning("You should select an item to add to the menu.");
+            }
+        });
 
-    $("#saveBtn").on("click", function() {
-        updateOutput($('#nestable').data('output', $('#nestable-output')));
-        let locationsCheckbox = $('input[name="locations[]"]:checked');
-        menuLocations = [];
-        if (locationsCheckbox && locationsCheckbox.length > 0) {
+        // Save menu structure
+        $("#saveBtn").on("click", function() {
+            updateOutput($('#nestable').data('output', $('#nestable-output')));
+            let locationsCheckbox = $('input[name="locations[]"]:checked');
+            menuLocations = [];
+
             locationsCheckbox.each(function() {
                 menuLocations.push($(this).val());
             });
-        }
 
-        if (menuDataset && menuDataset.length > 1) {
-            $.ajax({
-                url: "{{ route('admin.menus.save_structure') }}",
-                method: "POST",
-                data: {
-                    id: "{{$data->id}}",
-                    menus: menuDataset,
-                    status: $("#status").val(),
-                    locations: menuLocations,
-                },
-                success: function(response) {
-                    toastr.success(response.message);
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                // Capture and display the error message
-                let errorMessage = jqXHR.responseJSON?.message || errorThrown || "An unexpected error occurred.";
-                toastr.error(errorMessage);
-
-                // Optionally log the full error for debugging
-                console.error("AJAX Error:", {
-                    textStatus: textStatus,
-                    errorThrown: errorThrown,
-                    responseJSON: jqXHR.responseJSON
+            if (menuDataset.length > 1) {
+                $.ajax({
+                    url: "{{ route('admin.menus.save_structure') }}",
+                    method: "POST",
+                    data: {
+                        id: "{{$data->id}}",
+                        menus: menuDataset,
+                        status: $("#status").val(),
+                        locations: menuLocations,
+                    },
+                    success: function(response) {
+                        toastr.success(response.message);
+                    },
+                    error: function(jqXHR) {
+                        let errorMessage = jqXHR.responseJSON?.message || "An unexpected error occurred.";
+                        toastr.error(errorMessage);
+                    }
                 });
             }
-            });
-        }
+        });
+
     });
-});
 </script>
-<script>
 
-    let updateMenuItemDetails = function(data) {
-        // Reset the global menuDataset to avoid duplication
-        menuDataset = [];
-        data.forEach((item) => {
-            let menuItem = {
-                id: item.id,
-                title: "",
-                permalink: "",
-                icon_font: "",
-                css_class: "",
-                target: "",
-                reference: "",
-                label: "",
-                model_id: "",
-                children: [],
-            };
-            // Add title and link if available in the DOM
-            let currentItem = $(`.dd-item[data-id="${item.id}"]`);
-            menuItem.title = currentItem.find('input[name="title"]').val();
-            menuItem.permalink = currentItem.find('input[name="url"]').val();
-            menuItem.icon_font = currentItem.find('select option:selected').val();
-            menuItem.css_class = currentItem.find('input[name="css_class"]').val();
-            menuItem.target = currentItem.find('select[name="target"] option:selected').val() || '_self';
-            menuItem.reference = $(`.dd-item[data-id="${item.id}"]`).data('reference');
-            menuItem.label = $(`.dd-item[data-id="${item.id}"]`).data('label');
-            menuItem.model_id = $(`.dd-item[data-id="${item.id}"]`).data('model_id');
-            // Process children recursively if they exist
-            if (item.children && item.children.length > 0) {
-                menuItem.children = processMenuItemChildren(item.children);
-            }
-            // Push the menuItem to the global dataset
-            menuDataset.push(menuItem);
-        });
-    };
-
-    let processMenuItemChildren = function(children) {
-        let childArray = [];
-        children.forEach((child) => {
-            let menuItem = {
-                id: child.id,
-                title: "",
-                permalink: "",
-                icon_font: "",
-                css_class: "",
-                target: "",
-                reference: "",
-                label: "",
-                model_id: "",
-                children: [],
-            };
-
-            // Get title and link from the DOM for the child
-            let currentChild = $(`.dd-item[data-id="${child.id}"]`);
-            menuItem.title = currentChild.find('input[name="title"]').val();
-            menuItem.permalink = currentChild.find('input[name="url"]').val();
-            menuItem.icon_font = currentChild.find('select[name="icon_font"] option:selected').val();
-            menuItem.css_class = currentChild.find('input[name="css_class"]').val();
-            menuItem.target = currentChild.find('select[name="target"] option:selected').val() || '_self';
-            menuItem.reference = currentChild.data('reference');
-            menuItem.label = currentChild.data('label');
-            menuItem.model_id = currentChild.data('model_id');
-
-            // Process child elements recursively if they exist
-            if (child.children && child.children.length > 0) {
-                menuItem.children = processMenuItemChildren(child.children);
-            }
-            // Add the menuItem to the current child array
-            childArray.push(menuItem);
-        });
-        return childArray;
-    };
-
-
-</script>
 @endpush
