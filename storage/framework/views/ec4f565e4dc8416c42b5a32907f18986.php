@@ -132,7 +132,7 @@
         <ul class="menu-sub">
           <li class="menu-item <?php echo e(request()->routeIs('admin.theme.all.*') ? 'active' : ''); ?>">
             <a href="<?php echo e(route('admin.theme.all')); ?>" class="menu-link ">
-                <i class="menu-icon tf-icons bx bx-pallate me-2"></i>
+                <i class="menu-icon tf-icons bx bx-palette me-2"></i>
               <div class="text-truncate" data-i18n="Analytics">Themes</div>
             </a>
           </li>

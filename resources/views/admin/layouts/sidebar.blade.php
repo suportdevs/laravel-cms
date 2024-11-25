@@ -132,7 +132,7 @@
         <ul class="menu-sub">
           <li class="menu-item {{ request()->routeIs('admin.theme.all.*') ? 'active' : '' }}">
             <a href="{{route('admin.theme.all')}}" class="menu-link ">
-                <i class="menu-icon tf-icons bx bx-pallate me-2"></i>
+                <i class="menu-icon tf-icons bx bx-palette me-2"></i>
               <div class="text-truncate" data-i18n="Analytics">Themes</div>
             </a>
           </li>
