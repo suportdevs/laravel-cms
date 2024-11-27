@@ -37,7 +37,8 @@
                             <textarea name="excerpt" id="excerpt" rows="3" class="form-control border-radius-5" placeholder="Short Description">{{$data->excerpt}}</textarea>
                         </div>
                         <div class="mb-5">
-                            <label for="content" class="form-label"><b>Content</b></label>
+                            <label for="content" class="form-label"><b>Content</b></label><br>
+                            <button type="button" class="btn btn-outline-secondary my-2" data-bs-toggle="modal" data-bs-target="#modalScrollable">UI Blocks</button>
                             <textarea name="content" id="content" rows="10" class="form-control border-radius-5" placeholder="Content">{!!$data->content!!}</textarea>
                         </div>
                     </div>
@@ -242,6 +243,7 @@
             </div>
     </form>
 </div>
+@include('admin.pages.modals')
 @endpush
 
 @push('scripts')
@@ -306,6 +308,7 @@
     });
 
 
+    let editorInstance;
     ClassicEditor
             .create( document.querySelector( '#content' ), {
               ckfinder: {
@@ -313,6 +316,7 @@
               }
             } )
             .then((editor) => {
+                editorInstance = editor;
                 editor.ui.view.editable.element.style.height = 'auto';
               console.log(editor);
             })
@@ -320,4 +324,146 @@
                 console.error( error );
             } );
 </script>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+            // Add click event listener to all Use buttons
+            document.querySelectorAll('.use-btn').forEach((button) => {
+                button.addEventListener('click', (event) => {
+                    // Open a new modal dynamically
+                    openNewModal(event.target.closest('.card'));
+                });
+            });
+        });
+
+        function openNewModal(cardElement) {
+            const cardTitle = cardElement.querySelector('.card-title').innerText;
+            const cardDescription = cardElement.dataset.description;
+            const formConfig = JSON.parse(cardElement.dataset.formConfig || '[]');
+            const shortcodeName = cardElement.dataset.shortcodeName; // Fetch the shortcode name
+
+            const modalContent = `
+                <div class="modal fade" id="dynamicModal" tabindex="-1" aria-labelledby="dynamicModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="dynamicModalLabel">${cardTitle}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="dynamicForm">
+                                    ${generateFormFields(formConfig)}
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary" id="saveChanges" data-shortcode-name="${shortcodeName}">Use</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.body.insertAdjacentHTML('beforeend', modalContent);
+
+            const modal = new bootstrap.Modal(document.getElementById('dynamicModal'));
+            modal.show();
+
+            const dynamicModalElement = document.getElementById('dynamicModal');
+            dynamicModalElement.addEventListener('hidden.bs.modal', () => {
+                dynamicModalElement.remove();
+            });
+
+            document.getElementById('saveChanges').addEventListener('click', (event) => {
+                const formData = new FormData(document.getElementById('dynamicForm'));
+                const formValues = Object.fromEntries(formData.entries());
+
+                // Collect checkbox values for `display_fields` and `mandatory_fields`
+                const displayFields = Array.from(document.querySelectorAll('input[name="display_fields"]:checked'))
+                    .map((checkbox) => checkbox.value)
+                    .join(',');
+
+                const mandatoryFields = Array.from(document.querySelectorAll('input[name="mandatory_fields"]:checked'))
+                    .map((checkbox) => checkbox.value)
+                    .join(',');
+
+                // Add the collected values to the form data
+                formValues.display_fields = displayFields;
+                formValues.mandatory_fields = mandatoryFields;
+
+                const shortcodeName = event.target.dataset.shortcodeName;
+                const shortcode = generateShortcode(shortcodeName, formValues);
+
+                insertShortcodeIntoCKEditor(shortcode);
+
+                const modal = bootstrap.Modal.getInstance(document.getElementById('dynamicModal'));
+                modal.hide();
+            });
+
+        }
+
+        function generateFormFields(config) {
+            return config.map((field) => {
+                switch (field.type) {
+                    case 'text':
+                    case 'number':
+                    case 'color':
+                        return `
+                            <div class="mb-3">
+                                <label for="${field.name}" class="form-label">${field.label}</label>
+                                <input type="${field.type}" class="form-control" id="${field.name}" name="${field.name}" placeholder="${field.placeholder || ''}">
+                            </div>
+                        `;
+                    case 'checkbox-group':
+                        return `
+                            <div class="mb-3">
+                                <label>${field.label}</label>
+                                <div>
+                                    ${field.fields.map(subField => `
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="${subField.name}-${subField.value}" name="${field.name}" value="${subField.value}">
+                                            <label for="${subField.name}-${subField.value}" class="form-check-label">${subField.label}</label>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `;
+                    default:
+                        console.warn('Unsupported field type:', field.type);
+                        return '';
+                }
+            }).join('');
+        }
+
+
+        function generateShortcode(shortcodeName, formValues) {
+            let shortcode = `[${shortcodeName}`;
+            Object.entries(formValues).forEach(([key, value]) => {
+                if (key && value) {
+                    shortcode += ` ${key}="${value}"`;
+                }
+            });
+            shortcode += `][/${shortcodeName}]`;
+            return shortcode;
+        }
+
+
+        function insertShortcodeIntoCKEditor(shortcode) {
+            if (editorInstance && shortcode) {
+                // Get the current selection (caret position)
+                const selection = editorInstance.model.document.selection;
+
+                // Insert the name value at the caret position
+                editorInstance.model.change(writer => {
+                    // Create a text node with the name value
+                    const textNode = writer.createText(shortcode);
+
+                    // Insert the text node at the current selection
+                    writer.insert(textNode, selection.getFirstPosition());
+                });
+            }
+        }
+    </script>
+
 @endpush

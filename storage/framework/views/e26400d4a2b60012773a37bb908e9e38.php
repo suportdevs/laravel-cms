@@ -1,45 +1,43 @@
-@extends('admin.layouts.app')
-
-@push('content')
+<?php $__env->startPush('content'); ?>
 
 <div class="container-xxl flex-grow-1 container-p-y">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-style1">
         <li class="breadcrumb-item">
-            <a href="{{route('admin.dashboard')}}">Dashboard</a>
+            <a href="<?php echo e(route('admin.dashboard')); ?>">Dashboard</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="{{route('admin.pages.index')}}">Pages</a>
+            <a href="<?php echo e(route('admin.pages.index')); ?>">Pages</a>
         </li>
-        <li class="breadcrumb-item active">Create</li>
+        <li class="breadcrumb-item active">Edit ** <?php echo e($data->name); ?> **</li>
         </ol>
     </nav>
-
-    <form action="{{route('admin.pages.store')}}" method="POST" enctype="multipart/form-data">
-        @csrf
+    <form action="<?php echo e(route('admin.pages.update', $data->_key)); ?>" method="POST" enctype="multipart/form-data">
+        <?php echo csrf_field(); ?>
+        <?php echo method_field('PUT'); ?>
         <div class="row">
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-body">
                       <div class="mb-5">
-                        <label for="name" class="form-label"><b>Name</b> <b class="text-danger">*</b></label>
-                        <input type="text" class="form-control border-radius-5" id="name" name="name" placeholder="Name" required>
+                        <label for="name" class="form-label">Name <b class="text-danger">*</b></label>
+                        <input type="text" class="form-control border-radius-5" id="name" name="name" placeholder="Name" value="<?php echo e($data->name); ?>" required>
                       </div>
                       <div class="mb-5">
-                          <label for="permalink" class="form-label"><b>Permalink</b> <b class="text-danger">{{$maxId ? '*' : ''}}</b></label>
+                          <label for="permalink" class="form-label">Permalink <b class="text-danger">*</b></label>
                           <div class="input-group input-group-merge">
-                            <span class="input-group-text text-gray" id="basic-addon34">{{$maxId ? route('home') : ''}}</span>
-                            <input type="text" class="form-control" name="permalink" id="permalink" {{$maxId ? 'required' : ''}} value="{{!$maxId ? route('home') : ''}}" {{!$maxId ? 'readonly' : ''}}>
+                            <span class="input-group-text" id="basic-addon34"><?php echo e(route('home')); ?>/</span>
+                            <input type="text" class="form-control" name="permalink" id="permalink" value="<?php echo e($data->permalink); ?>" required>
                           </div>
                         </div>
                         <div class="mb-5">
-                            <label for="excerpt" class="form-label"><b>Description</b></label>
-                            <textarea name="excerpt" id="excerpt" rows="3" class="form-control border-radius-5" placeholder="Short Description"></textarea>
+                            <label for="excerpt" class="form-label">Description</label>
+                            <textarea name="excerpt" id="excerpt" rows="3" class="form-control border-radius-5" placeholder="Short Description"><?php echo e($data->excerpt); ?></textarea>
                         </div>
                         <div class="mb-5">
                             <label for="content" class="form-label"><b>Content</b></label><br>
                             <button type="button" class="btn btn-outline-secondary my-2" data-bs-toggle="modal" data-bs-target="#modalScrollable">UI Blocks</button>
-                            <textarea name="content" id="content" rows="10" class="form-control border-radius-5" placeholder="Content"></textarea>
+                            <textarea name="content" id="content" rows="10" class="form-control border-radius-5" placeholder="Content"><?php echo $data->content; ?></textarea>
                         </div>
                     </div>
                 </div>
@@ -60,11 +58,11 @@
                             <div class="accordion-body">
                                 <div class="mb-5">
                                     <label for="seo_title" class="form-label">SEO Title</label>
-                                    <input type="text" class="form-control border-radius-5" id="seo_title" name="seo_title" placeholder="Title">
+                                    <input type="text" class="form-control border-radius-5" id="seo_title" name="seo_title" value="<?php echo e($data->seo_title); ?>" placeholder="Title">
                                 </div>
                                 <div class="mb-5">
                                     <label for="seo_description" class="form-label">SEO Description</label>
-                                    <textarea name="seo_description" id="seo_description" rows="3" class="form-control border-radius-5" placeholder="SEO Description"></textarea>
+                                    <textarea name="seo_description" id="seo_description" rows="3" class="form-control border-radius-5" placeholder="SEO Description"><?php echo e($data->seo_description); ?></textarea>
                                 </div>
                                 <div class="mb-5">
                                     <label for="seoFormFile" class="form-label">SEO Image</label>
@@ -73,8 +71,8 @@
                                         <img
                                             id="seoImagePreview"
                                             class="preview-image"
-                                            data-default="https://cms.botble.com/vendor/core/core/base/images/placeholder.png"
-                                            src="https://cms.botble.com/vendor/core/core/base/images/placeholder.png"
+                                            data-default="<?php echo e(!is_null($data->seo_image) ? $data->getFirstMediaUrl('seo_image') : 'https://cms.botble.com/vendor/core/core/base/images/placeholder.png'); ?>"
+                                            src="<?php echo e(!is_null($data->seo_image) ? $data->getFirstMediaUrl('seo_image') : 'https://cms.botble.com/vendor/core/core/base/images/placeholder.png'); ?>"
                                             alt="Preview image"
                                             style="width: 150px;"
                                         >
@@ -108,11 +106,11 @@
                                     <label for="is_index_index">Index</label>
                                     <br>
                                     <label for="indexYes">
-                                        <input name="is_index" class="form-check-input" type="radio" value="1" id="indexYes" checked>
+                                        <input name="is_index" class="form-check-input" type="radio" value="1" id="indexYes" <?php echo e($data->is_index == 1 ? 'checked' : ''); ?>>
                                         <span>Index</span>
                                     </label>
                                     <label for="indexNo">
-                                        <input name="is_index" class="form-check-input" type="radio" value="0" id="indexNo">
+                                        <input name="is_index" class="form-check-input" type="radio" value="0" id="indexNo" <?php echo e($data->is_index == 0 ? 'checked' : ''); ?>>
                                         <span>No Index</span>
                                     </label>
                                 </div>
@@ -136,10 +134,9 @@
                         <h5>Template <b class="text-danger">*</b></h5>
                     </div>
                     <div class="card-body mt-4">
-                        <label for="template" class="form-label">Selete Template</label>
-                        <select name="template" id="template" class="form-select select2search" data-control="select2" >
-                            <option value="default">Default</option>
-                            <option value="no_sidebar">No Sidebar</option>
+                        <select name="template" id="template" class="form-select">
+                            <option value="default" <?php echo e($data->template == 'default' ? 'selected' : ''); ?>>Default</option>
+                            <option value="no_sidebar" <?php echo e($data->template == 'no_sidebar' ? 'selected' : ''); ?>>No Sidebar</option>
                         </select>
                     </div>
                 </div>
@@ -148,11 +145,10 @@
                         <h5>Status <b class="text-danger">*</b></h5>
                     </div>
                     <div class="card-body mt-4">
-                        <label for="status" class="form-label">Select Status</label>
-                        <select name="status" id="status" class="form-select select2search" data-control="select2" >
-                            <option value="Published">Published</option>
-                            <option value="Draft">Draft</option>
-                            <option value="Pending">Pending</option>
+                        <select name="status" id="status" class="form-select">
+                            <option value="Published" <?php echo e($data->status == 'Published' ? 'selected' : ''); ?>>Published</option>
+                            <option value="Draft" <?php echo e($data->status == 'Draft' ? 'selected' : ''); ?>>Draft</option>
+                            <option value="Pending" <?php echo e($data->status == 'Pending' ? 'selected' : ''); ?>>Pending</option>
                         </select>
                     </div>
                 </div>
@@ -166,8 +162,8 @@
                                 <img
                                     id="imagePreview"
                                     class="preview-image"
-                                    data-default="https://cms.botble.com/vendor/core/core/base/images/placeholder.png"
-                                    src="https://cms.botble.com/vendor/core/core/base/images/placeholder.png"
+                                    data-default="<?php echo e(!is_null($data->image) ? $data->getFirstMediaUrl('image') : 'https://cms.botble.com/vendor/core/core/base/images/placeholder.png'); ?>"
+                                    src="<?php echo e(!is_null($data->image) ? $data->getFirstMediaUrl('image') : 'https://cms.botble.com/vendor/core/core/base/images/placeholder.png'); ?>"
                                     alt="Preview image"
                                     style="width: 150px;"
                                 >
@@ -209,8 +205,8 @@
                                 <img
                                     id="bannerImagePreview"
                                     class="preview-image"
-                                    data-default="https://cms.botble.com/vendor/core/core/base/images/placeholder.png"
-                                    src="https://cms.botble.com/vendor/core/core/base/images/placeholder.png"
+                                    data-default="<?php echo e($data->getFirstMediaUrl('banner_image') ? $data->getFirstMediaUrl('banner_image') : 'https://cms.botble.com/vendor/core/core/base/images/placeholder.png'); ?>"
+                                    src="<?php echo e($data->getFirstMediaUrl('banner_image') ? $data->getFirstMediaUrl('banner_image') : 'https://cms.botble.com/vendor/core/core/base/images/placeholder.png'); ?>"
                                     alt="Preview image"
                                     style="width: 150px;"
                                 >
@@ -245,20 +241,18 @@
             </div>
     </form>
 </div>
-@include('admin.pages.modals')
-@endpush
+<?php echo $__env->make('admin.pages.modals', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php $__env->stopPush(); ?>
 
-@push('scripts')
-<script src="{{ asset('assets/vendor/ckeditor5/ckeditor.js') }}"></script>
+<?php $__env->startPush('scripts'); ?>
+<script src="<?php echo e(asset('assets/vendor/ckeditor5/ckeditor.js')); ?>"></script>
 <script>
     function debounce(func, delay) {
         let timeout;
-        @if($maxId)
-            return function (...args) {
-                clearTimeout(timeout);
-                timeout = setTimeout(() => func.apply(this, args), delay);
-            };
-        @endif
+        return function (...args) {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(this, args), delay);
+        };
     }
 
     document.getElementById('name').addEventListener('keyup', debounce(function () {
@@ -269,9 +263,8 @@
             .replace(/[^\w\s-]/g, '')
             .replace(/[\s_-]+/g, '-')
             .replace(/^-+|-+$/g, '');
-        @if($maxId)
-            document.getElementById('permalink').value = slug;
-        @endif
+
+        document.getElementById('permalink').value = slug;
     }, 300));
 
     function previewSelectedImage(input) {
@@ -302,28 +295,34 @@
             const inputId = e.target.dataset.targetInput;
             const previewImage = document.getElementById(previewId);
             const fileInput = document.getElementById(inputId);
+            // Reset to default image
             const defaultImage = previewImage.dataset.default || '';
             previewImage.src = defaultImage;
+            // Hide the remove button
             e.target.classList.add('d-none');
+            // Clear the file input
             fileInput.value = '';
         }
     });
+
+
     let editorInstance;
     ClassicEditor
             .create( document.querySelector( '#content' ), {
               ckfinder: {
-                uploadUrl: "{{ route('admin.pages.ckeditor.image.upload').'?_token='.csrf_token() }}"
+                uploadUrl: "<?php echo e(route('admin.pages.ckeditor.image.upload').'?_token='.csrf_token()); ?>"
               }
             } )
             .then((editor) => {
                 editorInstance = editor;
-                editor.ui.view.editable.element.style.height = '300px';
+                editor.ui.view.editable.element.style.height = 'auto';
               console.log(editor);
             })
             .catch( error => {
                 console.error( error );
             } );
 </script>
+
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -465,4 +464,6 @@
         }
     </script>
 
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('admin.layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /media/anonymous/12a8dd6f-3122-4159-adcf-832ac2c3572d/laravel/cms_api_service/resources/views/admin/pages/edit.blade.php ENDPATH**/ ?>

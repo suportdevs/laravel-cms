@@ -18,6 +18,7 @@ use App\Http\Controllers\ThemeSettingController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/{permalink}', [HomeController::class, 'page'])->name('page');
 Route::get('/category/{permalink}', [HomeController::class, 'index'])->name('category.index');
 
 Route::middleware([
